@@ -47,8 +47,11 @@
 		<jdbc.driver.artifactId>h2</jdbc.driver.artifactId>
 		<jdbc.driver.version>1.3.166</jdbc.driver.version>
 
-		<!-- jdbc mysql <jdbc.driver.groupId>mysql</jdbc.driver.groupId> <jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId> 
-			<jdbc.driver.version>5.1.11</jdbc.driver.version> -->
+		<!--
+			jdbc mysql <jdbc.driver.groupId>mysql</jdbc.driver.groupId>
+			<jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId>
+			<jdbc.driver.version>5.1.11</jdbc.driver.version>
+		-->
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -56,7 +59,7 @@
 	<repositories>
 		<repository>
 			<id>kafeitu</id>
-            <url>http://maven.kafeitu.me/nexus/content/groups/public</url>
+			<url>http://maven.kafeitu.me/nexus/content/groups/public</url>
 		</repository>
 		<repository>
 			<id>Activiti</id>
@@ -70,6 +73,24 @@
 
 	<!-- 依赖项定义 -->
 	<dependencies>
+
+		<dependency>
+			<groupId>net.sourceforge.jexcelapi</groupId>
+			<artifactId>jxl</artifactId>
+			<version>2.6.12</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.htmlparser</groupId>
+			<artifactId>htmlparser</artifactId>
+			<version>2.1</version>
+		</dependency>
+
+
 		<!-- activiti -->
 		<dependency>
 			<groupId>org.activiti</groupId>
@@ -81,11 +102,11 @@
 			<artifactId>activiti-spring</artifactId>
 			<version>${activiti.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-explorer</artifactId>
-            <version>${activiti.version}</version>
+			<version>${activiti.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>vaadin</artifactId>
@@ -104,9 +125,9 @@
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-modeler</artifactId>
-            <version>${activiti.version}</version>
+			<version>${activiti.version}</version>
 		</dependency>
-		
+
 		<!-- 支持activiti缓存 -->
 		<dependency>
 			<groupId>org.infinispan</groupId>
@@ -461,20 +482,20 @@
 				</configuration>
 			</plugin>
 
-            <!-- jrebel -->
-            <plugin>
-                <groupId>org.zeroturnaround</groupId>
-                <artifactId>jrebel-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-rebel-xml</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+			<!-- jrebel -->
+			<plugin>
+				<groupId>org.zeroturnaround</groupId>
+				<artifactId>jrebel-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-rebel-xml</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -512,20 +533,25 @@
 								<property name="sql.type" value="${sql.type}" />
 								<property name="dbunit.datatype" value="org.dbunit.ext.h2.H2DataTypeFactory" />
 
-								<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="maven.test.classpath" />
+								<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"
+									classpathref="maven.test.classpath" />
 								<!-- base -->
-								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}"
-									src="src/main/resources/sql/${sql.type}/schema.sql" onerror="continue">
+								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
+									password="${jdbc.password}" src="src/main/resources/sql/${sql.type}/schema.sql"
+									onerror="continue">
 									<classpath refid="maven.test.classpath" />
 								</sql>
 
 								<!-- add init datas -->
-								<dbunit driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}">
+								<dbunit driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
+									password="${jdbc.password}">
 									<dbconfig>
 										<property name="datatypeFactory" value="${dbunit.datatype}" />
 									</dbconfig>
 									<classpath refid="maven.test.classpath" />
-									<operation type="CLEAN_INSERT" src="src/test/resources/data/sample-data.xml" format="flat" transaction="true" />
+									<operation type="CLEAN_INSERT"
+										src="src/test/resources/data/sample-data.xml" format="flat"
+										transaction="true" />
 								</dbunit>
 							</target>
 						</configuration>
@@ -551,52 +577,69 @@
 								<property name="sql.type" value="${sql.type}" />
 								<property name="dbunit.datatype" value="org.dbunit.ext.h2.H2DataTypeFactory" />
 
-								<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="maven.test.classpath" />
+								<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"
+									classpathref="maven.test.classpath" />
 								<!-- base -->
-								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}"
-									src="src/main/resources/sql/${sql.type}/schema.sql" onerror="continue">
+								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
+									password="${jdbc.password}" src="src/main/resources/sql/${sql.type}/schema.sql"
+									onerror="continue">
 									<classpath refid="maven.test.classpath" />
 								</sql>
 
 								<!-- activit start -->
-								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}"
-									src="src/main/resources/sql/${sql.type}/drop/activiti.${sql.type}.drop.engine.sql" onerror="continue">
+								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
+									password="${jdbc.password}"
+									src="src/main/resources/sql/${sql.type}/drop/activiti.${sql.type}.drop.engine.sql"
+									onerror="continue">
 									<classpath refid="maven.test.classpath" />
 								</sql>
 
-								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}"
-									src="src/main/resources/sql/${sql.type}/drop/activiti.${sql.type}.drop.history.sql" onerror="continue">
+								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
+									password="${jdbc.password}"
+									src="src/main/resources/sql/${sql.type}/drop/activiti.${sql.type}.drop.history.sql"
+									onerror="continue">
 									<classpath refid="maven.test.classpath" />
 								</sql>
 
-								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}"
-									src="src/main/resources/sql/${sql.type}/drop/activiti.${sql.type}.drop.identity.sql" onerror="continue">
+								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
+									password="${jdbc.password}"
+									src="src/main/resources/sql/${sql.type}/drop/activiti.${sql.type}.drop.identity.sql"
+									onerror="continue">
 									<classpath refid="maven.test.classpath" />
 								</sql>
 
-								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}"
-									src="src/main/resources/sql/${sql.type}/create/activiti.${sql.type}.create.engine.sql" onerror="continue">
+								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
+									password="${jdbc.password}"
+									src="src/main/resources/sql/${sql.type}/create/activiti.${sql.type}.create.engine.sql"
+									onerror="continue">
 									<classpath refid="maven.test.classpath" />
 								</sql>
 
-								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}"
-									src="src/main/resources/sql/${sql.type}/create/activiti.${sql.type}.create.history.sql" onerror="continue">
+								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
+									password="${jdbc.password}"
+									src="src/main/resources/sql/${sql.type}/create/activiti.${sql.type}.create.history.sql"
+									onerror="continue">
 									<classpath refid="maven.test.classpath" />
 								</sql>
 
-								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}"
-									src="src/main/resources/sql/${sql.type}/create/activiti.${sql.type}.create.identity.sql" onerror="continue">
+								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
+									password="${jdbc.password}"
+									src="src/main/resources/sql/${sql.type}/create/activiti.${sql.type}.create.identity.sql"
+									onerror="continue">
 									<classpath refid="maven.test.classpath" />
 								</sql>
 								<!-- activit end -->
 
 								<!-- add init datas -->
-								<dbunit driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}">
+								<dbunit driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
+									password="${jdbc.password}">
 									<dbconfig>
 										<property name="datatypeFactory" value="${dbunit.datatype}" />
 									</dbconfig>
 									<classpath refid="maven.test.classpath" />
-									<operation type="CLEAN_INSERT" src="src/test/resources/data/sample-data.xml" format="flat" transaction="true" />
+									<operation type="CLEAN_INSERT"
+										src="src/test/resources/data/sample-data.xml" format="flat"
+										transaction="true" />
 								</dbunit>
 							</target>
 						</configuration>
