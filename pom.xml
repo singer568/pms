@@ -55,7 +55,7 @@
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
+<!--
 	<repositories>
 		<repository>
 			<id>kafeitu</id>
@@ -70,7 +70,7 @@
 			<url>http://repository.codehaus.org</url>
 		</repository>
 	</repositories>
-
+-->
 	<!-- 依赖项定义 -->
 	<dependencies>
 
@@ -482,7 +482,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- jrebel -->
+			<!-- jrebel 
 			<plugin>
 				<groupId>org.zeroturnaround</groupId>
 				<artifactId>jrebel-maven-plugin</artifactId>
@@ -496,6 +496,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 
