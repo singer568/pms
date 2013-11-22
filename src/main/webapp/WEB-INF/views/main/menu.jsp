@@ -8,6 +8,11 @@
 			<li><a rel="oa/leave/list/task">请假办理(普通)</a></li>
 			<li><a rel="oa/leave/list/running">运行中流程(普通)</a></li>
 			<li><a rel="oa/leave/list/finished">已结束流程(普通)</a></li>
+			<li><a rel="oa/leave/list/finished">分组设置</a></li>
+			<li><a rel="oa/leave/list/finished">分级设置</a></li>
+			<li><a rel="oa/leave/list/finished">邮箱设置</a></li>
+			<li><a rel="oa/leave/list/finished">其他</a></li>
+			
 		</ul>
 	</li>
 	<li>
@@ -17,6 +22,10 @@
 			<li><a rel="form/dynamic/task/list">任务列表(动态)</a></li>
 			<li><a rel="form/dynamic/process-instance/running/list">运行中流程表(动态)</a></li>
 			<li><a rel="form/dynamic/process-instance/finished/list">已结束流程(动态)</a></li>
+			<li><a rel="form/dynamic/process-list">网址设置</a></li>
+			<li><a rel="form/dynamic/task/list">抓取规则</a></li>
+			<li><a rel="form/dynamic/process-instance/running/list">抓取任务</a></li>
+			<li><a rel="form/dynamic/process-instance/finished/list">抓取记录(补抓)</a></li>
 		</ul>
 	</li>
 	<li>
@@ -26,6 +35,10 @@
 			<li><a rel="form/formkey/task/list">任务列表(外置)</a></li>
 			<li><a rel="form/formkey/process-instance/running/list">运行中流程表(外置)</a></li>
 			<li><a rel="form/formkey/process-instance/finished/list">已结束流程(外置)</a></li>
+			<li><a rel="form/formkey/process-list">抓取统计</a></li>
+			<li><a rel="form/formkey/task/list">政策查询</a></li>
+			<li><a rel="form/formkey/process-instance/running/list">政策分析</a></li>
+			<li><a rel="form/formkey/process-instance/finished/list">已结束流程(外置)</a></li>
 		</ul>
 	</li>
 	<li>
@@ -34,6 +47,7 @@
 			<li><a rel='workflow/process-list'>流程定义及部署管理</a></li>
 			<li><a rel='workflow/processinstance/running'>运行中流程</a></li>
 			<li><a rel='workflow/model/list'>模型工作区</a></li>
+			<li><a rel='workflow/process-list'>系统日志</a></li>
 		</ul>
 	</li>
 </ul>
