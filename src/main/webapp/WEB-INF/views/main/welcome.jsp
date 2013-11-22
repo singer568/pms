@@ -26,7 +26,7 @@
 	<script src="${ctx }/js/module/activiti/workflow.js" type="text/javascript"></script>
     <script src="${ctx }/js/module/main/welcome-portlet.js" type="text/javascript"></script>
 </head>
-<body style="margin-top: 1em;">
+<body style="margin-top: 0.5em;">
 	<div id='portlet-container'></div>
 
 	<!-- 隐藏 -->
