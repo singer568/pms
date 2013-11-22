@@ -481,8 +481,14 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
-
-			<!-- jrebel 
+ <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+			<!-- jrebel -->
 			<plugin>
 				<groupId>org.zeroturnaround</groupId>
 				<artifactId>jrebel-maven-plugin</artifactId>
@@ -496,7 +502,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			-->
+			
 		</plugins>
 	</build>
 

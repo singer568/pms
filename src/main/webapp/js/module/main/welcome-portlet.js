@@ -2,7 +2,7 @@ $(function() {
 	$('#portlet-container').portlet({
 		sortable: true,
 		columns: [{
-			width: 450,
+			width: '50%',
 			portlets: [{
 				title: '待办任务',
 				content: {
@@ -28,14 +28,6 @@ $(function() {
 					}
 				}
 			}, {
-				title: '表单概念',
-				content: {
-					type: 'text',
-					text: function() {
-						return $('.forms').html();
-					}
-				}
-			}, {
 				title: '会签（多实例）说明',
 				content: {
 					type: 'text',
@@ -44,41 +36,14 @@ $(function() {
 					}
 				}
 			}]
-		}, {
-			width: 250,
-			portlets: [{
-				title: '演示内容',
-				content: {
-					type: 'text',
-					text: function() {
-						return $('.demos').html();
-					}
-				}
-			}, {
-				title: '关于作者',
-				content: {
-					type: 'text',
-					text: function() {
-						return $('.aboutme').html();
-					}
-				}
-			}]
-		}, {
-			width: 500,
+		},{
+			width: '50%',
 			portlets: [{
 				title: '项目说明',
 				content: {
 					type: 'text',
 					text: function() {
 						return $('.project-info').html();
-					}
-				}
-			}, {
-				title: '架构说明',
-				content: {
-					type: 'text',
-					text: function() {
-						return $('.arch').html();
 					}
 				}
 			}, {
