@@ -22,14 +22,24 @@
 	<!-- 项目属性 -->
 	<properties>
 		<jdk.version>1.6</jdk.version>
-		<spring.version>3.1.2.RELEASE</spring.version>
-		<hibernate.version>4.1.4.Final</hibernate.version>
-		<spring-data-jpa.version>1.1.0.RELEASE</spring-data-jpa.version>
+		<springside.version>4.1.0.GA</springside.version>
+
+
+
+		<spring.version>3.2.3.RELEASE</spring.version>
+		<spring-data-jpa.version>1.3.2.RELEASE</spring-data-jpa.version>
+
+		<hibernate.version>4.2.3.Final</hibernate.version>
+		<hibernate-validator.version>4.3.1.Final</hibernate-validator.version>
+
+		<shiro.version>1.2.2</shiro.version>
+		<jackson.version>2.1.5</jackson.version>
+
 		<commons-dbcp.version>1.4</commons-dbcp.version>
+		<guava.version>14.0.1</guava.version>
+
 		<ehcache.version>2.5.2</ehcache.version>
-		<jackson.version>2.0.4</jackson.version>
 		<spymemcached.version>2.8.1</spymemcached.version>
-		<guava.version>12.0</guava.version>
 		<commons-lang3.version>3.1</commons-lang3.version>
 		<commons-io.version>2.4</commons-io.version>
 		<joda-time.version>2.1</joda-time.version>
@@ -55,25 +65,28 @@
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-<!--
-	<repositories>
-		<repository>
-			<id>kafeitu</id>
-			<url>http://maven.kafeitu.me/nexus/content/groups/public</url>
-		</repository>
-		<repository>
-			<id>Activiti</id>
-			<url>https://maven.alfresco.com/nexus/content/groups/public</url>
-		</repository>
-		<repository>
-			<id>Codehaus</id>
-			<url>http://repository.codehaus.org</url>
-		</repository>
-	</repositories>
--->
+	<!--
+		<repositories> <repository> <id>kafeitu</id>
+		<url>http://maven.kafeitu.me/nexus/content/groups/public</url>
+		</repository> <repository> <id>Activiti</id>
+		<url>https://maven.alfresco.com/nexus/content/groups/public</url>
+		</repository> <repository> <id>Codehaus</id>
+		<url>http://repository.codehaus.org</url> </repository>
+		</repositories>
+	-->
 	<!-- 依赖项定义 -->
-	<dependencies>
 
+	<dependencies>
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>sitemesh</artifactId>
+			<version>2.4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springside</groupId>
+			<artifactId>springside-core</artifactId>
+			<version>${springside.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.jexcelapi</groupId>
 			<artifactId>jxl</artifactId>
@@ -90,6 +103,99 @@
 			<version>2.1</version>
 		</dependency>
 
+		<!-- JSR303  BeanValidator -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jboss-logging</artifactId>
+					<groupId>org.jboss.logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- JSON begin -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-jaxb-annotations</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<!-- JSON end -->
+
+		<!-- SECURITY begin -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>${shiro.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-ehcache</artifactId>
+			<version>${shiro.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>2.6.6</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.8</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- SECURITY end -->
+
+
+		<!-- modified end -->
+
+
+
 
 		<!-- activiti -->
 		<dependency>
@@ -101,6 +207,12 @@
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-spring</artifactId>
 			<version>${activiti.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-tx</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -120,6 +232,10 @@
 					<artifactId>activiti-simple-workflow</artifactId>
 					<groupId>org.activiti</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>spring-web</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -133,6 +249,12 @@
 			<groupId>org.infinispan</groupId>
 			<artifactId>infinispan-core</artifactId>
 			<version>5.1.7.Final</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jboss-logging</artifactId>
+					<groupId>org.jboss.logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Jackson JSON Mapper -->
@@ -141,6 +263,12 @@
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.7</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- UTILS -->
@@ -154,6 +282,9 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2.2</version>
 		</dependency>
+
+
+
 
 		<!-- SPRING begin -->
 		<!-- spring basic -->
@@ -210,22 +341,37 @@
 		</dependency>
 		<!-- SPRING end -->
 
+
+
 		<!-- PERSISTENCE begin -->
 		<!-- hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jboss-logging</artifactId>
+					<groupId>org.jboss.logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
+
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
 			<version>${hibernate.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jboss-logging</artifactId>
+					<groupId>org.jboss.logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
@@ -242,6 +388,10 @@
 				<exclusion>
 					<groupId>junit</groupId>
 					<artifactId>junit-dep</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-tx</artifactId>
+					<groupId>org.springframework</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -439,7 +589,6 @@
 					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
-
 			<!-- eclipse插件, 设定wtp版本并添加springIDE nature -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -481,13 +630,13 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
- <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
 			<!-- jrebel -->
 			<plugin>
 				<groupId>org.zeroturnaround</groupId>
@@ -502,7 +651,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 		</plugins>
 	</build>
 
@@ -636,6 +785,15 @@
 									<classpath refid="maven.test.classpath" />
 								</sql>
 								<!-- activit end -->
+
+								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
+									password="${jdbc.password}"
+									src="src/main/resources/sql/${sql.type}/create/springside.sql"
+									onerror="continue">
+									<classpath refid="maven.test.classpath" />
+								</sql>
+
+
 
 								<!-- add init datas -->
 								<dbunit driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"

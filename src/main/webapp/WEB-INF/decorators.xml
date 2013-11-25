@@ -3,8 +3,8 @@
 	<excludes>
 		<pattern>/static/*</pattern>
 	</excludes>
-	
+	    
 	<decorator name="default" page="default.jsp">
-		<pattern>/*</pattern>
+		<pattern>/quickstart/*</pattern>
 	</decorator>
 </decorators>

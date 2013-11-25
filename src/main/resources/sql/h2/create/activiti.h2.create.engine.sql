@@ -6,10 +6,10 @@ create table ACT_GE_PROPERTY (
 );
 
 insert into ACT_GE_PROPERTY
-values ('schema.version', '5.12', 1);
+values ('schema.version', '5.13', 1);
 
 insert into ACT_GE_PROPERTY
-values ('schema.history', 'create(5.12)', 1);
+values ('schema.history', 'create(5.13)', 1);
 
 insert into ACT_GE_PROPERTY
 values ('next.dbid', '1', 1);
@@ -23,6 +23,20 @@ create table ACT_GE_BYTEARRAY (
     GENERATED_ bit,
     primary key (ID_)
 );
+
+create table ACT_HI_IDENTITYLINK (
+    ID_ varchar(64),
+    GROUP_ID_ varchar(255),
+    TYPE_ varchar(255),
+    USER_ID_ varchar(255),
+    TASK_ID_ varchar(64),
+    PROC_INST_ID_ varchar(64) null,
+    primary key (ID_)
+);
+
+create index ACT_IDX_HI_IDENT_LNK_USER on ACT_HI_IDENTITYLINK(USER_ID_);
+create index ACT_IDX_HI_IDENT_LNK_TASK on ACT_HI_IDENTITYLINK(TASK_ID_);
+create index ACT_IDX_HI_IDENT_LNK_PROCINST on ACT_HI_IDENTITYLINK(PROC_INST_ID_);
 
 create table ACT_RE_DEPLOYMENT (
     ID_ varchar(64),

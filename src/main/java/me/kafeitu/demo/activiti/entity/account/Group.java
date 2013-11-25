@@ -22,7 +22,7 @@ public class Group implements Serializable {
 	private String id;
 	private String name;
 	private String type;
-	private List<User> actIdUsers;
+	private List<ActUser> actIdUsers;
 
 	public Group() {
 	}
@@ -58,11 +58,11 @@ public class Group implements Serializable {
 
 	//bi-directional many-to-many association to User
 	@ManyToMany(mappedBy = "actIdGroups")
-	public List<User> getActIdUsers() {
+	public List<ActUser> getActIdUsers() {
 		return this.actIdUsers;
 	}
 
-	public void setActIdUsers(List<User> actIdUsers) {
+	public void setActIdUsers(List<ActUser> actIdUsers) {
 		this.actIdUsers = actIdUsers;
 	}
 
