@@ -17,14 +17,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "ACT_ID_GROUP")
-public class Group implements Serializable {
+public class ActGroup implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id;
 	private String name;
 	private String type;
 	private List<ActUser> actIdUsers;
 
-	public Group() {
+	public ActGroup() {
 	}
 
 	@Id

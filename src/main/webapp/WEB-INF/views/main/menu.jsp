@@ -4,15 +4,17 @@
 	<li>
 		<a rel="#">请假（普通表单）</a>
 		<ul>
+		<!-- 
 			<li><a rel="oa/leave/apply">请假申请(普通)</a></li>
 			<li><a rel="oa/leave/list/task">请假办理(普通)</a></li>
 			<li><a rel="oa/leave/list/running">运行中流程(普通)</a></li>
 			<li><a rel="oa/leave/list/finished">已结束流程(普通)</a></li>
-			<li><a rel="oa/leave/list/finished">分组设置</a></li>
-			<li><a rel="oa/leave/list/finished">分级设置</a></li>
-			<li><a rel="oa/leave/list/finished">邮箱设置</a></li>
 			<li><a rel="oa/leave/list/finished">其他</a></li>
-			
+			<li><a rel="quickstart/task">测试list和form</a></li>
+			-->
+			<li><a rel="bd/group">分组设置</a></li>
+			<li><a rel="bd/level">分级设置</a></li>
+			<li><a rel="bd/email">邮箱设置</a></li>
 		</ul>
 	</li>
 	<li>

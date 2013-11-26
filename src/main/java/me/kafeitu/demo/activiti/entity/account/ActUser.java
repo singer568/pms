@@ -26,7 +26,7 @@ public class ActUser implements Serializable {
 	private String first;
 	private String last;
 	private String password;
-	private List<Group> actIdGroups;
+	private List<ActGroup> actIdGroups;
 
 	public ActUser() {
 	}
@@ -81,11 +81,11 @@ public class ActUser implements Serializable {
 	//bi-directional many-to-many association to Group
 	@ManyToMany
 	@JoinTable(name = "ACT_ID_MEMBERSHIP", joinColumns = { @JoinColumn(name = "USER_ID_") }, inverseJoinColumns = { @JoinColumn(name = "GROUP_ID_") })
-	public List<Group> getActIdGroups() {
+	public List<ActGroup> getActIdGroups() {
 		return this.actIdGroups;
 	}
 
-	public void setActIdGroups(List<Group> actIdGroups) {
+	public void setActIdGroups(List<ActGroup> actIdGroups) {
 		this.actIdGroups = actIdGroups;
 	}
 
