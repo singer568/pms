@@ -77,6 +77,11 @@
 	<!-- 依赖项定义 -->
 
 	<dependencies>
+		<dependency> 
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>1.8.6</version>
+        </dependency>
 		<dependency>
 			<groupId>opensymphony</groupId>
 			<artifactId>sitemesh</artifactId>
