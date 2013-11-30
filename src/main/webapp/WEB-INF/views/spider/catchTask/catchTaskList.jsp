@@ -4,7 +4,7 @@
 <html lang="en">
 	<head>
 		<%@ include file="/common/global.jsp"%>
-		<title>网址列表</title>
+		<title>抓取任务</title>
 		<%@ include file="/common/meta.jsp"%>
 		<%@ include file="/common/include-base-styles.jsp"%>
 		<%@ include file="/common/include-jquery-ui-theme.jsp"%>
@@ -43,7 +43,6 @@
 body {
 	TEXT-ALIGN: center;
 }
-
 #querydiv {
 	MARGIN-RIGHT: auto;
 	MARGIN-LEFT: auto;
@@ -84,7 +83,7 @@ body {
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a
 					class="startup-process ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
-					href="${ctx}/spider/url/create">新增</a>
+					href="${ctx}/spider/catchTask/create">新增</a>
 			</form>
 		</div>
 
@@ -99,13 +98,7 @@ body {
 						名称
 					</th>
 					<th>
-						网址
-					</th>
-					<th>
-						规则
-					</th>
-					<th>
-						所属任务
+						抓取频率
 					</th>
 					<th>
 						描述
@@ -117,35 +110,29 @@ body {
 			</thead>
 			<tbody>
 
-				<c:forEach items="${urls.content}" var="url">
+				<c:forEach items="${catchTasks.content}" var="catchTask">
 					<tr>
 						<td>
-							<a href="${ctx}/spider/url/update/${url.id}">${url.code}</a>
+							<a href="${ctx}/spider/catchTask/update/${catchTask.id}">${catchTask.code}</a>
 						</td>
 						<td>
-							${url.name}
+							${catchTask.name}
 						</td>
 						<td>
-							${url.url}
+							${catchTask.cron}
 						</td>
 						<td>
-							${url.rule.id}
+							${catchTask.description}
 						</td>
 						<td>
-							${url.task.id}
-						</td>
-						<td>
-							${url.description}
-						</td>
-						<td>
-							<a href="${ctx}/spider/url/delete/${url.id}">删除</a>
+							<a href="${ctx}/spider/catchTask/delete/${catchTask.id}">删除</a>
 						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 
-		<tags:pagination page="${urls}" paginationSize="5" />
+		<tags:pagination page="${catchTasks}" paginationSize="5" />
 
 
 	</body>

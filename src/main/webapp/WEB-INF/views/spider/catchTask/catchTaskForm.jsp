@@ -5,7 +5,7 @@
 <html lang="en">
 	<head>
 		<%@ include file="/common/global.jsp"%>
-		<title>编辑网址</title>
+		<title>抓取任务</title>
 		<%@ include file="/common/meta.jsp"%>
 		<%@ include file="/common/include-base-styles.jsp"%>
 		<%@ include file="/common/include-jquery-ui-theme.jsp"%>
@@ -33,12 +33,12 @@
 	<body>
 
 		<div class="container showgrid">
-			<form:form id="inputForm" action="${ctx}/spider/url/${action}"
+			<form:form id="inputForm" action="${ctx}/spider/catchTask/${action}"
 				method="post" class="form-horizontal">
-				<input type="hidden" name="id" value="${url.id}" />
+				<input type="hidden" name="id" value="${catchTask.id}" />
 				<fieldset>
 					<legend>
-						<small>编辑网址</small>
+						<small>编辑规则</small>
 					</legend>
 					<table border="1">
 						<tr>
@@ -46,7 +46,8 @@
 								编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:
 							</td>
 							<td>
-								<input type="text" id="code" name="code" value="${url.code}" />
+								<input type="text" id="code" name="code"
+									value="${catchTask.code}" />
 							</td>
 						</tr>
 						<tr>
@@ -54,34 +55,17 @@
 								名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称:
 							</td>
 							<td>
-								<input type="text" id="name" name="name" value="${url.name}" />
+								<input type="text" id="name" name="name"
+									value="${catchTask.name}" />
 							</td>
 						</tr>
 						<tr>
 							<td>
-								网&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址:
+								抓取频率:
 							</td>
 							<td>
-								<input type="text" id="url" name="url"
-									value="${url.url}" />
-							</td>
-						</tr>
-						<tr>
-							<td>
-								规&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;则:
-							</td>
-							<td>
-								<input type="text" id="rule_id" name="rule_id"
-									value="${url.rule.id}" />
-							</td>
-						</tr>
-						<tr>
-							<td>
-								所属任务:
-							</td>
-							<td>
-								<input type="text" id="rule_id" name="rule_id"
-									value="${url.task.id}" />
+								<input type="text" id="cron" name="cron"
+									value="${catchTask.cron}" />
 							</td>
 						</tr>
 						<tr>
@@ -90,7 +74,7 @@
 							</td>
 							<td>
 								<textarea id="description" name="description"
-									class="input-large">${url.description}</textarea>
+									class="input-large">${catchTask.description}</textarea>
 							</td>
 						</tr>
 						<tr>

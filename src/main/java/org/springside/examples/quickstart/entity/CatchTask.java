@@ -1,54 +1,33 @@
 package org.springside.examples.quickstart.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 //JPA标识
 @Entity
-@Table(name = "pms_bd_url")
-public class Url extends IdEntity {
+@Table(name = "pms_bd_task")
+public class CatchTask extends IdEntity {
 
 	private String code;
+
 	private String name;
-	private String url;
+
+	/**
+	 * 抓取频率
+	 */
+	private String cron;
 
 	private String description;
 
-	private Rule rule;
-
-	private CatchTask task;
-
-	@ManyToOne
-	@JoinColumn(name = "task_id")
-	public CatchTask getTask() {
-		return task;
-	}
-
-	public void setTask(CatchTask task) {
-		this.task = task;
-	}
-
 	@NotBlank
-	public String getUrl() {
-		return url;
+	public String getCron() {
+		return cron;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "rule_id")
-	public Rule getRule() {
-		return rule;
-	}
-
-	public void setRule(Rule rule) {
-		this.rule = rule;
+	public void setCron(String cron) {
+		this.cron = cron;
 	}
 
 	// JSR303 BeanValidator的校验规则
@@ -77,5 +56,4 @@ public class Url extends IdEntity {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 }
