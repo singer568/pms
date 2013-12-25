@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springside.examples.quickstart.entity.CatchTask;
 import org.springside.examples.quickstart.entity.Email;
 import org.springside.examples.quickstart.entity.Url;
-import org.springside.examples.quickstart.quartz.job.EmailJob;
 import org.springside.examples.quickstart.quartz.job.SpiderJob;
 import org.springside.examples.quickstart.service.bd.EmailService;
 import org.springside.examples.quickstart.service.spider.CatchTaskService;
@@ -103,16 +102,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 			jobDetail.setName(task.getName());
 			jobDetail.setGroup(jobGroup);
 
-			if (task.getCatchType() == null
-					|| task.getCatchType().equals("CATCHTASK")) {// URL类型的任务
-				jobDetail.getJobDataMap().put(URLLIST, getTaskUrls(task));// 待执行的URL列表
-				jobDetail.setJobClass(SpiderJob.class);
-				jobDetail.getJobDataMap().put(CATCHSERVICE, html);// 抓取html的实例对象
-			} else {
-				jobDetail.getJobDataMap().put(EMAILLIST, getTaskEmails(task));// 待执行的Email列表
-				jobDetail.setJobClass(EmailJob.class);
-				jobDetail.getJobDataMap().put(SUBJECTSERVICE, subjectService);// 抓取html的实例对象
-			}
+			jobDetail.getJobDataMap().put(URLLIST, getTaskUrls(task));// 待执行的URL列表
+			jobDetail.setJobClass(SpiderJob.class);
+			jobDetail.getJobDataMap().put(CATCHSERVICE, html);// 抓取html的实例对象
 
 			schedule(task.getCron(), jobDetail);
 		}
@@ -160,15 +152,6 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 	}
 
-	// public void schedule(Map<JobDetail, String> jobsMap) {
-	// Set<Map.Entry<JobDetail, String>> set = jobsMap.entrySet();
-	// Iterator<Map.Entry<JobDetail, String>> it = set.iterator();
-	// while (it.hasNext()) {
-	// Map.Entry<JobDetail, String> entry = it.next();
-	// schedule(entry.getValue(), entry.getKey());
-	// }
-	//
-	// }
 
 	private void schedule(String cron, JobDetail jobDetail) {
 		try {
