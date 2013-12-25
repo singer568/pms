@@ -37,9 +37,9 @@ import org.htmlparser.tags.TableTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
-public class Main {
+public class CatchLoginHtml {
 
-	private static Logger logger = Logger.getLogger(Main.class.getName());
+	private static Logger logger = Logger.getLogger(CatchLoginHtml.class.getName());
 
 	
 	/**

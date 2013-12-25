@@ -9,24 +9,11 @@
 		<%@ include file="/common/meta.jsp"%>
 		<%@ include file="/common/include-base-styles.jsp"%>
 		<%@ include file="/common/include-jquery-ui-theme.jsp"%>
-		<link
-			href="${ctx }/js/common/plugins/jui/extends/timepicker/jquery-ui-timepicker-addon.css"
-			type="text/css" rel="stylesheet" />
+		<%@ include file="/common/include-custom-styles.jsp"%>
 
-		<script src="${ctx }/js/common/jquery-1.8.3.js" type="text/javascript">
-</script>
-		<script
-			src="${ctx }/js/common/plugins/jui/jquery-ui-${themeVersion }.min.js"
-			type="text/javascript">
-</script>
-		<script
-			src="${ctx }/js/common/plugins/jui/extends/timepicker/jquery-ui-timepicker-addon.js"
-			type="text/javascript">
-</script>
-		<script
-			src="${ctx }/js/common/plugins/jui/extends/i18n/jquery-ui-date_time-picker-zh-CN.js"
-			type="text/javascript">
-</script>
+		<script src="${ctx }/js/common/jquery-1.8.3.js" type="text/javascript"></script>
+		<script	src="${ctx }/js/common/plugins/jui/jquery-ui-${themeVersion }.min.js" type="text/javascript"></script>
+		
 	</head>
 
 
@@ -34,8 +21,8 @@
 
 		<div class="container showgrid">
 			<form:form id="inputForm" action="${ctx}/bd/level/${action}"
-				method="post" class="form-horizontal">
-				<input type="hidden" name="id" value="${level.id}" />
+				method="post">
+				<input type="hidden" name="id" id="id" value="${level.id}" />
 				<fieldset>
 					<legend>
 						<small>编辑分级</small>
@@ -62,7 +49,12 @@
 								直接上级:
 							</td>
 							<td>
-								<input type="text" id="parent_id" name="parent_id"
+								<input type="button" id="choose" name="choose" value="选择"></input>
+								<span id="chooseRow"> <c:if
+										test="${level.parent.id != null}">编码:${level.parent.code}；名称:${level.parent.name}</c:if>
+								</span>
+
+								<input type="hidden" id="parent.id" name="parent.id"
 									value="${level.parent.id}" />
 							</td>
 						</tr>
@@ -89,10 +81,74 @@
 				</fieldset>
 			</form:form>
 		</div>
-
+		<div id="chooseParent" title="选择直接上级" style="display: none">
+			<table>
+				<tr>
+					<th>
+						序号
+					</th>
+					<th>
+						编码
+					</th>
+					<th>
+						名称
+					</th>
+					<th>
+						描述
+					</th>
+				</tr>
+				<c:forEach items="${levelList}" var="level" varStatus="nowcount">
+					<tr ondblclick="setValue(this)"
+						id="${level.id}_${level.code}_${level.name}">
+						<td>
+							${nowcount.count}
+						</td>
+						<td>
+							${level.code}
+						</td>
+						<td>
+							${level.name}
+						</td>
+						<td>
+							${level.description}
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
+		</div>
 
 	</body>
 	<script type="text/javascript">
+function setValue(obj) {
+	var editId = document.getElementById("id").value;
+	var id = obj.id;
+
+	var str = id.split("_");
+
+	if (str[0] == editId) {
+		alert("选择的直接上级不能和当前编辑的组相同");
+		return;
+	}
+
+	//document.getElementById("pid").value=str[0];
+	document.getElementById("parent.id").value = str[0];
+	document.getElementById("chooseRow").innerHTML = "编码:" + str[1] + "；名称:"
+			+ str[2];
+	$('#chooseParent').dialog("close");
+}
+$(function() {
+	$('#choose').button( {
+		icons : {
+			primary : 'ui-icon-plus'
+		}
+	}).click(function() {
+		$('#chooseParent').dialog( {
+			modal : true,
+			width : 500,
+			height : 800
+		});
+	});
+});
 $(function() {
 	$('.startup-process').button( {
 		icons : {

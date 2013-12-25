@@ -119,7 +119,10 @@ body {
 							${group.name}
 						</td>
 						<td>
-							${group.parent.id}
+							<c:if test="${group.parent.id!=null}"><a href="${ctx}/bd/group/update/${group.parent.id}">${group.parent.code}_${group.parent.name}</a></c:if>
+						
+						
+							
 						</td>
 						<td>
 							${group.description}
@@ -132,7 +135,7 @@ body {
 			</tbody>
 		</table>
 
-		<tags:pagination page="${groups}" paginationSize="5" />
+		<tags:pagination page="${groups}" paginationSize="50" />
 
 
 	</body>

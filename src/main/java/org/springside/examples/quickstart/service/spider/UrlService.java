@@ -40,6 +40,13 @@ public class UrlService {
 		return (List<Url>) urlDao.findAll();
 	}
 
+	public Page<Url> queryUrlByParam(Map<String, Object> searchParams) {
+		PageRequest pageRequest = buildPageRequest(1, 50, "code");
+		Specification<Url> spec = buildSpecification(searchParams);
+
+		return urlDao.findAll(spec, pageRequest);
+	}
+
 	public Page<Url> getUserUrl(Map<String, Object> searchParams,
 			int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize,
@@ -72,9 +79,6 @@ public class UrlService {
 	private Specification<Url> buildSpecification(
 			Map<String, Object> searchParams) {
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
-		// filters
-		// .put("user.id",
-		// new SearchFilter("user.id", Operator.EQ, userId));
 		Specification<Url> spec = DynamicSpecifications.bySearchFilter(filters
 				.values(), Url.class);
 		return spec;

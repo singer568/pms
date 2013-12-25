@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springside.examples.quickstart.entity.CatchTask;
+import org.springside.examples.quickstart.quartz.SchedulerService;
 import org.springside.examples.quickstart.repository.CatchTaskDao;
 import org.springside.modules.persistence.DynamicSpecifications;
 import org.springside.modules.persistence.SearchFilter;
@@ -24,12 +25,56 @@ public class CatchTaskService {
 
 	private CatchTaskDao catchTaskDao;
 
+	private UrlService urlService;
+
+	private SchedulerService schedulerService;
+
+	public SchedulerService getSchedulerService() {
+		return schedulerService;
+	}
+
+	@Autowired
+	public void setSchedulerService(SchedulerService schedulerService) {
+		this.schedulerService = schedulerService;
+	}
+
+	public UrlService getUrlService() {
+		return urlService;
+	}
+
+	@Autowired
+	public void setUrlService(UrlService urlService) {
+		this.urlService = urlService;
+	}
+
 	public CatchTask getCatchTask(Long id) {
 		return catchTaskDao.findOne(id);
 	}
 
 	public void saveCatchTask(CatchTask entity) {
 		catchTaskDao.save(entity);
+	}
+
+	/**
+	 * 启动定时任务
+	 */
+	public void refreshTasks() {
+
+		schedulerService.schedule(this.getAllCatchTask());
+
+		// CatchSimpleHtml html = new CatchSimpleHtml();
+		// List<Url> urls = urlService.getAllUrl();
+		// Iterator<Url> it = urls.iterator();
+		// while (it.hasNext()) {
+		// Url url = it.next();
+		// if (url.getCode().contains("ShangWuBu")) {
+		// continue;
+		// }
+		//
+		// List<Subjects> lst = html.catchPolicy(url, "2013-12-06");
+		// System.out.println(lst);
+		// }
+
 	}
 
 	public void deleteCatchTask(Long id) {
@@ -72,9 +117,6 @@ public class CatchTaskService {
 	private Specification<CatchTask> buildSpecification(
 			Map<String, Object> searchParams) {
 		Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
-		// filters
-		// .put("user.id",
-		// new SearchFilter("user.id", Operator.EQ, userId));
 		Specification<CatchTask> spec = DynamicSpecifications.bySearchFilter(
 				filters.values(), CatchTask.class);
 		return spec;

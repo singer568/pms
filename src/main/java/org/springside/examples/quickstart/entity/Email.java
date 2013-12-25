@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 //JPA标识
 @Entity
-@Table(name = "pms_bd_email")
+@Table(name = "pms_email")
 public class Email extends IdEntity {
 
 	private String code;
@@ -17,7 +17,8 @@ public class Email extends IdEntity {
 	private String description;
 	private String email;
 	private User user;
-	
+
+
 	// JPA 基于USER_ID列的多对一关系定义
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -34,6 +35,7 @@ public class Email extends IdEntity {
 	public void setCode(String code) {
 		this.code = code;
 	}
+
 	@NotBlank
 	public String getName() {
 		return name;
@@ -42,6 +44,7 @@ public class Email extends IdEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	@NotBlank
 	public String getEmail() {
 		return email;

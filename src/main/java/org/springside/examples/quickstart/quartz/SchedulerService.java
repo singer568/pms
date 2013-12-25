@@ -2,14 +2,20 @@ package org.springside.examples.quickstart.quartz;
 
 import java.util.List;
 
+import org.springside.examples.quickstart.entity.CatchTask;
+
 public interface SchedulerService {
 	public final String jobGroup = "COM.BJM.PUB.COMPONENT.QUARTZ";
-	public final String URLRULES = "URL_RULES";
+	public final String CATCHTASKINFO = "URL_RULES";
+	public final String URLLIST = "URLLIST";
+	public final String EMAILLIST = "EMAILLIST";
+	public final String CATCHSERVICE = "CATCH_SERVICE";
+	public final String SUBJECTSERVICE = "SUBJECT_SERVICE";
 
 	/**
 	 * @param tasks
 	 */
-	void schedule(List<TaskInfo> tasks);
+	void schedule(List<CatchTask> tasks);
 
 	/**
 	 * key jobDetail value cronExpression

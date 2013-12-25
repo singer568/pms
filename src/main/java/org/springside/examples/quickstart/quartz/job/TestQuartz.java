@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springside.examples.quickstart.entity.CatchTask;
 import org.springside.examples.quickstart.quartz.SchedulerService;
-import org.springside.examples.quickstart.quartz.TaskInfo;
 
 public class TestQuartz {
 	public static void main(String[] args) {
@@ -20,38 +20,38 @@ public class TestQuartz {
 		SchedulerService schedulerService = (SchedulerService) springContext
 				.getBean("schedulerService");
 
-		List<TaskInfo> lst = new ArrayList<TaskInfo>();
+		List<CatchTask> lst = new ArrayList<CatchTask>();
 
-		TaskInfo task1 = new TaskInfo("task_001", "0/1 * * ? * * *");
-		task1.addUrlRule("http://www.1.com", "1");
-		task1.addUrlRule("http://www.11.com", "11");
-		task1.addUrlRule("http://www.111.com", "111");
-		task1.addUrlRule("http://www.1111.com", "1111");
-		task1.addUrlRule("http://www.11111.com", "11111");
-		lst.add(task1);
-		TaskInfo task2 = new TaskInfo("task_002", "0/2 * * ? * * *");
-		task2.addUrlRule("http://www.2.com", "2");
-		task2.addUrlRule("http://www.22.com", "22");
-		task2.addUrlRule("http://www.222.com", "222");
-		task2.addUrlRule("http://www.2222.com", "2222");
-		task2.addUrlRule("http://www.22222.com", "22222");
-		lst.add(task2);
-
-		schedulerService.schedule(lst);
-
-		// 执行业务逻辑...
-
-		// 设置调度任务
-		// 每1秒中执行调试一次
-		// schedulerService.schedule("aaa","0/1 * * ? * * *");
-
-		TaskInfo task3 = new TaskInfo("task_003", "0/3 * * ? * * *");
-		task3.addUrlRule("http://www.3.com", "3");
-		task3.addUrlRule("http://www.33.com", "33");
-		task3.addUrlRule("http://www.333.com", "333");
-		task3.addUrlRule("http://www.3333.com", "3333");
-		task3.addUrlRule("http://www.33333.com", "33333");
-		lst.add(task3);
+		// CatchTask task1 = new CatchTask("task_001", "0/1 * * ? * * *");
+		// task1.addUrlRule("http://www.1.com", "1");
+		// task1.addUrlRule("http://www.11.com", "11");
+		// task1.addUrlRule("http://www.111.com", "111");
+		// task1.addUrlRule("http://www.1111.com", "1111");
+		// task1.addUrlRule("http://www.11111.com", "11111");
+		// lst.add(task1);
+		// CatchTask task2 = new CatchTask("task_002", "0/2 * * ? * * *");
+		// task2.addUrlRule("http://www.2.com", "2");
+		// task2.addUrlRule("http://www.22.com", "22");
+		// task2.addUrlRule("http://www.222.com", "222");
+		// task2.addUrlRule("http://www.2222.com", "2222");
+		// task2.addUrlRule("http://www.22222.com", "22222");
+		// lst.add(task2);
+		//
+		// schedulerService.schedule(lst);
+		//
+		// // 执行业务逻辑...
+		//
+		// // 设置调度任务
+		// // 每1秒中执行调试一次
+		// // schedulerService.schedule("aaa","0/1 * * ? * * *");
+		//
+		// CatchTask task3 = new CatchTask("task_003", "0/3 * * ? * * *");
+		// task3.addUrlRule("http://www.3.com", "3");
+		// task3.addUrlRule("http://www.33.com", "33");
+		// task3.addUrlRule("http://www.333.com", "333");
+		// task3.addUrlRule("http://www.3333.com", "3333");
+		// task3.addUrlRule("http://www.33333.com", "33333");
+		// lst.add(task3);
 
 		long curr = System.currentTimeMillis();
 		while (true) {

@@ -43,6 +43,7 @@
 body {
 	TEXT-ALIGN: center;
 }
+
 #querydiv {
 	MARGIN-RIGHT: auto;
 	MARGIN-LEFT: auto;
@@ -84,6 +85,10 @@ body {
 				<a
 					class="startup-process ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
 					href="${ctx}/spider/catchTask/create">新增</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a
+					class="startup-process ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
+					href="javascript:refreshTask()">刷新任务</a>
 			</form>
 		</div>
 
@@ -98,7 +103,25 @@ body {
 						名称
 					</th>
 					<th>
+						类型
+					</th>
+					<th>
 						抓取频率
+					</th>
+					<th>
+						匹配URL
+					</th>
+					<th>
+						最近抓取开始时间
+					</th>
+					<th>
+						最近抓取结束时间
+					</th>
+					<th>
+						持续时间
+					</th>
+					<th>
+						状态
 					</th>
 					<th>
 						描述
@@ -119,20 +142,40 @@ body {
 							${catchTask.name}
 						</td>
 						<td>
+							<c:if test="${'EMAILTASK' == catchTask.catchType}">邮件</c:if>
+							<c:if test="${'CATCHTASK' == catchTask.catchType || catchTask.catchType == null}">网站 </c:if>
+						</td>
+						<td>
 							${catchTask.cron}
+						</td>
+						<td>
+							${catchTask.urlRule}
+						</td>
+						<td>
+							${catchTask.startDate}
+						</td>
+						<td>
+							${catchTask.endDate}
+						</td>
+						<td>
+							${catchTask.duration}
+						</td>
+						<td>
+							${catchTask.status}
 						</td>
 						<td>
 							${catchTask.description}
 						</td>
 						<td>
 							<a href="${ctx}/spider/catchTask/delete/${catchTask.id}">删除</a>
+							<a href="${ctx}/spider/catchTask/copy/${catchTask.id}">复制</a>
 						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 
-		<tags:pagination page="${catchTasks}" paginationSize="5" />
+		<tags:pagination page="${catchTasks}" paginationSize="50" />
 
 
 	</body>
@@ -147,6 +190,17 @@ $(function() {
 
 function querySubmit() {
 	$('#queryForm').submit();
+}
+
+function refreshTask() {
+	$.ajax( {
+		type : "GET",
+		url : "${ctx}/spider/catchTask/refreshTask",
+		dataType : 'text',
+		success : function(data) {
+			alert(data);
+		}
+	});
 }
 </script>
 </html>

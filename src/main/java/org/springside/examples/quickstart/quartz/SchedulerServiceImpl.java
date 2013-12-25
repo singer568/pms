@@ -1,7 +1,9 @@
 package org.springside.examples.quickstart.quartz;
 
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.quartz.CronExpression;
 import org.quartz.CronTrigger;
@@ -10,35 +12,137 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springside.examples.quickstart.entity.CatchTask;
+import org.springside.examples.quickstart.entity.Email;
+import org.springside.examples.quickstart.entity.Url;
+import org.springside.examples.quickstart.quartz.job.EmailJob;
 import org.springside.examples.quickstart.quartz.job.SpiderJob;
+import org.springside.examples.quickstart.service.bd.EmailService;
+import org.springside.examples.quickstart.service.spider.CatchTaskService;
+import org.springside.examples.quickstart.service.spider.SubjectsService;
+import org.springside.examples.quickstart.service.spider.UrlService;
+import org.springside.examples.quickstart.service.spider.util.CatchService;
 
-@Service("schedulerService")
+@Component
+@Transactional
 public class SchedulerServiceImpl implements SchedulerService {
 
 	private Scheduler scheduler;
+
+	private CatchTaskService taskService;
+
+	private UrlService urlService;
+
+	private EmailService emailService;
+
+	private CatchService html;
+
+	private SubjectsService subjectService;
+
+	public SubjectsService getSubjectService() {
+		return subjectService;
+	}
+
+	@Autowired
+	public void setSubjectService(SubjectsService subjectService) {
+		this.subjectService = subjectService;
+	}
+
+	public CatchService getHtml() {
+		return html;
+	}
+
+	public EmailService getEmailService() {
+		return emailService;
+	}
+
+	@Autowired
+	public void setEmailService(EmailService emailService) {
+		this.emailService = emailService;
+	}
+
+	@Autowired
+	public void setHtml(CatchService html) {
+		this.html = html;
+	}
+
+	public UrlService getUrlService() {
+		return urlService;
+	}
+
+	@Autowired
+	public void setUrlService(UrlService urlService) {
+		this.urlService = urlService;
+	}
+
+	public CatchTaskService getTaskService() {
+		return taskService;
+	}
+
+	@Autowired
+	public void setTaskService(CatchTaskService taskService) {
+		this.taskService = taskService;
+	}
 
 	@Autowired
 	public void setScheduler(@Qualifier("quartzScheduler") Scheduler scheduler) {
 		this.scheduler = scheduler;
 	}
 
-	public void schedule(List<TaskInfo> tasks) {
+	public void schedule(List<CatchTask> tasks) {
 
 		deleteAll();
 
 		for (int i = 0, len = tasks.size(); i < len; i++) {
-			TaskInfo task = tasks.get(i);
+			CatchTask task = tasks.get(i);
 
 			JobDetail jobDetail = new JobDetail();
+			jobDetail.setName(task.getName());
 			jobDetail.setGroup(jobGroup);
-			jobDetail.setName(task.getTaskName());
-			jobDetail.getJobDataMap().put(URLRULES, task.getUrlRule());
-			
-			jobDetail.setJobClass(SpiderJob.class);
+
+			if (task.getCatchType() == null
+					|| task.getCatchType().equals("CATCHTASK")) {// URL类型的任务
+				jobDetail.getJobDataMap().put(URLLIST, getTaskUrls(task));// 待执行的URL列表
+				jobDetail.setJobClass(SpiderJob.class);
+				jobDetail.getJobDataMap().put(CATCHSERVICE, html);// 抓取html的实例对象
+			} else {
+				jobDetail.getJobDataMap().put(EMAILLIST, getTaskEmails(task));// 待执行的Email列表
+				jobDetail.setJobClass(EmailJob.class);
+				jobDetail.getJobDataMap().put(SUBJECTSERVICE, subjectService);// 抓取html的实例对象
+			}
 
 			schedule(task.getCron(), jobDetail);
 		}
+	}
+
+	private List<Email> getTaskEmails(CatchTask task) {
+		String urlRule = task.getUrlRule();// 匹配的邮件规则，以LIKE_email=dd#LIKE_email=bb形式出现
+		Map<String, Object> param = new HashMap<String, Object>();
+		// Param是以#分隔的key=value对；例如：Like_code=ZhongYang
+		String[] strs = urlRule.split("#");
+		for (int i = 0; i < strs.length; i++) {
+			String[] values = strs[i].split("=");
+			param.put(values[0], values[1]);
+		}
+		Page<Email> emails = emailService.queryEmailByParam(param);
+		return emails.getContent();
+	}
+
+	private List<Url> getTaskUrls(CatchTask task) {
+		String urlRule = task.getUrlRule();
+		Map<String, Object> param = new HashMap<String, Object>();
+
+		// Param是以#号分隔的key=value对；例如：Like_code=ZhongYang
+		String[] strs = urlRule.split("#");
+		for (int i = 0; i < strs.length; i++) {
+			String[] values = strs[i].split("=");
+			param.put(values[0], values[1]);
+		}
+		Page<Url> urls = urlService.queryUrlByParam(param);
+		return urls.getContent();
 	}
 
 	private void deleteAll() {
@@ -73,8 +177,8 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 			scheduler.addJob(jobDetail, true);
 
-			CronTrigger cronTrigger = new CronTrigger(name, jobGroup,
-					jobDetail.getName(), jobGroup);
+			CronTrigger cronTrigger = new CronTrigger(name, jobGroup, jobDetail
+					.getName(), jobGroup);
 
 			cronTrigger.setCronExpression(cronExpression);
 
@@ -85,84 +189,4 @@ public class SchedulerServiceImpl implements SchedulerService {
 			throw new RuntimeException(e);
 		}
 	}
-
-	// public void schedule(String name, Date startTime, Date endTime,
-	// int repeatCount, long repeatInterval, JobDetail jobDetail) {
-	// try {
-	// if (name == null || name.trim().equals("")) {
-	// throw new RuntimeException("当前要执行的定时任务名称为空，请检查");
-	// }
-	// if (scheduler.getJobDetail(name, jobGroup) == null) {
-	// scheduler.addJob(jobDetail, true);
-	// SimpleTrigger simpleTrigger = new SimpleTrigger(name,
-	// jobGroup, jobDetail.getName(), jobGroup,
-	// startTime, endTime, repeatCount, repeatInterval);
-	// scheduler.scheduleJob(simpleTrigger);
-	// } else {
-	// SimpleTrigger simpleTrigger = new SimpleTrigger(name,
-	// jobGroup, jobDetail.getName(), jobGroup,
-	// startTime, endTime, repeatCount, repeatInterval);
-	// scheduler.rescheduleJob(name, jobGroup, simpleTrigger);
-	// }
-	// } catch (SchedulerException e) {
-	// throw new RuntimeException(e);
-	// }
-	// }
-
-	// public void schedule(String cronExpression) {
-	// schedule(null, cronExpression);
-	// }
-
-	// @Override
-	// public void schedule(String name, String cronExpression) {
-	// try {
-	// schedule(name, new CronExpression(cronExpression));
-	// } catch (java.text.ParseException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	//
-	// @Override
-	// public void schedule(CronExpression cronExpression) {
-	// schedule(null, cronExpression);
-	// }
-	//
-	// @Override
-	// public void schedule(Date startTime) {
-	// schedule(startTime, null);
-	// }
-	//
-	// @Override
-	// public void schedule(String name, Date startTime) {
-	// schedule(name, startTime, null);
-	// }
-	//
-	// @Override
-	// public void schedule(Date startTime, Date endTime) {
-	// schedule(startTime, endTime, 0);
-	// }
-	//
-	// @Override
-	// public void schedule(String name, Date startTime, Date endTime) {
-	// schedule(name, startTime, endTime, 0);
-	// }
-	//
-	// @Override
-	// public void schedule(Date startTime, Date endTime, int repeatCount) {
-	// schedule(null, startTime, endTime, 0);
-	// }
-	//
-	// @Override
-	// public void schedule(String name, Date startTime, Date endTime,
-	// int repeatCount, JobDetail jobDetail) {
-	// schedule(name, startTime, endTime, 0, 0L, jobDetail);
-	// }
-	//
-	// @Override
-	// public void schedule(Date startTime, Date endTime, int repeatCount,
-	// long repeatInterval, JobDetail jobDetail) {
-	// schedule(null, startTime, endTime, repeatCount, repeatInterval,
-	// jobDetail);
-	// }
-
 }

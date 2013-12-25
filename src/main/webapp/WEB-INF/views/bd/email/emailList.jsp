@@ -132,7 +132,7 @@ body {
 			</tbody>
 		</table>
 
-		<tags:pagination page="${emails}" paginationSize="5" />
+		<tags:pagination page="${emails}" paginationSize="50" />
 
 
 	</body>

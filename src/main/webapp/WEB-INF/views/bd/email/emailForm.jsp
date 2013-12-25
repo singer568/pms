@@ -9,24 +9,10 @@
 		<%@ include file="/common/meta.jsp"%>
 		<%@ include file="/common/include-base-styles.jsp"%>
 		<%@ include file="/common/include-jquery-ui-theme.jsp"%>
-		<link
-			href="${ctx }/js/common/plugins/jui/extends/timepicker/jquery-ui-timepicker-addon.css"
-			type="text/css" rel="stylesheet" />
+		<%@ include file="/common/include-custom-styles.jsp" %>		
 
-		<script src="${ctx }/js/common/jquery-1.8.3.js" type="text/javascript">
-</script>
-		<script
-			src="${ctx }/js/common/plugins/jui/jquery-ui-${themeVersion }.min.js"
-			type="text/javascript">
-</script>
-		<script
-			src="${ctx }/js/common/plugins/jui/extends/timepicker/jquery-ui-timepicker-addon.js"
-			type="text/javascript">
-</script>
-		<script
-			src="${ctx }/js/common/plugins/jui/extends/i18n/jquery-ui-date_time-picker-zh-CN.js"
-			type="text/javascript">
-</script>
+		<script src="${ctx }/js/common/jquery-1.8.3.js" type="text/javascript"></script>
+		<script	src="${ctx }/js/common/plugins/jui/jquery-ui-${themeVersion }.min.js" type="text/javascript"></script>
 	</head>
 
 
@@ -34,7 +20,7 @@
 
 		<div class="container showgrid">
 			<form:form id="inputForm" action="${ctx}/bd/email/${action}"
-				method="post" class="form-horizontal">
+				method="post">
 				<input type="hidden" name="id" value="${email.id}" />
 				<fieldset>
 					<legend>
@@ -89,10 +75,9 @@
 				</fieldset>
 			</form:form>
 		</div>
-
-
 	</body>
 	<script type="text/javascript">
+	
 $(function() {
 	$('.startup-process').button( {
 		icons : {

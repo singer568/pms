@@ -1,8 +1,12 @@
 package org.springside.examples.quickstart.web.spider;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
@@ -37,7 +41,7 @@ import com.google.common.collect.Maps;
 @RequestMapping(value = "/spider/catchTask")
 public class CatchTaskController {
 
-	private static final String PAGE_SIZE = "3";
+	private static final String PAGE_SIZE = "50";
 
 	private static Map<String, String> sortTypes = Maps.newLinkedHashMap();
 	static {
@@ -61,7 +65,6 @@ public class CatchTaskController {
 			Model model, ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(
 				request, "search_");
-		// Long userId = getCurrentUserId();
 
 		Page<CatchTask> catchTasks = catchTaskService.getUserCatchTask(
 				searchParams, pageNumber, pageSize, sortType);
@@ -74,6 +77,25 @@ public class CatchTaskController {
 				.encodeParameterStringWithPrefix(searchParams, "search_"));
 
 		return "spider/catchTask/catchTaskList";
+	}
+
+	@RequestMapping(value = "refreshTask", method = RequestMethod.GET)
+	public void refreshTask(HttpServletRequest request,
+			HttpServletResponse response) {
+
+		catchTaskService.refreshTasks();// 刷新任务信息
+		
+		String str = "成功刷新任务信息";
+		response.setContentType("text/xml;charset=UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.print(str);// 用于返回对象参数
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@RequestMapping(value = "create", method = RequestMethod.GET)
@@ -90,10 +112,10 @@ public class CatchTaskController {
 			redirectAttributes.addFlashAttribute("message", "必填信息不能为空");
 			return "redirect:/spider/catchTask/";
 		}
-		// User user = new User(getCurrentUserId());
-		// newCatchTask.setUser(user);
 
 		catchTaskService.saveCatchTask(newCatchTask);
+
+		// catchTaskService.refreshTasks();
 
 		redirectAttributes.addFlashAttribute("message", "创建规则成功");
 		return "redirect:/spider/catchTask/";
@@ -103,6 +125,15 @@ public class CatchTaskController {
 	public String updateForm(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("catchTask", catchTaskService.getCatchTask(id));
 		model.addAttribute("action", "update");
+		return "spider/catchTask/catchTaskForm";
+	}
+
+	@RequestMapping(value = "copy/{id}", method = RequestMethod.GET)
+	public String copyForm(@PathVariable("id") Long id, Model model) {
+		CatchTask task = catchTaskService.getCatchTask(id);
+		task.setId(null);
+		model.addAttribute("catchTask", task);
+		model.addAttribute("action", "create");
 		return "spider/catchTask/catchTaskForm";
 	}
 

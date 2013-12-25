@@ -40,6 +40,14 @@ public class EmailService {
 		return (List<Email>) emailDao.findAll();
 	}
 
+	public Page<Email> queryEmailByParam(Map<String, Object> searchParams) {
+		PageRequest pageRequest = buildPageRequest(1, 50, "code");
+		Specification<Email> spec = buildSpecification(searchParams);
+
+		return emailDao.findAll(spec, pageRequest);
+	}
+
+	
 	public Page<Email> getUserEmail(Map<String, Object> searchParams,
 			int pageNumber, int pageSize, String sortType) {
 		PageRequest pageRequest = buildPageRequest(pageNumber, pageSize,

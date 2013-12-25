@@ -37,7 +37,7 @@ import com.google.common.collect.Maps;
 @RequestMapping(value = "/spider/rule")
 public class RuleController {
 
-	private static final String PAGE_SIZE = "3";
+	private static final String PAGE_SIZE = "50";
 
 	private static Map<String, String> sortTypes = Maps.newLinkedHashMap();
 	static {

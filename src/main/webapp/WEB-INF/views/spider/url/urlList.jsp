@@ -99,13 +99,51 @@ body {
 						名称
 					</th>
 					<th>
+						省份
+					</th>
+					<th>
+						部门
+					</th>
+					<th>
+						板块
+					</th>
+					<th>
+						子版块
+					</th>
+					<th>
+						组别
+					</th>
+					<th>
+						级别
+					</th>
+					<!-- 
+					<th>
 						网址
 					</th>
 					<th>
-						规则
+						前缀网址
 					</th>
 					<th>
-						所属任务
+						主题xpath
+					</th>
+					<th>
+						替换字符
+					</th>
+					<th>
+						链接xpath
+					</th>
+					<th>
+						发布日期xpath
+					</th>
+					<th>
+						替换字符
+					</th>
+					<th>
+						开始序号
+					</th>
+					 -->
+					<th>
+						编码
 					</th>
 					<th>
 						描述
@@ -126,26 +164,67 @@ body {
 							${url.name}
 						</td>
 						<td>
+							${url.province}
+						</td>
+						<td>
+							${url.department}
+						</td>
+						<td>
+							${url.module}
+						</td>
+						<td>
+							${url.submodule}
+						</td>
+						<td>
+							${url.group.code}-${url.group.name}
+						</td>
+						<td>
+						${url.level.code}-${url.level.name}
+						</td>
+						<!-- 
+						<td>
 							${url.url}
 						</td>
 						<td>
-							${url.rule.id}
+							${url.urlPrefix}
+						</td>
+						
+						<td>
+							${url.subjPath}
 						</td>
 						<td>
-							${url.task.id}
+							${url.subjReplace}
+						</td>
+						<td>
+							${url.linkPath}
+						</td>
+						<td>
+							${url.datePath}
+						</td>
+						<td>
+							${url.dateReplace}
+						</td>
+						<td>
+							${url.startBegin}
+						</td>
+						 -->
+							<td>
+							${url.charset}
 						</td>
 						<td>
 							${url.description}
 						</td>
 						<td>
 							<a href="${ctx}/spider/url/delete/${url.id}">删除</a>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<a href="${ctx}/spider/url/copy/${url.id}">复制</a>
 						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 
-		<tags:pagination page="${urls}" paginationSize="5" />
+		<tags:pagination page="${urls}" paginationSize="50" />
 
 
 	</body>

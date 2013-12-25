@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 //JPA标识
 @Entity
-@Table(name = "pms_bd_rule")
+@Table(name = "pms_rule")
 public class Rule extends IdEntity {
 
 	private String code;

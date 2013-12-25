@@ -119,7 +119,7 @@ body {
 							${level.name}
 						</td>
 						<td>
-							${level.parent.id}
+							${level.parent.name}
 						</td>
 						<td>
 							${level.description}
@@ -132,7 +132,7 @@ body {
 			</tbody>
 		</table>
 
-		<tags:pagination page="${levels}" paginationSize="5" />
+		<tags:pagination page="${levels}" paginationSize="50" />
 
 
 	</body>

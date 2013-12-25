@@ -1,5 +1,6 @@
 package org.springside.examples.quickstart.web.bd;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -10,12 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.examples.quickstart.entity.Group;
 import org.springside.examples.quickstart.service.account.ShiroDbRealm.ShiroUser;
@@ -37,7 +41,7 @@ import com.google.common.collect.Maps;
 @RequestMapping(value = "/bd/group")
 public class GroupController {
 
-	private static final String PAGE_SIZE = "3";
+	private static final String PAGE_SIZE = "50";
 
 	private static Map<String, String> sortTypes = Maps.newLinkedHashMap();
 	static {
@@ -61,7 +65,7 @@ public class GroupController {
 			Model model, ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(
 				request, "search_");
-//		Long userId = getCurrentUserId();
+		// Long userId = getCurrentUserId();
 
 		Page<Group> groups = groupService.getUserGroup(searchParams,
 				pageNumber, pageSize, sortType);
@@ -76,25 +80,39 @@ public class GroupController {
 		return "bd/group/groupList";
 	}
 
+	@RequestMapping(value = "queryAll", method = RequestMethod.GET)
+	@ResponseBody
+	public Object queryGroups(Model model) {
+		List<Group> groups = groupService.getAllGroup();
+		return groups;
+	}
+
 	@RequestMapping(value = "create", method = RequestMethod.GET)
 	public String createForm(Model model) {
 		model.addAttribute("group", new Group());
 		model.addAttribute("action", "create");
+		List<Group> groups = groupService.getAllGroup();
+		model.addAttribute("groupList", groups);
 		return "bd/group/groupForm";
 	}
 
 	@RequestMapping(value = "create", method = RequestMethod.POST)
-	public String create(@Valid Group newGroup,Errors errors,
+	public String create(@Valid Group newGroup, Errors errors,
 			RedirectAttributes redirectAttributes) {
-		if(errors.hasErrors()) {
-			redirectAttributes.addFlashAttribute("message", "必填信息不能为空");	
+		// 关联属性如果不想保存，默认需要设置为null
+		// spring对关联属性默认会设置一个new Group的空值
+		if (newGroup.getParent() == null
+				|| newGroup.getParent().getId() == null) {
+			newGroup.setParent(null);
+		}
+
+		if (errors.hasErrors()) {
+			redirectAttributes.addFlashAttribute("message", "必填信息不能为空");
 			return "redirect:/bd/group/";
 		}
-//		User user = new User(getCurrentUserId());
-//		newGroup.setUser(user);
 
 		groupService.saveGroup(newGroup);
-		
+
 		redirectAttributes.addFlashAttribute("message", "创建分组成功");
 		return "redirect:/bd/group/";
 	}
@@ -102,6 +120,8 @@ public class GroupController {
 	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
 	public String updateForm(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("group", groupService.getGroup(id));
+		List<Group> groups = groupService.getAllGroup();
+		model.addAttribute("groupList", groups);
 		model.addAttribute("action", "update");
 		return "bd/group/groupForm";
 	}
@@ -131,9 +151,9 @@ public class GroupController {
 	public void getTask(
 			@RequestParam(value = "id", defaultValue = "-1") Long id,
 			Model model) {
-		if (id != -1) {
-			model.addAttribute("group", groupService.getGroup(id));
-		}
+		// if (id != -1) {
+		// model.addAttribute("group", groupService.getGroup(id));
+		// }
 	}
 
 	/**

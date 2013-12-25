@@ -1,5 +1,6 @@
 package org.springside.examples.quickstart.web.bd;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -18,8 +19,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.examples.quickstart.entity.Email;
+import org.springside.examples.quickstart.entity.Group;
+import org.springside.examples.quickstart.entity.Level;
 import org.springside.examples.quickstart.service.account.ShiroDbRealm.ShiroUser;
 import org.springside.examples.quickstart.service.bd.EmailService;
+import org.springside.examples.quickstart.service.bd.GroupService;
+import org.springside.examples.quickstart.service.bd.KeyWordsService;
+import org.springside.examples.quickstart.service.bd.LevelService;
 import org.springside.modules.web.Servlets;
 
 import com.google.common.collect.Maps;
@@ -37,7 +43,7 @@ import com.google.common.collect.Maps;
 @RequestMapping(value = "/bd/email")
 public class EmailController {
 
-	private static final String PAGE_SIZE = "3";
+	private static final String PAGE_SIZE = "50";
 
 	private static Map<String, String> sortTypes = Maps.newLinkedHashMap();
 	static {
@@ -47,6 +53,36 @@ public class EmailController {
 	}
 
 	private EmailService emailService;
+	private GroupService groupService;
+	private LevelService levelService;
+	private KeyWordsService keywordsService;
+
+	public KeyWordsService getKeywordsService() {
+		return keywordsService;
+	}
+
+	@Autowired
+	public void setKeywordsService(KeyWordsService keywordsService) {
+		this.keywordsService = keywordsService;
+	}
+
+	public GroupService getGroupService() {
+		return groupService;
+	}
+
+	@Autowired
+	public void setGroupService(GroupService groupService) {
+		this.groupService = groupService;
+	}
+
+	public LevelService getLevelService() {
+		return levelService;
+	}
+
+	@Autowired
+	public void setLevelService(LevelService levelService) {
+		this.levelService = levelService;
+	}
 
 	@Autowired
 	public void setEmailService(EmailService emailService) {
@@ -80,19 +116,23 @@ public class EmailController {
 	public String createForm(Model model) {
 		model.addAttribute("email", new Email());
 		model.addAttribute("action", "create");
+
+		List<Group> groups = groupService.getAllGroup();
+		model.addAttribute("groupList", groups);
+		List<Level> levels = levelService.getAllLevel();
+		model.addAttribute("levelList", levels);
+
 		return "bd/email/emailForm";
 	}
 
 	@RequestMapping(value = "create", method = RequestMethod.POST)
 	public String create(@Valid Email newEmail, Errors errors,
 			RedirectAttributes redirectAttributes) {
+
 		if (errors.hasErrors()) {
 			redirectAttributes.addFlashAttribute("message", "必填信息不能为空");
 			return "redirect:/bd/email/";
 		}
-		// User user = new User(getCurrentUserId());
-		// newEmail.setUser(user);
-
 		emailService.saveEmail(newEmail);
 
 		redirectAttributes.addFlashAttribute("message", "创建分级成功");
@@ -103,6 +143,11 @@ public class EmailController {
 	public String updateForm(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("email", emailService.getEmail(id));
 		model.addAttribute("action", "update");
+		List<Group> groups = groupService.getAllGroup();
+		model.addAttribute("groupList", groups);
+		List<Level> levels = levelService.getAllLevel();
+		model.addAttribute("levelList", levels);
+
 		return "bd/email/emailForm";
 	}
 
@@ -110,6 +155,7 @@ public class EmailController {
 	public String update(@Valid @ModelAttribute("email") Email email,
 			RedirectAttributes redirectAttributes) {
 		emailService.saveEmail(email);
+
 		redirectAttributes.addFlashAttribute("message", "更新分级成功");
 		return "redirect:/bd/email/";
 	}
@@ -131,9 +177,6 @@ public class EmailController {
 	public void getTask(
 			@RequestParam(value = "id", defaultValue = "-1") Long id,
 			Model model) {
-		if (id != -1) {
-			model.addAttribute("email", emailService.getEmail(id));
-		}
 	}
 
 	/**

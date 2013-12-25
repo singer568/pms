@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.examples.quickstart.entity.Url;
 import org.springside.examples.quickstart.service.account.ShiroDbRealm.ShiroUser;
+import org.springside.examples.quickstart.service.spider.SubjectsService;
 import org.springside.examples.quickstart.service.spider.UrlService;
 import org.springside.modules.web.Servlets;
 
@@ -37,7 +38,7 @@ import com.google.common.collect.Maps;
 @RequestMapping(value = "/spider/url")
 public class UrlController {
 
-	private static final String PAGE_SIZE = "3";
+	private static final String PAGE_SIZE = "50";
 
 	private static Map<String, String> sortTypes = Maps.newLinkedHashMap();
 	static {
@@ -47,10 +48,25 @@ public class UrlController {
 	}
 
 	private UrlService urlService;
+	private SubjectsService subjectsService;
+
+	@Autowired
+	public void setSubjectsService(SubjectsService subjectsService) {
+		this.subjectsService = subjectsService;
+	}
 
 	@Autowired
 	public void setUrlService(UrlService urlService) {
 		this.urlService = urlService;
+	}
+
+	@RequestMapping(value = "copy/{id}", method = RequestMethod.GET)
+	public String copyForm(@PathVariable("id") Long id, Model model) {
+		Url url = urlService.getUrl(id);
+		url.setId(null);
+		model.addAttribute("url", url);
+		model.addAttribute("action", "create");
+		return "spider/url/urlForm";
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -90,9 +106,12 @@ public class UrlController {
 			redirectAttributes.addFlashAttribute("message", "必填信息不能为空");
 			return "redirect:/spider/url/";
 		}
-		// User user = new User(getCurrentUserId());
-		// newUrl.setUser(user);
-
+		if (newUrl.getLevel() == null || newUrl.getLevel().getId()==null) {
+			newUrl.setLevel(null);
+		}
+		if (newUrl.getGroup() == null || newUrl.getGroup().getId()==null) {
+			newUrl.setGroup(null);
+		}
 		urlService.saveUrl(newUrl);
 
 		redirectAttributes.addFlashAttribute("message", "创建网址成功");
@@ -122,19 +141,6 @@ public class UrlController {
 		return "redirect:/spider/url/";
 	}
 
-	/**
-	 * 所有RequestMapping方法调用前的Model准备方法, 实现Struts2
-	 * Preparable二次部分绑定的效果,先根据form的id从数据库查出Task对象,再把Form提交的内容绑定到该对象上。
-	 * 因为仅update()方法的form中有id属性，因此仅在update时实际执行.
-	 */
-	@ModelAttribute
-	public void getTask(
-			@RequestParam(value = "id", defaultValue = "-1") Long id,
-			Model model) {
-		if (id != -1) {
-			model.addAttribute("url", urlService.getUrl(id));
-		}
-	}
 
 	/**
 	 * 取出Shiro中的当前用户Id.

@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 //JPA标识
 @Entity
-@Table(name = "pms_bd_level")
+@Table(name = "pms_level")
 public class Level extends IdEntity {
 
 	private String code;

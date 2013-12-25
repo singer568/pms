@@ -46,7 +46,8 @@
 								编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:
 							</td>
 							<td>
-								<input type="text" id="code" name="code" value="${url.code}" />
+								<input type="text" id="code" name="code" value="${url.code}"
+									size="100" />
 							</td>
 						</tr>
 						<tr>
@@ -54,7 +55,72 @@
 								名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称:
 							</td>
 							<td>
-								<input type="text" id="name" name="name" value="${url.name}" />
+								<input type="text" id="name" name="name" value="${url.name}"
+									size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								省&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;份:
+							</td>
+							<td>
+								<input type="text" id="province" name="province"
+									value="${url.province}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门:
+							</td>
+							<td>
+								<input type="text" id="department" name="department"
+									value="${url.department}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								板&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;块:
+							</td>
+							<td>
+								<input type="text" id="module" name="module"
+									value="${url.module}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								子&nbsp;&nbsp;&nbsp;版&nbsp;&nbsp;&nbsp;块:
+							</td>
+							<td>
+								<input type="text" id="submodule" name="submodule"
+									value="${url.submodule}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:
+							</td>
+							<td>
+								<input type="button" id="chooseGroupBtn" name="chooseGroupBtn"
+									value="选择"></input>
+								<span id="chooseGroup"> <c:if
+										test="${url.group.id != null}">编码:${url.group.code}；名称:${url.group.name}</c:if>
+								</span>
+								<input type="hidden" id="group.id" name="group.id"
+									value="${url.group.id}" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:
+							</td>
+							<td>
+								<input type="button" id="chooseLevelBtn" name="chooseLevelBtn"
+									value="选择"></input>
+								<span id="chooseLevel"> <c:if
+										test="${url.level.id != null}">编码:${url.level.code}；名称:${url.level.name}</c:if>
+								</span>
+								<input type="hidden" id="level.id" name="level.id"
+									value="${url.level.id}" />
 							</td>
 						</tr>
 						<tr>
@@ -62,17 +128,72 @@
 								网&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址:
 							</td>
 							<td>
-								<input type="text" id="url" name="url"
-									value="${url.url}" />
+								<input type="text" id="url" name="url" value="${url.url}"
+									size="100" />
 							</td>
 						</tr>
+						<tr>
+							<td>
+								前缀网址:
+							</td>
+							<td>
+								<input type="text" id="urlPrefix" name="urlPrefix"
+									value="${url.urlPrefix}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								主&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题xpath:
+							</td>
+							<td>
+								<input type="text" id="subjPath" name="subjPath"
+									value="${url.subjPath}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								替换字符:
+							</td>
+							<td>
+								<input type="text" id="subjReplace" name="subjReplace"
+									value="${url.subjReplace}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								链&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接xpath:
+							</td>
+							<td>
+								<input type="text" id="linkPath" name="linkPath"
+									value="${url.linkPath}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期xpath:
+							</td>
+							<td>
+								<input type="text" id="datePath" name="datePath"
+									value="${url.datePath}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								替换字符:
+							</td>
+							<td>
+								<input type="text" id="dateReplace" name="dateReplace"
+									value="${url.dateReplace}" size="100" />
+							</td>
+						</tr>
+
 						<tr>
 							<td>
 								规&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;则:
 							</td>
 							<td>
 								<input type="text" id="rule_id" name="rule_id"
-									value="${url.rule.id}" />
+									value="${url.rule.id}" size="100" />
 							</td>
 						</tr>
 						<tr>
@@ -81,7 +202,25 @@
 							</td>
 							<td>
 								<input type="text" id="rule_id" name="rule_id"
-									value="${url.task.id}" />
+									value="${url.task.id}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								开始序号:
+							</td>
+							<td>
+								<input type="text" id="startBegin" name="startBegin"
+									value="${url.startBegin}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:
+							</td>
+							<td>
+								<input type="text" id="charset" name="charset"
+									value="${url.charset}" size="100" />
 							</td>
 						</tr>
 						<tr>
@@ -108,9 +247,153 @@
 			</form:form>
 		</div>
 
+		<div id="chooseLevelPanel" title="选择级别" style="display: none">
+			<table>
+				<thead>
+					<tr>
+						<td>
+							序号
+						</td>
+						<td>
+							编码
+						</td>
+						<td>
+							名称
+						</td>
+						<td>
+							描述
+						</td>
+					</tr>
+					<tbody id="levelData"></tbody>
+				</thead>
+			</table>
+		</div>
+
+		<div id="chooseGroupPanel" title="选择组别" style="display: none">
+			<table>
+				<thead>
+					<tr>
+						<td>
+							序号
+						</td>
+						<td>
+							编码
+						</td>
+						<td>
+							名称
+						</td>
+						<td>
+							描述
+						</td>
+					</tr>
+				</thead>
+				<tbody id="groupData"></tbody>
+			</table>
+		</div>
+
 
 	</body>
 	<script type="text/javascript">
+$('#chooseGroupPanel').dialog( {
+	 autoOpen:false,
+	modal : true,
+	width : 500,
+	height : 800
+});
+$('#chooseLevelPanel').dialog( {
+	 autoOpen:false,
+	modal : true,
+	width : 500,
+	height : 800
+});
+
+/////处理组别
+$(function() {
+	$('#chooseGroupBtn').button( {
+		icons : {
+			primary : 'ui-icon-plus'
+		}
+	}).click(function() {
+			getGroupData();//获取json数据  
+			$("#chooseGroupPanel").dialog('open');//设置为‘open’时将显示对话框  
+		});
+});
+
+function getGroupData() {
+	var valid = jQuery.ajax( {
+		type : 'GET',
+		async : false,
+		url : '${ctx}/bd/group/queryAll',
+		dataType : "json",
+		success : setGroupList
+	});
+}
+
+function setGroupList(obj) {
+	var strHTML = "";
+	for ( var i = 0; i < obj.length; i++) {
+		strHTML += "<tr ondblclick='setValue(1,this)' id='" + obj[i].id + "_" + obj[i].code + "_" + obj[i].name +"'>";
+		strHTML += "<td>" + (i + 1) + "</td>";
+		strHTML += "<td>" + obj[i].code + "</td>";
+		strHTML += "<td>" + obj[i].name + "</td>";
+		strHTML += "<td>" + obj[i].description + "</td>";
+		strHTML += "</tr>";
+	}
+	$("#groupData").html(strHTML);//显示到tbody中  
+}
+
+///////////处理级别
+$(function() {
+	$('#chooseLevelBtn').button( {
+		icons : {
+			primary : 'ui-icon-plus'
+		}
+	}).click(function() {
+		getLevelData();//获取json数据  
+			$("#chooseLevelPanel").dialog('open');//设置为‘open’时将显示对话框  
+		});
+});
+
+function getLevelData() {
+	var valid = jQuery.ajax( {
+		type : 'GET',
+		async : false,
+		url : '${ctx}/bd/level/queryAll',
+		dataType : "json",
+		success : setLevelList
+	});
+}
+
+function setLevelList(obj) {
+	var strHTML = "";
+	for ( var i = 0; i < obj.length; i++) {
+		strHTML += "<tr ondblclick='setValue(2,this)' id='" + obj[i].id + "_" + obj[i].code + "_" + obj[i].name +"'>";
+		strHTML += "<td>" + (i + 1) + "</td>";
+		strHTML += "<td>" + obj[i].code + "</td>";
+		strHTML += "<td>" + obj[i].name + "</td>";
+		strHTML += "<td>" + obj[i].description + "</td>";
+		strHTML += "</tr>";
+	}
+	$("#levelData").html(strHTML);//显示到tbody中  
+}
+
+//选中一行后双击，将值放到父页面上
+function setValue(type, obj) {
+	var id = obj.id;
+	var str = id.split("_");
+	if (2 == type) {//1为group，2为level
+		document.getElementById("level.id").value = str[0];
+		document.getElementById("chooseLevel").innerHTML = "编码:" + str[1]
+				+ "；名称:" + str[2];
+		$('#chooseLevelPanel').dialog("close");
+	} else {
+		document.getElementById("group.id").value = str[0];
+		document.getElementById("chooseGroup").innerHTML = "编码:" + str[1]
+				+ "；名称:" + str[2];
+		$('#chooseGroupPanel').dialog("close");
+	}
+}
+
 $(function() {
 	$('.startup-process').button( {
 		icons : {

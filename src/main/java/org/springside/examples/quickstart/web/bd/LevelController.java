@@ -1,5 +1,6 @@
 package org.springside.examples.quickstart.web.bd;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springside.examples.quickstart.entity.Group;
 import org.springside.examples.quickstart.entity.Level;
 import org.springside.examples.quickstart.service.account.ShiroDbRealm.ShiroUser;
 import org.springside.examples.quickstart.service.bd.LevelService;
@@ -37,7 +40,7 @@ import com.google.common.collect.Maps;
 @RequestMapping(value = "/bd/level")
 public class LevelController {
 
-	private static final String PAGE_SIZE = "3";
+	private static final String PAGE_SIZE = "50";
 
 	private static Map<String, String> sortTypes = Maps.newLinkedHashMap();
 	static {
@@ -75,23 +78,33 @@ public class LevelController {
 
 		return "bd/level/levelList";
 	}
-
+	
+	@RequestMapping(value = "queryAll", method = RequestMethod.GET)
+	@ResponseBody
+	public Object queryGroups(Model model) {
+		List<Level> levels = levelService.getAllLevel();
+		return levels;
+	}
 	@RequestMapping(value = "create", method = RequestMethod.GET)
 	public String createForm(Model model) {
 		model.addAttribute("level", new Level());
 		model.addAttribute("action", "create");
+		List<Level> levels = levelService.getAllLevel();
+		model.addAttribute("levelList", levels);		
 		return "bd/level/levelForm";
 	}
 
 	@RequestMapping(value = "create", method = RequestMethod.POST)
 	public String create(@Valid Level newLevel, Errors errors,
 			RedirectAttributes redirectAttributes) {
+		if (newLevel.getParent()== null || newLevel.getParent().getId() ==null) {
+			newLevel.setParent(null);
+		}
+		
 		if (errors.hasErrors()) {
 			redirectAttributes.addFlashAttribute("message", "必填信息不能为空");
 			return "redirect:/bd/level/";
 		}
-		// User user = new User(getCurrentUserId());
-		// newLevel.setUser(user);
 
 		levelService.saveLevel(newLevel);
 
@@ -103,6 +116,8 @@ public class LevelController {
 	public String updateForm(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("level", levelService.getLevel(id));
 		model.addAttribute("action", "update");
+		List<Level> levels = levelService.getAllLevel();
+		model.addAttribute("levelList", levels);
 		return "bd/level/levelForm";
 	}
 
@@ -131,9 +146,9 @@ public class LevelController {
 	public void getTask(
 			@RequestParam(value = "id", defaultValue = "-1") Long id,
 			Model model) {
-		if (id != -1) {
-			model.addAttribute("level", levelService.getLevel(id));
-		}
+//		if (id != -1) {
+//			model.addAttribute("level", levelService.getLevel(id));
+//		}
 	}
 
 	/**

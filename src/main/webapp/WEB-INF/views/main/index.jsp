@@ -15,7 +15,7 @@ PropertyFileUtil.init();
 		}
 	</script>
 	<%@ include file="/common/meta.jsp" %>
-    <title>Activiti-演示系统</title>
+    <title>项目运维管理系统</title>
     <%@ include file="/common/include-base-styles.jsp" %>
 	<%@ include file="/common/include-jquery-ui-theme.jsp" %>
     <link rel="stylesheet" type="text/css" href="${ctx }/css/menu.css" />

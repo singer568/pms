@@ -61,11 +61,31 @@
 						</tr>
 						<tr>
 							<td>
+								类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型:
+							</td>
+							<td>
+								<select name ="catchType">
+									<option value="CATCHTASK" <c:if test="${catchTask.catchType == 'CATCHTASK' || catchTask.catchType == null}">selected</c:if>>网站</option>
+									<option value="EMAILTASK" <c:if test="${catchTask.catchType == 'EMAILTASK'}">selected</c:if>>邮件</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
 								抓取频率:
 							</td>
 							<td>
 								<input type="text" id="cron" name="cron"
 									value="${catchTask.cron}" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								匹配规则:
+							</td>
+							<td>
+								<input type="text" id="urlRule" name="urlRule"
+									value="${catchTask.urlRule}" />
 							</td>
 						</tr>
 						<tr>
