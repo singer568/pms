@@ -90,17 +90,38 @@ body {
 			<thead>
 				<tr>
 					<th>
+						编码
+					</th>
+					<th>
+						名称
+					</th>
+					<th>
+						省份
+					</th>
+					<th>
+						部门
+					</th>
+					<th>
+						板块
+					</th>
+					<th>
+						子版块
+					</th>
+					<th>
+						网址
+					</th>
+					<th>
 						政策标题
 					</th>
 					<th>
 						发布日期
 					</th>
-					<th>
-						组别
-					</th>
-					<th>
-						级别
-					</th>
+<%--					<th>--%>
+<%--						组别--%>
+<%--					</th>--%>
+<%--					<th>--%>
+<%--						级别--%>
+<%--					</th>--%>
 					<th>
 						操作
 					</th>
@@ -110,10 +131,31 @@ body {
 				<c:forEach items="${subjects.content}" var="subject">
 					<tr>
 						<td>
+							${subject.url.code}
+						</td>
+						<td>
+							${subject.url.name}
+						</td>
+						<td>
+							${subject.url.province}
+						</td>
+						<td>
+							${subject.url.department}
+						</td>
+						<td>
+							${subject.url.module}
+						</td>
+						<td>
+							${subject.url.submodule}
+						</td>
+						<td>
+							${subject.url.url}
+						</td>
+						<td>
 							<a target="_blank" href="${subject.subjUrl}">${subject.subject}</a>
 						</td>
 						<td>
-							${subject.publishDate}
+						 	<fmt:formatDate pattern="yyyy-MM-dd" value="${subject.publishDate}" type="both"/>
 						</td>
 						<td>
 							<a href="${ctx}/policy/subjects/delete/${subject.id}">删除</a>

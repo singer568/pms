@@ -189,24 +189,6 @@
 
 						<tr>
 							<td>
-								规&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;则:
-							</td>
-							<td>
-								<input type="text" id="rule_id" name="rule_id"
-									value="${url.rule.id}" size="100" />
-							</td>
-						</tr>
-						<tr>
-							<td>
-								所属任务:
-							</td>
-							<td>
-								<input type="text" id="rule_id" name="rule_id"
-									value="${url.task.id}" size="100" />
-							</td>
-						</tr>
-						<tr>
-							<td>
 								开始序号:
 							</td>
 							<td>
@@ -216,11 +198,30 @@
 						</tr>
 						<tr>
 							<td>
-								编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:
+								字符集:
 							</td>
 							<td>
 								<input type="text" id="charset" name="charset"
 									value="${url.charset}" size="100" />
+							</td>
+						</tr>
+						
+						<tr>
+							<td>
+								抓取下一页:
+							</td>
+							<td>
+								<input type="text" id="catchNextPage" name="catchNextPage"
+									value="${url.catchNextPage}" size="100" /><br/>提示：1为抓取，默认为0
+							</td>
+						</tr>
+						<tr>
+							<td>
+								下一页xpath:
+							</td>
+							<td>
+								<input type="text" id="nextPageXpath" name="nextPageXpath"
+									value="${url.nextPageXpath}" size="100" />
 							</td>
 						</tr>
 						<tr>

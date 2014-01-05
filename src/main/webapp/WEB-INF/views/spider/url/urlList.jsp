@@ -116,6 +116,9 @@ body {
 					<th>
 						级别
 					</th>
+					<th>
+						下一页
+					</th>
 					<!-- 
 					<th>
 						网址
@@ -180,6 +183,9 @@ body {
 						</td>
 						<td>
 						${url.level.code}-${url.level.name}
+						</td>
+						<td>
+						${url.catchNextPage}
 						</td>
 						<!-- 
 						<td>

@@ -52,6 +52,20 @@ public class CatchTask extends IdEntity {
 	 * 最近一次抓取状态：SUCCESS成功/失败FAIL
 	 */
 	private String status;
+	
+	/**
+	 * 匹配邮箱
+	 */
+	private String emailRule;
+	
+	
+	public String getEmailRule() {
+		return emailRule;
+	}
+
+	public void setEmailRule(String emailRule) {
+		this.emailRule = emailRule;
+	}
 
 	public String getCatchType() {
 		return catchType;

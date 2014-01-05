@@ -1,5 +1,6 @@
 package org.springside.examples.quickstart.service.spider;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,26 +56,24 @@ public class CatchTaskService {
 		catchTaskDao.save(entity);
 	}
 
+	public void refreshTask(long taskId){
+		List<CatchTask> tasks = new ArrayList<CatchTask>();
+		tasks.add(catchTaskDao.findOne(taskId));
+		schedulerService.schedule(tasks);
+	}
+	
+	public void stopTask(long taskId) {
+		List<CatchTask> tasks = new ArrayList<CatchTask>();
+		tasks.add(catchTaskDao.findOne(taskId));
+		schedulerService.stop(tasks);
+	}
+	
+	
 	/**
 	 * 启动定时任务
 	 */
 	public void refreshTasks() {
-
 		schedulerService.schedule(this.getAllCatchTask());
-
-		// CatchSimpleHtml html = new CatchSimpleHtml();
-		// List<Url> urls = urlService.getAllUrl();
-		// Iterator<Url> it = urls.iterator();
-		// while (it.hasNext()) {
-		// Url url = it.next();
-		// if (url.getCode().contains("ShangWuBu")) {
-		// continue;
-		// }
-		//
-		// List<Subjects> lst = html.catchPolicy(url, "2013-12-06");
-		// System.out.println(lst);
-		// }
-
 	}
 
 	public void deleteCatchTask(Long id) {

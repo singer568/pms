@@ -128,6 +128,12 @@ public class UrlController {
 	@RequestMapping(value = "update", method = RequestMethod.POST)
 	public String update(@Valid @ModelAttribute("url") Url url,
 			RedirectAttributes redirectAttributes) {
+		if (url.getLevel() == null || url.getLevel().getId()==null) {
+			url.setLevel(null);
+		}
+		if (url.getGroup() == null || url.getGroup().getId()==null) {
+			url.setGroup(null);
+		}
 		urlService.saveUrl(url);
 		redirectAttributes.addFlashAttribute("message", "更新网址成功");
 		return "redirect:/spider/url/";

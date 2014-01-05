@@ -78,6 +78,15 @@ public class Url extends IdEntity {
 	 */
 	private Integer startBegin;
 	
+	/**
+	 * 1:继续抓取下一页
+	 * 0:不抓取下一页
+	 */
+	private String catchNextPage;
+	/**
+	 * 下一页的xpath
+	 */
+	private String nextPageXpath;
 
 	private Rule rule;
 
@@ -108,6 +117,22 @@ public class Url extends IdEntity {
 
 	public String getProvince() {
 		return province;
+	}
+
+	public String getCatchNextPage() {
+		return catchNextPage;
+	}
+
+	public void setCatchNextPage(String catchNextPage) {
+		this.catchNextPage = catchNextPage;
+	}
+
+	public String getNextPageXpath() {
+		return nextPageXpath;
+	}
+
+	public void setNextPageXpath(String nextPageXpath) {
+		this.nextPageXpath = nextPageXpath;
 	}
 
 	public void setProvince(String province) {

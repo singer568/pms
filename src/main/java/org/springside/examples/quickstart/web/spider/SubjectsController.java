@@ -41,7 +41,7 @@ public class SubjectsController {
 	static {
 		sortTypes.put("auto", "自动");
 		sortTypes.put("code", "编码");
-		sortTypes.put("name", "姓名");
+		sortTypes.put("publishDate", "发布日期");
 	}
 
 	private SubjectsService subjectsService;

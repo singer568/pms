@@ -75,7 +75,7 @@ body {
 					value="${param.search_LIKE_code}">
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<label class="ui-button-text">
-					姓名：
+					名称：
 				</label>
 				<input type="text" name="search_LIKE_name" class="input-medium"
 					value="${param.search_LIKE_name}">
@@ -101,6 +101,21 @@ body {
 						邮箱
 					</th>
 					<th>
+						发送SMTP
+					</th>
+					<th>
+						用户名
+					</th>
+					<th>
+						密码
+					</th>
+					<th>
+						发送主题
+					</th>
+					<th>
+						邮件正文
+					</th>
+					<th>
 						描述
 					</th>
 					<th>
@@ -122,8 +137,25 @@ body {
 							${email.email}
 						</td>
 						<td>
+							${email.host}
+						</td>
+						<td>
+							${email.userName}
+						</td>
+						<td>
+							${email.pwd}
+						</td>
+						<td>
+							${email.subject}
+						</td>
+						
+						<td>
+							${email.emailContent}
+						</td>
+						<td>
 							${email.description}
 						</td>
+						
 						<td>
 							<a href="${ctx}/bd/email/delete/${email.id}">删除</a>
 						</td>

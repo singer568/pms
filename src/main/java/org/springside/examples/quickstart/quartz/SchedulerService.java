@@ -11,11 +11,17 @@ public interface SchedulerService {
 	public final String EMAILLIST = "EMAILLIST";
 	public final String CATCHSERVICE = "CATCH_SERVICE";
 	public final String SUBJECTSERVICE = "SUBJECT_SERVICE";
-
+	public final String KEYWORDSLIST = "KEYWORD_LIST";
+	public final String FROMEMAIL = "FROM_EMAIL";
+	
+	public final String ERROR_EMAIL_CODE="ERROR_EMAIL";
+	
 	/**
 	 * @param tasks
 	 */
 	void schedule(List<CatchTask> tasks);
+	
+	void stop(List<CatchTask> tasks);
 
 	/**
 	 * key jobDetail value cronExpression

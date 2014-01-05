@@ -76,6 +76,8 @@ public class SubjectsService {
 			sort = new Sort(Direction.ASC, "code");
 		} else if ("name".equals(sortType)) {
 			sort = new Sort(Direction.ASC, "name");
+		}else if ("publishDate".equals(sortType)) {
+			sort = new Sort(Direction.DESC, "publishDate");
 		}
 
 		return new PageRequest(pageNumber - 1, pagzSize, sort);

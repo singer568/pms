@@ -88,7 +88,7 @@ body {
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a
 					class="startup-process ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
-					href="javascript:refreshTask()">刷新任务</a>
+					href="javascript:refreshTasks()">刷新任务</a>
 			</form>
 		</div>
 
@@ -102,27 +102,30 @@ body {
 					<th>
 						名称
 					</th>
-					<th>
-						类型
-					</th>
+<%--					<th>--%>
+<%--						类型--%>
+<%--					</th>--%>
 					<th>
 						抓取频率
 					</th>
 					<th>
 						匹配URL
 					</th>
-					<th>
-						最近抓取开始时间
-					</th>
-					<th>
-						最近抓取结束时间
-					</th>
-					<th>
-						持续时间
-					</th>
-					<th>
-						状态
-					</th>
+<%--					<th>--%>
+<%--						最近抓取开始时间--%>
+<%--					</th>--%>
+<%--					<th>--%>
+<%--						最近抓取结束时间--%>
+<%--					</th>--%>
+<%--					<th>--%>
+<%--						持续时间--%>
+<%--					</th>--%>
+<%--					<th>--%>
+<%--						状态--%>
+<%--					</th>--%>
+<th>
+	发送邮箱
+</th>
 					<th>
 						描述
 					</th>
@@ -141,32 +144,35 @@ body {
 						<td>
 							${catchTask.name}
 						</td>
-						<td>
-							<c:if test="${'EMAILTASK' == catchTask.catchType}">邮件</c:if>
-							<c:if test="${'CATCHTASK' == catchTask.catchType || catchTask.catchType == null}">网站 </c:if>
-						</td>
+<%--						<td>--%>
+<%--							<c:if test="${'EMAILTASK' == catchTask.catchType}">邮件</c:if>--%>
+<%--							<c:if test="${'CATCHTASK' == catchTask.catchType || catchTask.catchType == null}">网站 </c:if>--%>
+<%--						</td>--%>
 						<td>
 							${catchTask.cron}
 						</td>
 						<td>
 							${catchTask.urlRule}
 						</td>
-						<td>
-							${catchTask.startDate}
-						</td>
-						<td>
-							${catchTask.endDate}
-						</td>
-						<td>
-							${catchTask.duration}
-						</td>
-						<td>
-							${catchTask.status}
-						</td>
+<%--						<td>--%>
+<%--							${catchTask.startDate}--%>
+<%--						</td>--%>
+<%--						<td>--%>
+<%--							${catchTask.endDate}--%>
+<%--						</td>--%>
+<%--						<td>--%>
+<%--							${catchTask.duration}--%>
+<%--						</td>--%>
+<%--						<td>--%>
+<%--							${catchTask.status}--%>
+<%--						</td>--%>
+					<td>${catchTask.emailRule}</td>
 						<td>
 							${catchTask.description}
 						</td>
 						<td>
+							<a href="javascript:refreshOne(${catchTask.id})">刷新</a>
+							<a href="javascript:stopOne(${catchTask.id})">停止</a>
 							<a href="${ctx}/spider/catchTask/delete/${catchTask.id}">删除</a>
 							<a href="${ctx}/spider/catchTask/copy/${catchTask.id}">复制</a>
 						</td>
@@ -192,10 +198,35 @@ function querySubmit() {
 	$('#queryForm').submit();
 }
 
-function refreshTask() {
+function stopOne(id) {
+	$.ajax( {
+		type : "GET",
+		url : "${ctx}/spider/catchTask/stopTask",
+		dataType : 'text',
+		data: "id=" + id,
+		success : function(data) {
+			alert(data);
+		}
+	});
+}
+
+
+
+function refreshOne(id) {
 	$.ajax( {
 		type : "GET",
 		url : "${ctx}/spider/catchTask/refreshTask",
+		dataType : 'text',
+		data: "id=" + id,
+		success : function(data) {
+			alert(data);
+		}
+	});
+}
+function refreshTasks() {
+	$.ajax( {
+		type : "GET",
+		url : "${ctx}/spider/catchTask/refreshAll",
 		dataType : 'text',
 		success : function(data) {
 			alert(data);

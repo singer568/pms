@@ -44,17 +44,16 @@ public class CatchSimpleHtml {
 	public Url getUrl() {
 		Url url = new Url();
 		url.setCode("001");
-		url.setName("科技部");
+		url.setName("北京市");
 		url
-				.setUrl("http://www.miit.gov.cn/n11293472/n11293832/n12845605/n13916943/index.html");
-		url.setUrlPrefix("http://www.miit.gov.cn");
-		url.setSubjReplace("·=");
+				.setUrl("http://zc.k8008.com/beijing/");
+		url.setUrlPrefix("http://zc.k8008.com/beijing/");
 		url
-				.setSubjPath("body/table[4]/tbody/tr/td/table/tbody/tr/td[3]/table[2]/tbody/tr[2]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr/td/table[parameter]/tbody/tr/td[1]/a");
+				.setSubjPath("//div[@class='list']/ul/li[parameter]/a");
 		url
-				.setLinkPath("body/table[4]/tbody/tr/td/table/tbody/tr/td[3]/table[2]/tbody/tr[2]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr/td/table[parameter]/tbody/tr/td[1]/a");
+				.setLinkPath("//div[@class='list']/ul/li[parameter]/a");
 		url
-				.setDatePath("body/table[4]/tbody/tr/td/table/tbody/tr/td[3]/table[2]/tbody/tr[2]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr/td/table[parameter]/tbody/tr/td[2]");
+				.setDatePath("//div[@class='list']/ul/li[parameter]/span[1]");
 		return url;
 	}
 
@@ -88,12 +87,15 @@ public class CatchSimpleHtml {
 				Object[] linkNode = html.evaluateXPath(linkPathTmp);
 
 				String subj = ((TagNode) subjNode[0]).getText().toString();
+				
 				String href = ((TagNode) linkNode[0])
 						.getAttributeByName("href");
 				String date = ((TagNode) dateNode[0]).getText().toString();
-
-				subj = replaceSubj(subj, subjReplace);
-				date = replaceDate(date, dateReplace);
+				System.out.println(subj);
+				System.out.println(href);
+				System.out.println(date);
+//				subj = replaceSubj(subj, subjReplace);
+//				date = replaceDate(date, dateReplace);
 			}
 		} catch (XPatherException e) {
 			e.printStackTrace();
@@ -132,7 +134,11 @@ public class CatchSimpleHtml {
 			props.setRecognizeUnicodeChars(true);
 			props.setOmitComments(true);
 
-			node = cleaner.clean(new String(responseBody));
+			String text = new String(responseBody);
+			
+			System.out.println(text);
+			
+			node = cleaner.clean(text);
 		} catch (HttpException e) {
 			// 发生致命异常，可能是协议不对或者返回的内容有问题
 			System.out.println("Please check your provided http address");

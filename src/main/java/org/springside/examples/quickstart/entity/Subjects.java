@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Subjects extends IdEntity {
 
 	private Url url;
+	private CatchTask task;
 
 	/**
 	 * 抓取来源网址
@@ -56,6 +57,12 @@ public class Subjects extends IdEntity {
 	 */
 	private Date catchTime;
 	
+	/**
+	 * 是否为关键主题
+	 * 1:为关键
+	 * 0:非关键
+	 */
+	private String keyFlag;
 	
 	/**
 	 * 删除标志
@@ -66,7 +73,39 @@ public class Subjects extends IdEntity {
 	
 	private Group group;
 	
+	/**
+	 * 是否成功发送邮件
+	 * 1：发送成功
+	 * 0：未发送成功
+	 */
+	private String isSend;
 	
+	
+	public String getIsSend() {
+		return isSend;
+	}
+
+	public void setIsSend(String isSend) {
+		this.isSend = isSend;
+	}
+
+	public String getKeyFlag() {
+		return keyFlag;
+	}
+
+	public void setKeyFlag(String keyFlag) {
+		this.keyFlag = keyFlag;
+	}
+	@ManyToOne
+	@JoinColumn(name="task_id")
+	public CatchTask getTask() {
+		return task;
+	}
+
+	public void setTask(CatchTask task) {
+		this.task = task;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "level_id")
 	public Level getLevel() {

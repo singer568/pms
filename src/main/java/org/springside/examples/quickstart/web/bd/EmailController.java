@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.examples.quickstart.entity.Email;
 import org.springside.examples.quickstart.entity.Group;
@@ -87,6 +88,13 @@ public class EmailController {
 	@Autowired
 	public void setEmailService(EmailService emailService) {
 		this.emailService = emailService;
+	}
+	
+	@RequestMapping(value = "queryAll", method = RequestMethod.GET)
+	@ResponseBody
+	public Object queryEmails(Model model) {
+		List<Email> emails = emailService.getAllEmail();
+		return emails;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)

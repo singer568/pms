@@ -9,6 +9,39 @@ import java.util.List;
 
 public class DateUtil {
 
+	public static String getCurrentDateTime() {
+		Calendar cal = Calendar.getInstance();
+		Date date = cal.getTime();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String ret = format.format(date);
+		return toChineseDate(ret);
+	}
+
+	public static void main(String[] args) {
+		String a = "2001-05-06 12:56:32";
+		String[] tmp = a.split(" ");
+		String[] ymd = tmp[0].split("-");
+		String[] hms = tmp[1].trim().split(":");
+
+		StringBuffer buf = new StringBuffer();
+		buf.append(ymd[0]).append("年").append(ymd[1]).append("月")
+				.append(ymd[2]).append("日").append(hms[0]).append("时").append(
+						hms[1]).append("分").append(hms[2]).append("秒");
+		System.out.println(buf.toString());
+	}
+
+	private static String toChineseDate(String date) {
+		String[] tmp = date.split(" ");
+		String[] ymd = tmp[0].split("-");
+		String[] hms = tmp[1].trim().split(":");
+
+		StringBuffer buf = new StringBuffer();
+		buf.append(ymd[0]).append("年").append(ymd[1]).append("月")
+				.append(ymd[2]).append("日").append(hms[0]).append("时").append(
+						hms[1]).append("分").append(hms[2]).append("秒");
+		return buf.toString();
+	}
+
 	public static Date getCurrentDate() {
 		Calendar cal = Calendar.getInstance();
 		Date date = cal.getTime();
@@ -21,7 +54,12 @@ public class DateUtil {
 		}
 		return date;
 	}
-
+	public static String getCurrentDateStr() {
+		Calendar cal = Calendar.getInstance();
+		Date date = cal.getTime();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		return format.format(date);
+	}
 	/**
 	 * 取当前日期的不同格式数组
 	 * 

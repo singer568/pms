@@ -79,13 +79,51 @@ public class CatchTaskController {
 		return "spider/catchTask/catchTaskList";
 	}
 
+	@RequestMapping(value = "stopTask", method = RequestMethod.GET)
+	public void stopTask(Long id, HttpServletRequest request,
+			HttpServletResponse response) {
+		catchTaskService.stopTask(id);// 刷新任务信息
+		
+		String str = "成功停止任务";
+		response.setContentType("text/xml;charset=UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.print(str);// 用于返回对象参数
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@RequestMapping(value = "refreshTask", method = RequestMethod.GET)
-	public void refreshTask(HttpServletRequest request,
+	public void refreshTask(Long id, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		catchTaskService.refreshTask(id);// 刷新任务信息
+		
+		String str = "成功刷新任务";
+		response.setContentType("text/xml;charset=UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.print(str);// 用于返回对象参数
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@RequestMapping(value = "refreshAll", method = RequestMethod.GET)
+	public void refreshAll(HttpServletRequest request,
 			HttpServletResponse response) {
 
 		catchTaskService.refreshTasks();// 刷新任务信息
 		
-		String str = "成功刷新任务信息";
+		String str = "成功刷新所有任务";
 		response.setContentType("text/xml;charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Cache-Control", "no-cache");

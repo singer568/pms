@@ -1,6 +1,7 @@
 package org.springside.examples.quickstart.quartz;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +18,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springside.examples.quickstart.entity.CatchTask;
 import org.springside.examples.quickstart.entity.Email;
+import org.springside.examples.quickstart.entity.KeyWords;
 import org.springside.examples.quickstart.entity.Url;
 import org.springside.examples.quickstart.quartz.job.SpiderJob;
 import org.springside.examples.quickstart.service.bd.EmailService;
+import org.springside.examples.quickstart.service.bd.KeyWordsService;
 import org.springside.examples.quickstart.service.spider.CatchTaskService;
 import org.springside.examples.quickstart.service.spider.SubjectsService;
 import org.springside.examples.quickstart.service.spider.UrlService;
@@ -40,6 +43,17 @@ public class SchedulerServiceImpl implements SchedulerService {
 	private CatchService html;
 
 	private SubjectsService subjectService;
+
+	private KeyWordsService wordService;
+
+	public KeyWordsService getWordService() {
+		return wordService;
+	}
+
+	@Autowired
+	public void setWordService(KeyWordsService wordService) {
+		this.wordService = wordService;
+	}
 
 	public SubjectsService getSubjectService() {
 		return subjectService;
@@ -93,34 +107,55 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 	public void schedule(List<CatchTask> tasks) {
 
-		deleteAll();
+		deleteJobs(tasks);
 
+		List<KeyWords> keys = wordService.getAllKeyWords();
+		Email fromEmail = emailService.getAllEmail().get(0);
 		for (int i = 0, len = tasks.size(); i < len; i++) {
 			CatchTask task = tasks.get(i);
 
 			JobDetail jobDetail = new JobDetail();
-			jobDetail.setName(task.getName());
+			jobDetail.setName(task.getCode() + "_" + task.getName());
 			jobDetail.setGroup(jobGroup);
 
 			jobDetail.getJobDataMap().put(URLLIST, getTaskUrls(task));// 待执行的URL列表
 			jobDetail.setJobClass(SpiderJob.class);
 			jobDetail.getJobDataMap().put(CATCHSERVICE, html);// 抓取html的实例对象
+			jobDetail.getJobDataMap().put(EMAILLIST,
+					getEmails(task.getEmailRule()));
+			jobDetail.getJobDataMap().put(KEYWORDSLIST, keys);
+			jobDetail.getJobDataMap().put(FROMEMAIL, fromEmail);
 
 			schedule(task.getCron(), jobDetail);
 		}
 	}
 
-	private List<Email> getTaskEmails(CatchTask task) {
-		String urlRule = task.getUrlRule();// 匹配的邮件规则，以LIKE_email=dd#LIKE_email=bb形式出现
-		Map<String, Object> param = new HashMap<String, Object>();
-		// Param是以#分隔的key=value对；例如：Like_code=ZhongYang
-		String[] strs = urlRule.split("#");
-		for (int i = 0; i < strs.length; i++) {
-			String[] values = strs[i].split("=");
-			param.put(values[0], values[1]);
+	/* (non-Javadoc)
+	 * @see org.springside.examples.quickstart.quartz.SchedulerService#stop(java.util.List)
+	 */
+	public void stop(List<CatchTask> tasks) {
+		deleteJobs(tasks);
+	}
+
+	
+	
+	/**
+	 * 仅支持 IN_code=('a','v')类型的匹配;
+	 * 
+	 * @param emailRule
+	 * @return
+	 */
+	private List<String> getEmails(String emailRule) {
+		if (null == emailRule || "".equals(emailRule.trim())) {
+			return null;
 		}
-		Page<Email> emails = emailService.queryEmailByParam(param);
-		return emails.getContent();
+		String[] emails = emailRule.split(";");
+		List<String> lst = new ArrayList<String>();
+		for (int i = 0; i < emails.length; i++) {
+			lst.add(emails[i]);
+		}
+
+		return lst;
 	}
 
 	private List<Url> getTaskUrls(CatchTask task) {
@@ -137,21 +172,20 @@ public class SchedulerServiceImpl implements SchedulerService {
 		return urls.getContent();
 	}
 
-	private void deleteAll() {
+	private void deleteJobs(List<CatchTask> tasks) {
 		try {
-			String[] jobNames = scheduler.getJobNames(jobGroup);
-			if (null != jobNames && jobNames.length > 0) {
-				for (int i = 0, len = jobNames.length; i < len; i++) {
-					scheduler.unscheduleJob(jobNames[i], jobGroup);
-					scheduler.deleteJob(jobNames[i], jobGroup);
-				}
+			CatchTask task = null;
+			for (int i = 0; i < tasks.size(); i++) {
+				task = tasks.get(i);
+				String jobName = task.getCode() + "_" + task.getName();
+				scheduler.unscheduleJob(jobName, jobGroup);
+				scheduler.deleteJob(jobName, jobGroup);
 			}
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
 
 	}
-
 
 	private void schedule(String cron, JobDetail jobDetail) {
 		try {

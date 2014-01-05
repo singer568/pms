@@ -37,7 +37,7 @@
 						</tr>
 						<tr>
 							<td>
-								姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:
+								名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称:
 							</td>
 							<td>
 								<input type="text" id="name" name="name" value="${email.name}" />
@@ -50,6 +50,51 @@
 							<td>
 								<input type="text" id="email" name="email"
 									value="${email.email}" />
+							</td>
+						</tr>
+							<tr>
+							<td>
+								发送SMTP:
+							</td>
+							<td>
+								<input type="text" id="host" name="host"
+									value="${email.host}" />
+							</td>
+						</tr>
+							<tr>
+							<td>
+								用户名:
+							</td>
+							<td>
+								<input type="text" id="userName" name="userName"
+									value="${email.userName}" />
+							</td>
+						</tr>
+							<tr>
+							<td>
+								密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:
+							</td>
+							<td>
+								<input type="text" id="pwd" name="pwd"
+									value="${email.pwd}" />
+							</td>
+						</tr>
+							<tr>
+							<td>
+								主&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题:
+							</td>
+							<td>
+								<input type="text" id="subject" name="subject"
+									value="${email.subject}" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								邮件正文:
+							</td>
+							<td>
+								<input type="text" id="emailContent" name="emailContent"
+									value="${email.emailContent}" />
 							</td>
 						</tr>
 						<tr>
