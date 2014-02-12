@@ -81,14 +81,14 @@ body {
 				<input type="text" name="search_LIKE_name" class="input-medium"
 					value="${param.search_LIKE_name}">
 				<a class="startup-process" href="javascript:querySubmit()">检索</a>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a
 					class="startup-process ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
 					href="${ctx}/spider/catchTask/create">新增</a>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a
 					class="startup-process ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
-					href="javascript:refreshTasks()">刷新任务</a>
+					href="javascript:refreshTasks()">刷新全部</a>
 			</form>
 		</div>
 

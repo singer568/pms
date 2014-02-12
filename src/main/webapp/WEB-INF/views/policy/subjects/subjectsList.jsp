@@ -49,6 +49,18 @@ body {
 	MARGIN-LEFT: auto;
 }
 </style>
+		<script type="text/javascript">
+jQuery(function() {
+	// 时间设置
+	jQuery('#search_EQ_publishDate').datepicker( {
+		dateFormat : "yy-mm-dd"
+	});
+
+});
+</script>
+
+		<style>
+</style>
 	</head>
 	<%@ taglib prefix="tags" tagdir="/WEB-INF/tags/qktags"%>
 
@@ -66,25 +78,84 @@ body {
 			</div>
 		</c:if>
 
-		<div id="querydiv">
+		<div id="querydiv" align="center" style="width: 100%; margin:0px ">
 			<form name="queryForm" id="queryForm" action="#">
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<label class="ui-button-text">
-					编码：
-				</label>
-				<input type="text" name="search_LIKE_code" class="input-medium"
-					value="${param.search_LIKE_code}">
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<label class="ui-button-text">
-					名称：
-				</label>
-				<input type="text" name="search_LIKE_name" class="input-medium"
-					value="${param.search_LIKE_name}">
-				<a class="startup-process" href="javascript:querySubmit()">检索</a>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			</form>
-		</div>
+				<table style="width: 70%; margin-bottom: 0px" align="center">
+					<tr>
+						<td style="background-color: white">
+							<label class="ui-button-text">
+								主题：
+							</label>
+							<input type="text" name="search_LIKE_subject"
+								id="search_LIKE_subject" class="input-medium"
+								value="${param.search_LIKE_subject}">
+						</td>
+						<td style="background-color: white">
+							<label class="ui-button-text">
+								发布日期：
+							</label>
+							<input type="text" name="search_EQ_publishDate"
+								id="search_EQ_publishDate" class="input-medium"
+								value="${param.search_EQ_publishDate}" readonly />
 
+						</td>
+						<td style="background-color: white">
+							<label class="ui-button-text">
+								省&nbsp;&nbsp;&nbsp;&nbsp;份：
+							</label>
+							<input type="text" name="search_LIKE_url.province"
+								class="input-medium" value="${param.search_LIKE_url.province}">
+						</td>
+						<td style="background-color: white">
+							<label class="ui-button-text">
+								部门：
+							</label>
+							<input type="text" name="search_LIKE_url.department"
+								class="input-medium" value="${param.search_LIKE_url.department}">
+						</td>
+					</tr>
+					<tr>
+						<td style="background-color: white">
+							<label class="ui-button-text">
+								板块：
+							</label>
+							<input type="text" name="search_LIKE_url.module"
+								class="input-medium" value="${param.search_LIKE_url.module}">
+						</td>
+						<td style="background-color: white">
+							<label class="ui-button-text">
+								子&nbsp;&nbsp;版&nbsp;块：
+							</label>
+							<input type="text" name="search_LIKE_url.submodule"
+								class="input-medium" value="${param.search_LIKE_url.submodule}">
+						</td>
+						<td style="background-color: white">
+							<label class="ui-button-text">
+								级&nbsp;&nbsp;&nbsp;&nbsp;别：
+							</label>
+							<input type="text" name="search_LIKE_level.name"
+								class="input-medium" value="${param.search_LIKE_level.name}">
+						</td>
+						<td style="background-color: white" align="center">
+							<a class="startup-process" href="javascript:querySubmit()">检索</a>
+						</td>
+					</tr>
+				</table>
+			</form>
+			
+		</div>
+	<div style="width: 80%; margin:0px 120px 5px 120px; background-color: #C9C8B0 " align="left">
+				<font style="size: 14; font-weight: bold;">关键词：</font>
+				<c:set var="no" value="1"></c:set>
+				<c:forEach items="${words}" var="word">
+					<a href="javascript:submitWords('${word.name}')">${word.name}</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+									<c:if test="${no%15==0}">
+						<br />
+					</c:if>
+					<c:set var="no" value="${no+1}"></c:set>
+				</c:forEach>
+			</div>
 		<table id="contentTable"
 			class="table table-striped table-bordered table-condensed">
 			<thead>
@@ -95,11 +166,11 @@ body {
 					<th>
 						名称
 					</th>
+<%--					<th>--%>
+<%--						省份--%>
+<%--					</th>--%>
 					<th>
-						省份
-					</th>
-					<th>
-						部门
+						部委
 					</th>
 					<th>
 						板块
@@ -116,12 +187,12 @@ body {
 					<th>
 						发布日期
 					</th>
-<%--					<th>--%>
-<%--						组别--%>
-<%--					</th>--%>
-<%--					<th>--%>
-<%--						级别--%>
-<%--					</th>--%>
+					<%--					<th>--%>
+					<%--						组别--%>
+					<%--					</th>--%>
+					<%--					<th>--%>
+					<%--						级别--%>
+					<%--					</th>--%>
 					<th>
 						操作
 					</th>
@@ -136,9 +207,9 @@ body {
 						<td>
 							${subject.url.name}
 						</td>
-						<td>
-							${subject.url.province}
-						</td>
+<%--						<td>--%>
+<%--							${subject.url.province}--%>
+<%--						</td>--%>
 						<td>
 							${subject.url.department}
 						</td>
@@ -155,7 +226,8 @@ body {
 							<a target="_blank" href="${subject.subjUrl}">${subject.subject}</a>
 						</td>
 						<td>
-						 	<fmt:formatDate pattern="yyyy-MM-dd" value="${subject.publishDate}" type="both"/>
+							<fmt:formatDate pattern="yyyy-MM-dd"
+								value="${subject.publishDate}" type="both" />
 						</td>
 						<td>
 							<a href="${ctx}/policy/subjects/delete/${subject.id}">删除</a>
@@ -179,6 +251,10 @@ $(function() {
 });
 
 function querySubmit() {
+	$('#queryForm').submit();
+}
+function submitWords(obj) {
+	document.getElementById("search_LIKE_subject").value = obj;
 	$('#queryForm').submit();
 }
 </script>

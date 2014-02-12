@@ -143,7 +143,7 @@ public class EmailController {
 		}
 		emailService.saveEmail(newEmail);
 
-		redirectAttributes.addFlashAttribute("message", "创建分级成功");
+		redirectAttributes.addFlashAttribute("message", "创建邮箱成功");
 		return "redirect:/bd/email/";
 	}
 
@@ -164,7 +164,7 @@ public class EmailController {
 			RedirectAttributes redirectAttributes) {
 		emailService.saveEmail(email);
 
-		redirectAttributes.addFlashAttribute("message", "更新分级成功");
+		redirectAttributes.addFlashAttribute("message", "更新邮箱成功");
 		return "redirect:/bd/email/";
 	}
 
@@ -172,7 +172,7 @@ public class EmailController {
 	public String delete(@PathVariable("id") Long id,
 			RedirectAttributes redirectAttributes) {
 		emailService.deleteEmail(id);
-		redirectAttributes.addFlashAttribute("message", "删除分级成功");
+		redirectAttributes.addFlashAttribute("message", "删除邮箱成功");
 		return "redirect:/bd/email/";
 	}
 

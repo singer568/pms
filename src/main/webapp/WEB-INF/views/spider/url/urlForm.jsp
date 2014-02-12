@@ -61,52 +61,26 @@
 						</tr>
 						<tr>
 							<td>
-								省&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;份:
+								中东西部:
 							</td>
 							<td>
-								<input type="text" id="province" name="province"
-									value="${url.province}" size="100" />
-							</td>
-						</tr>
-						<tr>
-							<td>
-								部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门:
-							</td>
-							<td>
-								<input type="text" id="department" name="department"
-									value="${url.department}" size="100" />
+								<select name="area" id="area">
+									<option value="MIDDLE" <c:if test="${url.area=='MIDDLE'}">selected</c:if>>中部</option>
+									<option value="EAST" <c:if test="${url.area=='EAST'}">selected</c:if>>东部</option>
+									<option value="WEST" <c:if test="${url.area=='WEST'}">selected</c:if>>西部</option>
+									<option value="OTHER" <c:if test="${url.area=='OTHER'}">selected</c:if>>其他</option>
+								</select>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								板&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;块:
+								是否省会:
 							</td>
 							<td>
-								<input type="text" id="module" name="module"
-									value="${url.module}" size="100" />
-							</td>
-						</tr>
-						<tr>
-							<td>
-								子&nbsp;&nbsp;&nbsp;版&nbsp;&nbsp;&nbsp;块:
-							</td>
-							<td>
-								<input type="text" id="submodule" name="submodule"
-									value="${url.submodule}" size="100" />
-							</td>
-						</tr>
-						<tr>
-							<td>
-								组&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:
-							</td>
-							<td>
-								<input type="button" id="chooseGroupBtn" name="chooseGroupBtn"
-									value="选择"></input>
-								<span id="chooseGroup"> <c:if
-										test="${url.group.id != null}">编码:${url.group.code}；名称:${url.group.name}</c:if>
-								</span>
-								<input type="hidden" id="group.id" name="group.id"
-									value="${url.group.id}" />
+								<select name="isCapital" id="isCapital">
+									<option value="0" <c:if test="${url.isCapital=='0'}">selected</c:if>>否</option>
+									<option value="1" <c:if test="${url.isCapital=='1'}">selected</c:if>>是</option>
+								</select>
 							</td>
 						</tr>
 						<tr>
@@ -123,6 +97,55 @@
 									value="${url.level.id}" />
 							</td>
 						</tr>
+						<tr>
+							<td>
+								省&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;份:
+							</td>
+							<td>
+								<input type="text" id="province" name="province"
+									value="${url.province}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;委:
+							</td>
+							<td>
+								<input type="text" id="department" name="department"
+									value="${url.department}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								子&nbsp;&nbsp;&nbsp;版&nbsp;&nbsp;&nbsp;块:
+							</td>
+							<td>
+								<input type="text" id="module" name="module"
+									value="${url.module}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								板&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;块:
+							</td>
+							<td>
+								<input type="text" id="submodule" name="submodule"
+									value="${url.submodule}" size="100" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								页面类型:
+							</td>
+							<td>
+							
+								<select name="catchType" id="catchType">
+									<option value="NORMAL" <c:if test="${url.catchType=='NORMAL'}">selected</c:if>>普通</option>
+									<option value="SCRIPT" <c:if test="${url.catchType=='SCRIPT'}">selected</c:if>>脚本</option>
+								</select>
+							</td>
+						</tr>
+						
 						<tr>
 							<td>
 								网&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址:
@@ -270,37 +293,40 @@
 			</table>
 		</div>
 
-		<div id="chooseGroupPanel" title="选择组别" style="display: none">
-			<table>
-				<thead>
-					<tr>
-						<td>
-							序号
-						</td>
-						<td>
-							编码
-						</td>
-						<td>
-							名称
-						</td>
-						<td>
-							描述
-						</td>
-					</tr>
-				</thead>
-				<tbody id="groupData"></tbody>
-			</table>
-		</div>
+<%--		<div id="chooseGroupPanel" title="选择组别" style="display: none">--%>
+<%--			<table>--%>
+<%--				<thead>--%>
+<%--					<tr>--%>
+<%--						<td>--%>
+<%--							序号--%>
+<%--						</td>--%>
+<%--						<td>--%>
+<%--							编码--%>
+<%--						</td>--%>
+<%--						<td>--%>
+<%--							名称--%>
+<%--						</td>--%>
+<%--						<td>--%>
+<%--							描述--%>
+<%--						</td>--%>
+<%--					</tr>--%>
+<%--				</thead>--%>
+<%--				<tbody id="groupData"></tbody>--%>
+<%--			</table>--%>
+<%--		</div>--%>
 
 
 	</body>
 	<script type="text/javascript">
+	
+	/**
 $('#chooseGroupPanel').dialog( {
 	 autoOpen:false,
 	modal : true,
 	width : 500,
 	height : 800
 });
+	*/
 $('#chooseLevelPanel').dialog( {
 	 autoOpen:false,
 	modal : true,
@@ -309,6 +335,7 @@ $('#chooseLevelPanel').dialog( {
 });
 
 /////处理组别
+/**
 $(function() {
 	$('#chooseGroupBtn').button( {
 		icons : {
@@ -342,7 +369,7 @@ function setGroupList(obj) {
 	}
 	$("#groupData").html(strHTML);//显示到tbody中  
 }
-
+*/
 ///////////处理级别
 $(function() {
 	$('#chooseLevelBtn').button( {

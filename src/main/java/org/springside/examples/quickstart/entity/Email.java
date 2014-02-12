@@ -32,6 +32,16 @@ public class Email extends IdEntity implements Cloneable {
 		return user;
 	}
 
+	public String toString() {
+		StringBuffer buf = new StringBuffer();
+		buf.append("Email Info{code=").append(code).append(",name=").append(
+				name).append(",email=").append(email).append(",host=").append(
+				host).append(",subject=").append(subject).append(
+				",emailContent=").append(emailContent).append(",user=").append(
+				userName).append(",description=").append(description);
+		return buf.toString();
+	}
+
 	public Email clone() {
 		Email mail = new Email();
 

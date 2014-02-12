@@ -44,20 +44,20 @@
 								<input type="text" id="name" name="name" value="${group.name}" />
 							</td>
 						</tr>
-						<tr>
-							<td>
-								直接上级:
-							</td>
-							<td>
-								<input type="button" id="choose" name="choose" value="选择"></input>
-								<span id="chooseRow">
-									<c:if test="${group.parent.id != null}">编码:${group.parent.code}；名称:${group.parent.name}</c:if>
-								</span>
-								
-								<input type="hidden" id="parent.id" name="parent.id"  value="${group.parent.id}" />
-								
-							</td>
-						</tr>
+<%--						<tr>--%>
+<%--							<td>--%>
+<%--								直接上级:--%>
+<%--							</td>--%>
+<%--							<td>--%>
+<%--								<input type="button" id="choose" name="choose" value="选择"></input>--%>
+<%--								<span id="chooseRow">--%>
+<%--									<c:if test="${group.parent.id != null}">编码:${group.parent.code}；名称:${group.parent.name}</c:if>--%>
+<%--								</span>--%>
+<%--								--%>
+<%--								<input type="hidden" id="parent.id" name="parent.id"  value="${group.parent.id}" />--%>
+<%--								--%>
+<%--							</td>--%>
+<%--						</tr>--%>
 						<tr>
 							<td>
 								描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述:
@@ -82,34 +82,34 @@
 			</form:form>
 		</div>
 
-		<div id="chooseParent" title="选择直接上级"  style="display: none">
-				<table>
-					<tr>
-						<th>序号</th>
-						<th>编码</th>
-						<th>名称</th>
-						<th>描述</th>
-					</tr>
-					<c:forEach items="${groupList}" var="group"  varStatus="nowcount">
-						<tr ondblclick="setValue(this)" id="${group.id}_${group.code}_${group.name}">
-							<td>
-							${nowcount.count}</td>							
-							<td>
-								${group.code}
-							</td>
-							<td>
-								${group.name}
-							</td>
-							<td>
-								${group.description}
-							</td>
-						</tr>
-					</c:forEach>
-				</table>
-		</div>
+<%--		<div id="chooseParent" title="选择直接上级"  style="display: none">--%>
+<%--				<table>--%>
+<%--					<tr>--%>
+<%--						<th>序号</th>--%>
+<%--						<th>编码</th>--%>
+<%--						<th>名称</th>--%>
+<%--						<th>描述</th>--%>
+<%--					</tr>--%>
+<%--					<c:forEach items="${groupList}" var="group"  varStatus="nowcount">--%>
+<%--						<tr ondblclick="setValue(this)" id="${group.id}_${group.code}_${group.name}">--%>
+<%--							<td>--%>
+<%--							${nowcount.count}</td>							--%>
+<%--							<td>--%>
+<%--								${group.code}--%>
+<%--							</td>--%>
+<%--							<td>--%>
+<%--								${group.name}--%>
+<%--							</td>--%>
+<%--							<td>--%>
+<%--								${group.description}--%>
+<%--							</td>--%>
+<%--						</tr>--%>
+<%--					</c:forEach>--%>
+<%--				</table>--%>
+<%--		</div>--%>
 	</body>
 	<script type="text/javascript">
-	
+	/**	
 	function setValue(obj){
 		var editId = document.getElementById("id").value;
 		var id = obj.id;
@@ -126,7 +126,7 @@
 		document.getElementById("chooseRow").innerHTML="编码:"+str[1] + "；名称:" + str[2];
 		$('#chooseParent').dialog("close");
 	}
-	
+*/	
 	
 $(function() {
 	$('.startup-process').button( {
@@ -140,6 +140,7 @@ function submit() {
 	$('#inputForm').submit();
 }
 
+/**
 $(function() {
 	$('#choose').button( {
 		icons : {
@@ -153,5 +154,6 @@ $(function() {
     		});
 	});
 });
+*/
 </script>
 </html>

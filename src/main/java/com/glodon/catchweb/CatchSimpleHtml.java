@@ -1,7 +1,10 @@
 package com.glodon.catchweb;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Random;
 
@@ -19,6 +22,9 @@ import org.htmlcleaner.XPatherException;
 import org.springside.examples.quickstart.entity.Subjects;
 import org.springside.examples.quickstart.entity.Url;
 
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+
 public class CatchSimpleHtml {
 
 	private static Logger logger = Logger.getLogger(CatchSimpleHtml.class
@@ -33,7 +39,9 @@ public class CatchSimpleHtml {
 
 		try {
 			CatchSimpleHtml catchHtml = new CatchSimpleHtml();
-			catchHtml.catchPolicy(catchHtml.getUrl(),"2013-03-12");
+			// catchHtml.catchPolicy(catchHtml.getUrl(),"2013-03-12");
+
+			catchHtml.testCrawler();
 		} catch (Exception e) {
 			logger.debug("............................读取第" + currentNo
 					+ "页内容出错.........................");
@@ -41,25 +49,93 @@ public class CatchSimpleHtml {
 		}
 	}
 
+	public void testCrawler() throws Exception {
+		/** HtmlUnit请求web页面 */
+		WebClient wc = new WebClient();
+
+		wc.getOptions().setJavaScriptEnabled(true); // 启用JS解释器，默认为true
+		wc.getOptions().setCssEnabled(false); // 禁用css支持
+		wc.getOptions().setThrowExceptionOnScriptError(false); // js运行错误时，是否抛出异常
+		wc.getOptions().setTimeout(10000); // 设置连接超时时间 ，这里是10S。如果为0，则无限期等待
+//		HtmlPage page = wc
+//				.getPage("http://www.most.gov.cn/mostinfo/xinxifenlei/zjgx/index.htm");
+		
+//		HtmlPage page = wc.getPage("http://www.aqsiq.gov.cn/xxgk_13386/jlgg_12538/lhgg/xxgkml_1_4443.htm");
+		
+		HtmlPage page = wc.getPage("http://www.aqsiq.gov.cn/xxgk_13386/jlgg_12538/lhgg/xxgkml_1_4443.htm");
+		
+		
+		String pageXml = page.asXml(); // 以xml的形式获取响应文本
+
+		// System.out.println(page.asText());
+		System.out.println(page.asXml());
+
+		File file = new File("e:/a.html");
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+
+		FileWriter fw = new FileWriter(file);
+		BufferedWriter buffw = new BufferedWriter(fw);
+		PrintWriter pw = new PrintWriter(buffw);
+
+		pw.println(pageXml);
+
+		pw.close();
+		buffw.close();
+		fw.close();
+
+		
+		
+		HtmlCleaner cleaner = new HtmlCleaner();
+		CleanerProperties props = cleaner.getProperties();
+		props.setAllowHtmlInsideAttributes(true);
+		props.setAllowMultiWordAttributes(true);
+		props.setRecognizeUnicodeChars(true);
+		props.setOmitComments(true);
+
+		TagNode node = cleaner.clean(pageXml);
+		
+		Object[] nsscript = node.evaluateXPath("//script");
+		for (Object tt : nsscript) {
+		((TagNode) tt).removeFromTree();
+		} 
+		
+//		node.evaluateXPath("body/table/tbody/tr[2]/td/table[1]/tbody/tr/td[2]/a");
+//		node.evaluateXPath("body/table/tbody/tr[2]/td/table[1]/tbody/tr/td[3]");
+		
+//		node.evaluateXPath(".//*[@id='documentContainer']/div/table/tbody/tr[2]/td[3]/div");
+		
+		System.out.println(node);
+		
+		
+		
+		
+		
+		
+		/** jsoup解析文档 */
+//		Document doc = Jsoup.parse(pageXml, "http://cq.qq.com");
+//		Element pv = doc.select("#feed_content span").get(1);
+//		System.out.println(pv.text());
+//
+//		System.out.println("Thank God!");
+	}
+
 	public Url getUrl() {
 		Url url = new Url();
 		url.setCode("001");
 		url.setName("北京市");
-		url
-				.setUrl("http://zc.k8008.com/beijing/");
+		url.setUrl("http://zc.k8008.com/beijing/");
 		url.setUrlPrefix("http://zc.k8008.com/beijing/");
-		url
-				.setSubjPath("//div[@class='list']/ul/li[parameter]/a");
-		url
-				.setLinkPath("//div[@class='list']/ul/li[parameter]/a");
-		url
-				.setDatePath("//div[@class='list']/ul/li[parameter]/span[1]");
+		url.setSubjPath("//div[@class='list']/ul/li[parameter]/a");
+		url.setLinkPath("//div[@class='list']/ul/li[parameter]/a");
+		url.setDatePath("//div[@class='list']/ul/li[parameter]/span[1]");
 		return url;
 	}
 
 	/**
-	 * 取某天某网址的主题
-	 * 一个网址产出一批主题
+	 * 取某天某网址的主题 一个网址产出一批主题
+	 * 
 	 * @param url
 	 *            给定网址
 	 * @param catchDate
@@ -87,15 +163,15 @@ public class CatchSimpleHtml {
 				Object[] linkNode = html.evaluateXPath(linkPathTmp);
 
 				String subj = ((TagNode) subjNode[0]).getText().toString();
-				
+
 				String href = ((TagNode) linkNode[0])
 						.getAttributeByName("href");
 				String date = ((TagNode) dateNode[0]).getText().toString();
 				System.out.println(subj);
 				System.out.println(href);
 				System.out.println(date);
-//				subj = replaceSubj(subj, subjReplace);
-//				date = replaceDate(date, dateReplace);
+				// subj = replaceSubj(subj, subjReplace);
+				// date = replaceDate(date, dateReplace);
 			}
 		} catch (XPatherException e) {
 			e.printStackTrace();
@@ -135,9 +211,9 @@ public class CatchSimpleHtml {
 			props.setOmitComments(true);
 
 			String text = new String(responseBody);
-			
+
 			System.out.println(text);
-			
+
 			node = cleaner.clean(text);
 		} catch (HttpException e) {
 			// 发生致命异常，可能是协议不对或者返回的内容有问题

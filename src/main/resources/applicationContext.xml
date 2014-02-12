@@ -63,10 +63,6 @@
 	<!-- JSR303 Validator定义 -->
  	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 
-
-
-
-
 	<util:properties id="APP_PROPERTIES" location="classpath:application.properties"
 		local-override="true" />
 
@@ -87,59 +83,5 @@
 		<property name="timeBetweenEvictionRunsMillis" value="3600000" />
 		<property name="minEvictableIdleTimeMillis" value="3600000" />
 	</bean>
-
-
-	<!-- Activiti begin -->
-	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
-		<property name="dataSource" ref="dataSource" />
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="databaseSchemaUpdate" value="true" />
-		<property name="jobExecutorActivate" value="false" />
-		<property name="history" value="full" />
-		<property name="processDefinitionCacheLimit" value="10" />
-
-		<!-- 生成流程图的字体 -->
-		<property name="activityFontName" value="宋体" />
-		<property name="labelFontName" value="宋体" />
-
-		<!--
-			缓存支持 <property name="processDefinitionCache"> <bean
-			class="me.kafeitu.demo.activiti.util.cache.DistributedCache" />
-			</property>
-		-->
-
-		<!-- 自动部署 -->
-		<property name="deploymentResources">
-			<list>
-				<value>classpath*:/deployments/*</value>
-			</list>
-		</property>
-
-		<!-- 自定义表单字段类型 -->
-		<property name="customFormTypes">
-			<list>
-				<bean class="me.kafeitu.demo.activiti.activiti.form.UsersFormType" />
-			</list>
-		</property>
-	</bean>
-
-	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
-		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
-	</bean>
-
-	<bean id="repositoryService" factory-bean="processEngine"
-		factory-method="getRepositoryService" />
-	<bean id="runtimeService" factory-bean="processEngine"
-		factory-method="getRuntimeService" />
-	<bean id="formService" factory-bean="processEngine"
-		factory-method="getFormService" />
-	<bean id="identityService" factory-bean="processEngine"
-		factory-method="getIdentityService" />
-	<bean id="taskService" factory-bean="processEngine"
-		factory-method="getTaskService" />
-	<bean id="historyService" factory-bean="processEngine"
-		factory-method="getHistoryService" />
-	<bean id="managementService" factory-bean="processEngine"
-		factory-method="getManagementService" />
-	<!-- Activiti end -->
+<bean id="identityService" class="org.activiti.engine.impl.IdentityServiceImpl" />
 </beans>

@@ -11,8 +11,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springside.examples.quickstart.entity.Subjects;
 import org.springside.examples.quickstart.entity.Url;
 import org.springside.examples.quickstart.repository.UrlDao;
+import org.springside.examples.quickstart.service.spider.util.CatchService;
 import org.springside.modules.persistence.DynamicSpecifications;
 import org.springside.modules.persistence.SearchFilter;
 
@@ -23,6 +25,8 @@ import org.springside.modules.persistence.SearchFilter;
 public class UrlService {
 
 	private UrlDao urlDao;
+
+	private CatchService catchService;
 
 	public Url getUrl(Long id) {
 		return urlDao.findOne(id);
@@ -35,7 +39,14 @@ public class UrlService {
 	public void deleteUrl(Long id) {
 		urlDao.delete(id);
 	}
-
+	public boolean validate(Long id) throws Exception {
+		Url url = getUrl(id);
+		List<Subjects> subjs = catchService.catchPolicy(url);
+		if (null != subjs && subjs.size() > 0) {
+			return true;
+		}
+		return false;
+	}
 	public List<Url> getAllUrl() {
 		return (List<Url>) urlDao.findAll();
 	}
@@ -82,6 +93,11 @@ public class UrlService {
 		Specification<Url> spec = DynamicSpecifications.bySearchFilter(filters
 				.values(), Url.class);
 		return spec;
+	}
+
+	@Autowired
+	public void setCatchService(CatchService catchService) {
+		this.catchService = catchService;
 	}
 
 	@Autowired

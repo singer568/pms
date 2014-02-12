@@ -97,9 +97,9 @@ body {
 					<th>
 						名称
 					</th>
-					<th>
-						直接上级
-					</th>
+<%--					<th>--%>
+<%--						直接上级--%>
+<%--					</th>--%>
 					<th>
 						描述
 					</th>
@@ -118,12 +118,9 @@ body {
 						<td>
 							${group.name}
 						</td>
-						<td>
-							<c:if test="${group.parent.id!=null}"><a href="${ctx}/bd/group/update/${group.parent.id}">${group.parent.code}_${group.parent.name}</a></c:if>
-						
-						
-							
-						</td>
+<%--						<td>--%>
+<%--							<c:if test="${group.parent != null}"><a href="${ctx}/bd/group/update/${group.parent.id}">${group.parent.code}_${group.parent.name}</a></c:if>--%>
+<%--						</td>--%>
 						<td>
 							${group.description}
 						</td>

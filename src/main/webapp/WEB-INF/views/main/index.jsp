@@ -75,20 +75,17 @@ var notLogon = ${empty user};
 				<table id="topTable"
 					style="padding: 0px; margin: 0px; margin-top: -5px" width="100%">
 					<tr>
-						<td width="100%">
-							<div
-								style="float: left; color: #fff; font-size: 24px; margin-top: 10px">
-								政策信息智能管理系统(PMS)
-							</div>
-							<div
-								style="float: right; color: #fff; font-size: 12px; margin-top: 10px">
-								<label for="username">
-									欢迎：
-								</label>
-								<span title="角色：${groupNames }">${user.id }</span>
-								<a href="#" id="loginOut">安全退出</a>
-							</div>
+						<td width="50%" align="left">
+								<img src="${ctx }/images/logo.png" align="top"  style="margin-top:1px" />
 						</td>
+						<td width="50%" style="text-align: right;">
+							
+							欢迎：
+							
+							
+							${user.id } &nbsp;&nbsp;&nbsp;&nbsp;
+							<a href="#" id="loginOut">安全退出</a>&nbsp;&nbsp;&nbsp;&nbsp;
+							</td>
 					</tr>
 				</table>
 			</div>

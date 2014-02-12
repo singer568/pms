@@ -28,6 +28,25 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+<!-- Character Encoding filter -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
 	<!-- 配置文件Servlet -->
 	<servlet>
 		<servlet-name>PropertiesServlet</servlet-name>
@@ -42,15 +61,16 @@
 	<!--
 		Restlet adapter, used to expose modeler functionality through REST
 	-->
-	<servlet>
-		<servlet-name>RestletServlet</servlet-name>
-		<servlet-class>org.restlet.ext.servlet.ServerServlet</servlet-class>
-		<init-param>
+<!--	<servlet>-->
+<!--		<servlet-name>RestletServlet</servlet-name>-->
+<!--		<servlet-class>org.restlet.ext.servlet.ServerServlet</servlet-class>-->
+<!--		<init-param>-->
 			<!-- Application class name -->
-			<param-name>org.restlet.application</param-name>
-			<param-value>org.activiti.explorer.rest.application.ExplorerRestApplication</param-value>
-		</init-param>
-	</servlet>
+<!--			<param-name>org.restlet.application</param-name>-->
+<!--			<param-value>org.activiti.explorer.rest.application.ExplorerRestApplication</param-value>-->
+<!--		</init-param>-->
+<!--	</servlet>-->
+
 
 	<!-- Filter 定义 -->
 		<filter>
@@ -73,25 +93,6 @@
 	<filter-mapping>
 		<filter-name>sitemeshFilter</filter-name>
 		<url-pattern>/quickstart/*</url-pattern>
-	</filter-mapping>
-
-
-	<!-- Character Encoding filter -->
-	<filter>
-		<filter-name>encodingFilter</filter-name>
-		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-		<init-param>
-			<param-name>encoding</param-name>
-			<param-value>UTF-8</param-value>
-		</init-param>
-		<init-param>
-			<param-name>forceEncoding</param-name>
-			<param-value>true</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>encodingFilter</filter-name>
-		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
 
@@ -121,10 +122,10 @@
 	</servlet-mapping>
 
 	<!-- Catch all service requests -->
-	<servlet-mapping>
-		<servlet-name>RestletServlet</servlet-name>
-		<url-pattern>/service/*</url-pattern>
-	</servlet-mapping>
+<!--	<servlet-mapping>-->
+<!--		<servlet-name>RestletServlet</servlet-name>-->
+<!--		<url-pattern>/service/*</url-pattern>-->
+<!--	</servlet-mapping>-->
 
 	<!-- session超时定义,单位为分钟 -->
 	<session-config>

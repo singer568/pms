@@ -71,11 +71,9 @@ ul#css3menu a {
     text-align: left;
     text-decoration: none;
     font: bold 12px Trebuchet MS, sans-serif;
-    color: #000000;
-    text-shadow: #FFF 0 0 1px;
     cursor: pointer;
     padding: 10px;
-    background-color: #c1c1c1;
+    background-color: #6FA7D1;
     background-image: url("../images/menu/mainbk.png");
     background-position: 0 0;
     border-width: 0 0 0 1px;

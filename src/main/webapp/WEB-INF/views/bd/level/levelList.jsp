@@ -97,9 +97,9 @@ body {
 					<th>
 						名称
 					</th>
-					<th>
-						直接上级
-					</th>
+<%--					<th>--%>
+<%--						直接上级--%>
+<%--					</th>--%>
 					<th>
 						描述
 					</th>
@@ -118,9 +118,9 @@ body {
 						<td>
 							${level.name}
 						</td>
-						<td>
-							${level.parent.name}
-						</td>
+<%--						<td>--%>
+<%--							${level.parent.name}--%>
+<%--						</td>--%>
 						<td>
 							${level.description}
 						</td>

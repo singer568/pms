@@ -66,175 +66,186 @@ body {
 			</div>
 		</c:if>
 
-		<div id="querydiv">
+		<div id="querydiv" align="center" style="width: 100%; margin: 0px">
 			<form name="queryForm" id="queryForm" action="#">
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<label class="ui-button-text">
-					编码：
-				</label>
-				<input type="text" name="search_LIKE_code" class="input-medium"
-					value="${param.search_LIKE_code}">
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<label class="ui-button-text">
-					名称：
-				</label>
-				<input type="text" name="search_LIKE_name" class="input-medium"
-					value="${param.search_LIKE_name}">
-				<a class="startup-process" href="javascript:querySubmit()">检索</a>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a
-					class="startup-process ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
-					href="${ctx}/spider/url/create">新增</a>
-			</form>
-		</div>
-
-		<table id="contentTable"
-			class="table table-striped table-bordered table-condensed">
-			<thead>
-				<tr>
-					<th>
-						编码
-					</th>
-					<th>
-						名称
-					</th>
-					<th>
-						省份
-					</th>
-					<th>
-						部门
-					</th>
-					<th>
-						板块
-					</th>
-					<th>
-						子版块
-					</th>
-					<th>
-						组别
-					</th>
-					<th>
-						级别
-					</th>
-					<th>
-						下一页
-					</th>
-					<!-- 
-					<th>
-						网址
-					</th>
-					<th>
-						前缀网址
-					</th>
-					<th>
-						主题xpath
-					</th>
-					<th>
-						替换字符
-					</th>
-					<th>
-						链接xpath
-					</th>
-					<th>
-						发布日期xpath
-					</th>
-					<th>
-						替换字符
-					</th>
-					<th>
-						开始序号
-					</th>
-					 -->
-					<th>
-						编码
-					</th>
-					<th>
-						描述
-					</th>
-					<th>
-						操作
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-
-				<c:forEach items="${urls.content}" var="url">
+				<table style="width: 70%; margin-bottom: 0px" align="center">
 					<tr>
-						<td>
-							<a href="${ctx}/spider/url/update/${url.id}">${url.code}</a>
+						<td style="background-color: white">
+							<label class="ui-button-text">
+								编码：
+							</label>
+							<input type="text" name="search_LIKE_code" class="input-medium"
+								value="${param.search_LIKE_code}">
+						</td>
+						<td style="background-color: white">
+							<label class="ui-button-text">
+								名称：
+							</label>
+							<input type="text" name="search_LIKE_name" class="input-medium"
+								value="${param.search_LIKE_name}">
+						</td>
+						<td style="background-color: white">
+							<label class="ui-button-text">
+								省&nbsp;&nbsp;&nbsp;	份：
+							</label>
+							<input type="text" name="search_LIKE_province"
+								class="input-medium" value="${param.search_LIKE_province}">
 						</td>
 						<td>
-							${url.name}
+							&nbsp;
 						</td>
-						<td>
-							${url.province}
-						</td>
-						<td>
-							${url.department}
-						</td>
-						<td>
-							${url.module}
-						</td>
-						<td>
-							${url.submodule}
-						</td>
-						<td>
-							${url.group.code}-${url.group.name}
-						</td>
-						<td>
-						${url.level.code}-${url.level.name}
-						</td>
-						<td>
-						${url.catchNextPage}
-						</td>
-						<!-- 
-						<td>
-							${url.url}
-						</td>
-						<td>
-							${url.urlPrefix}
-						</td>
-						
-						<td>
-							${url.subjPath}
-						</td>
-						<td>
-							${url.subjReplace}
-						</td>
-						<td>
-							${url.linkPath}
-						</td>
-						<td>
-							${url.datePath}
-						</td>
-						<td>
-							${url.dateReplace}
-						</td>
-						<td>
-							${url.startBegin}
-						</td>
-						 -->
-							<td>
-							${url.charset}
-						</td>
-						<td>
-							${url.description}
-						</td>
-						<td>
-							<a href="${ctx}/spider/url/delete/${url.id}">删除</a>
-							&nbsp;&nbsp;&nbsp;&nbsp;
-							<a href="${ctx}/spider/url/copy/${url.id}">复制</a>
-						</td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
+						<tr>
+							<td style="background-color: white">
+								<label class="ui-button-text">
+									部门：
+								</label>
+								<input type="text" name="search_LIKE_department"
+									class="input-medium" value="${param.search_LIKE_department}">
+							</td>
+							<td style="background-color: white">
+								<label class="ui-button-text">
+									板块：
+								</label>
+								<input type="text" name="search_LIKE_module"
+									class="input-medium" value="${param.search_LIKE_module}">
+							</td>
+							<td style="background-color: white">
+								<label class="ui-button-text">
+									子板块：
+								</label>
+								<input type="text" name="search_LIKE_submodule"
+									class="input-medium" value="${param.search_LIKE_submodule}">
+								<a class="startup-process" href="javascript:querySubmit()">检索</a>
+								<a
+									class="startup-process ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
+									href="${ctx}/spider/url/create">新增</a>
+							</td>
+						</tr>
+						</form>
+						</div>
 
-		<tags:pagination page="${urls}" paginationSize="50" />
+						<table id="contentTable"
+							class="table table-striped table-bordered table-condensed">
+							<thead>
+								<tr>
+									<th>
+										编码
+									</th>
+									<th>
+										名称
+									</th>
+									<th>
+										省份
+									</th>
+<%--									<th>--%>
+<%--										省会--%>
+<%--									</th>--%>
+<%--									<th>--%>
+<%--										中东西部--%>
+<%--									</th>--%>
+									<th>
+										部门
+									</th>
+									<th>
+										板块
+									</th>
+									<th>
+										子版块
+									</th>
+									<th>
+										网址
+									</th>
+									
+<%--									<th>--%>
+<%--										级别--%>
+<%--									</th>--%>
+<%--									<th>--%>
+<%--										下一页--%>
+<%--									</th>--%>
+									<th>
+										编码
+									</th>
+									<th>
+										操作
+									</th>
+								</tr>
+							</thead>
+							<tbody>
 
+								<c:forEach items="${urls.content}" var="url">
+									<tr>
+										<td>
+											<a href="${ctx}/spider/url/update/${url.id}">${url.code}</a>
+										</td>
+										<td>
+											${url.name}
+										</td>
+										<td>
+											${url.province}
+										</td>
+<%--										<td>--%>
+<%--											<c:choose>--%>
+<%--												<c:when test="${url.isCapital=='1'}">是</c:when>--%>
+<%--												<c:otherwise>否</c:otherwise>--%>
+<%--											</c:choose>	--%>
+<%--										</td>--%>
+<%--										<td>--%>
+<%--											<c:choose>--%>
+<%--												<c:when test="${url.area=='MIDDLE'}">中部</c:when>--%>
+<%--												<c:when test="${url.area=='EAST'}">东部</c:when>--%>
+<%--												<c:when test="${url.area=='WEST'}">西部</c:when>--%>
+<%--												<c:otherwise>其他</c:otherwise>--%>
+<%--											</c:choose>--%>
+<%--											--%>
+<%--										</td>--%>
+										<td>
+											${url.department}
+										</td>
+										<td>
+											${url.module}
+										</td>
+										<td>
+											${url.submodule}
+										</td>
+										<td>
+											${url.url}
+										</td>
+<%--										<td>--%>
+<%--											${url.level.code}-${url.level.name}--%>
+<%--										</td>--%>
+<%--										<td>--%>
+<%--											${url.catchNextPage}--%>
+<%--										</td>--%>
+										<td>
+											${url.charset}
+										</td>
+										<td>
+											<a href="${ctx}/spider/url/delete/${url.id}">删除</a>
+											&nbsp;&nbsp;
+											<a href="${ctx}/spider/url/copy/${url.id}">复制</a>
+											&nbsp;&nbsp;
+											<a href="javascript:validate('${url.id}')">验证</a>
+										</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
 
+						<tags:pagination page="${urls}" paginationSize="50" />
 	</body>
 	<script type="text/javascript">
+function validate(id) {
+	$.ajax( {
+		type : "GET",
+		url : "${ctx}/spider/url/validate",
+		dataType : 'text',
+		data : "id=" + id,
+		success : function(data) {
+			alert(data);
+		}
+	});
+}
+
 $(function() {
 	$('.startup-process').button( {
 		icons : {

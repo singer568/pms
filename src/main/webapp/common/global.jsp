@@ -14,6 +14,8 @@ String themeVersion = "1.9.2";
 session.setAttribute("themeName", defaultTheme);
 session.setAttribute("themeVersion", themeVersion);
 pageContext.setAttribute("timeInMillis", System.currentTimeMillis());
+
+request.setCharacterEncoding("UTF-8");
 %>
 <script type="text/javascript">
 	var ctx = '<%=request.getContextPath() %>';

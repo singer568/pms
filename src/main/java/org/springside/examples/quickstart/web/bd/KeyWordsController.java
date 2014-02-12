@@ -95,7 +95,7 @@ public class KeyWordsController {
 
 		keywordsService.saveKeyWords(newKeyWords);
 		
-		redirectAttributes.addFlashAttribute("message", "创建分组成功");
+		redirectAttributes.addFlashAttribute("message", "创建关键词成功");
 		return "redirect:/bd/keywords/";
 	}
 
@@ -110,7 +110,7 @@ public class KeyWordsController {
 	public String update(@Valid @ModelAttribute("keywords") KeyWords keywords,
 			RedirectAttributes redirectAttributes) {
 		keywordsService.saveKeyWords(keywords);
-		redirectAttributes.addFlashAttribute("message", "更新分组成功");
+		redirectAttributes.addFlashAttribute("message", "更新关键词成功");
 		return "redirect:/bd/keywords/";
 	}
 
@@ -118,7 +118,7 @@ public class KeyWordsController {
 	public String delete(@PathVariable("id") Long id,
 			RedirectAttributes redirectAttributes) {
 		keywordsService.deleteKeyWords(id);
-		redirectAttributes.addFlashAttribute("message", "删除分组成功");
+		redirectAttributes.addFlashAttribute("message", "删除关键词成功");
 		return "redirect:/bd/keywords/";
 	}
 

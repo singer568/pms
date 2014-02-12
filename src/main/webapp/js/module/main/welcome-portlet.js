@@ -4,14 +4,24 @@ $(function() {
 		columns: [{
 			width: '50%',
 			portlets: [{
-				title: '待办任务',
+				title: '最新十条',
 				content: {
 					style: {
 						maxHeight: 300
+					},
+					type:'ajax',
+					dataType: 'json',
+					url: ctx + '/policy/subjects/query',
+					formatter:function(o,poi,data){
+						var ct = "<ol>";
+						$.each(data, function() {
+							ct += "<li><a href='#' onclick=\"window.open('"+ this.subjUrl + "')\">" + this.subject + "</a></li>";
+						});
+						return ct + "</ol>";
 					}
 				}
 			}, {
-				title: '会签（多实例）说明',
+				title: '备用1',
 				content: {
 					type: 'text',
 					text: function() {
@@ -22,7 +32,7 @@ $(function() {
 		},{
 			width: '50%',
 			portlets: [{
-				title: '项目说明',
+				title: '备用2',
 				content: {
 					type: 'text',
 					text: function() {
@@ -30,7 +40,7 @@ $(function() {
 					}
 				}
 			}, {
-				title: '资源链接',
+				title: '备用3',
 				content: {
 					type: 'text',
 					text: function() {

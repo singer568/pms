@@ -12,7 +12,7 @@
 			<li><a rel="oa/leave/list/finished">其他</a></li>
 			<li><a rel="quickstart/task">测试list和form</a></li>
 			-->
-			<li><a rel="bd/group">分组设置</a></li>
+<%--			<li><a rel="bd/group">分组设置</a></li>--%>
 			<li><a rel="bd/level">分级设置</a></li>
 			<li><a rel="bd/email">邮箱设置</a></li>
 			<li><a rel="bd/keywords">关键词设置</a></li>
@@ -30,7 +30,7 @@
 			<li><a rel="spider/url">抓取网址</a></li>
 			<li><a rel="spider/catchTask">抓取任务</a></li>
 <%--			<li><a rel="spider/rule">抓取规则</a></li>--%>
-			<li><a rel="spider/catchTaskHistory">抓取记录</a></li>
+<%--			<li><a rel="spider/catchTaskHistory">抓取记录</a></li>--%>
 		</ul>
 	</li>
 	<li>

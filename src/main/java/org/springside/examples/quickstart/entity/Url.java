@@ -59,6 +59,11 @@ public class Url extends IdEntity {
 	private String linkPath;
 
 	/**
+	 * 抓取类型 NORMAL===>普通html SCRIPT===>抓取前需要先执行script脚本，然后再解析
+	 */
+	private String catchType = "NORMAL";
+
+	/**
 	 * 发布日期对应的xpath路径
 	 */
 	private String datePath;
@@ -72,15 +77,14 @@ public class Url extends IdEntity {
 	 * 当前网站的编码
 	 */
 	private String charset;
-	
+
 	/**
 	 * 从哪个序列号开始读取，默认从1开始
 	 */
 	private Integer startBegin;
-	
+
 	/**
-	 * 1:继续抓取下一页
-	 * 0:不抓取下一页
+	 * 1:继续抓取下一页 0:不抓取下一页
 	 */
 	private String catchNextPage;
 	/**
@@ -88,13 +92,23 @@ public class Url extends IdEntity {
 	 */
 	private String nextPageXpath;
 
+	/**
+	 * 中部：MIDDLE；东部：EAST：西部：WEST；
+	 */
+	private String area;
+
+	/**
+	 * 是否为省会：1：是；0：否
+	 */
+	private String isCapital;
+
 	private Rule rule;
 
 	private CatchTask task;
 
 	private Level level;
 	private Group group;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "level_id")
 	public Level getLevel() {
@@ -104,7 +118,15 @@ public class Url extends IdEntity {
 	public void setLevel(Level level) {
 		this.level = level;
 	}
-	
+
+	public String getCatchType() {
+		return catchType;
+	}
+
+	public void setCatchType(String catchType) {
+		this.catchType = catchType;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "group_id")
 	public Group getGroup() {
@@ -113,6 +135,22 @@ public class Url extends IdEntity {
 
 	public void setGroup(Group group) {
 		this.group = group;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public String getIsCapital() {
+		return isCapital;
+	}
+
+	public void setIsCapital(String isCapital) {
+		this.isCapital = isCapital;
 	}
 
 	public String getProvince() {
@@ -158,7 +196,6 @@ public class Url extends IdEntity {
 	public String getModule() {
 		return module;
 	}
-
 
 	public Integer getStartBegin() {
 		return startBegin;
@@ -292,8 +329,10 @@ public class Url extends IdEntity {
 				";submodule=").append(submodule).append(";url=").append(url)
 				.append(";urlPrefix=").append(urlPrefix).append(";subjPath=")
 				.append(subjPath).append(";subjReplace=").append(subjReplace)
-				.append(";linkPath=").append(linkPath).append(";datePath=")
-				.append(datePath).append(";dateReplace=").append(dateReplace)
+				.append(";linkPath=").append(linkPath)
+				.append(";nextPageXpath=").append(nextPageXpath).append(
+						";datePath=").append(datePath).append(";dateReplace=")
+				.append(dateReplace).append(";catchType=").append(catchType)
 				.append(";description=").append(description);
 
 		return buf.toString();

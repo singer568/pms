@@ -44,20 +44,20 @@
 								<input type="text" id="name" name="name" value="${level.name}" />
 							</td>
 						</tr>
-						<tr>
-							<td>
-								直接上级:
-							</td>
-							<td>
-								<input type="button" id="choose" name="choose" value="选择"></input>
-								<span id="chooseRow"> <c:if
-										test="${level.parent.id != null}">编码:${level.parent.code}；名称:${level.parent.name}</c:if>
-								</span>
-
-								<input type="hidden" id="parent.id" name="parent.id"
-									value="${level.parent.id}" />
-							</td>
-						</tr>
+<%--						<tr>--%>
+<%--							<td>--%>
+<%--								直接上级:--%>
+<%--							</td>--%>
+<%--							<td>--%>
+<%--								<input type="button" id="choose" name="choose" value="选择"></input>--%>
+<%--								<span id="chooseRow"> <c:if--%>
+<%--										test="${level.parent.id != null}">编码:${level.parent.code}；名称:${level.parent.name}</c:if>--%>
+<%--								</span>--%>
+<%----%>
+<%--								<input type="hidden" id="parent.id" name="parent.id"--%>
+<%--									value="${level.parent.id}" />--%>
+<%--							</td>--%>
+<%--						</tr>--%>
 						<tr>
 							<td>
 								描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述:
@@ -81,44 +81,45 @@
 				</fieldset>
 			</form:form>
 		</div>
-		<div id="chooseParent" title="选择直接上级" style="display: none">
-			<table>
-				<tr>
-					<th>
-						序号
-					</th>
-					<th>
-						编码
-					</th>
-					<th>
-						名称
-					</th>
-					<th>
-						描述
-					</th>
-				</tr>
-				<c:forEach items="${levelList}" var="level" varStatus="nowcount">
-					<tr ondblclick="setValue(this)"
-						id="${level.id}_${level.code}_${level.name}">
-						<td>
-							${nowcount.count}
-						</td>
-						<td>
-							${level.code}
-						</td>
-						<td>
-							${level.name}
-						</td>
-						<td>
-							${level.description}
-						</td>
-					</tr>
-				</c:forEach>
-			</table>
-		</div>
+<%--		<div id="chooseParent" title="选择直接上级" style="display: none">--%>
+<%--			<table>--%>
+<%--				<tr>--%>
+<%--					<th>--%>
+<%--						序号--%>
+<%--					</th>--%>
+<%--					<th>--%>
+<%--						编码--%>
+<%--					</th>--%>
+<%--					<th>--%>
+<%--						名称--%>
+<%--					</th>--%>
+<%--					<th>--%>
+<%--						描述--%>
+<%--					</th>--%>
+<%--				</tr>--%>
+<%--				<c:forEach items="${levelList}" var="level" varStatus="nowcount">--%>
+<%--					<tr ondblclick="setValue(this)"--%>
+<%--						id="${level.id}_${level.code}_${level.name}">--%>
+<%--						<td>--%>
+<%--							${nowcount.count}--%>
+<%--						</td>--%>
+<%--						<td>--%>
+<%--							${level.code}--%>
+<%--						</td>--%>
+<%--						<td>--%>
+<%--							${level.name}--%>
+<%--						</td>--%>
+<%--						<td>--%>
+<%--							${level.description}--%>
+<%--						</td>--%>
+<%--					</tr>--%>
+<%--				</c:forEach>--%>
+<%--			</table>--%>
+<%--		</div>--%>
 
 	</body>
 	<script type="text/javascript">
+	/**
 function setValue(obj) {
 	var editId = document.getElementById("id").value;
 	var id = obj.id;
@@ -149,6 +150,7 @@ $(function() {
 		});
 	});
 });
+*/
 $(function() {
 	$('.startup-process').button( {
 		icons : {

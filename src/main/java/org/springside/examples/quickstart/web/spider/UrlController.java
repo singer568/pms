@@ -1,8 +1,12 @@
 package org.springside.examples.quickstart.web.spider;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
@@ -19,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.examples.quickstart.entity.Url;
 import org.springside.examples.quickstart.service.account.ShiroDbRealm.ShiroUser;
-import org.springside.examples.quickstart.service.spider.SubjectsService;
 import org.springside.examples.quickstart.service.spider.UrlService;
 import org.springside.modules.web.Servlets;
 
@@ -48,12 +51,6 @@ public class UrlController {
 	}
 
 	private UrlService urlService;
-	private SubjectsService subjectsService;
-
-	@Autowired
-	public void setSubjectsService(SubjectsService subjectsService) {
-		this.subjectsService = subjectsService;
-	}
 
 	@Autowired
 	public void setUrlService(UrlService urlService) {
@@ -106,10 +103,10 @@ public class UrlController {
 			redirectAttributes.addFlashAttribute("message", "必填信息不能为空");
 			return "redirect:/spider/url/";
 		}
-		if (newUrl.getLevel() == null || newUrl.getLevel().getId()==null) {
+		if (newUrl.getLevel() == null || newUrl.getLevel().getId() == null) {
 			newUrl.setLevel(null);
 		}
-		if (newUrl.getGroup() == null || newUrl.getGroup().getId()==null) {
+		if (newUrl.getGroup() == null || newUrl.getGroup().getId() == null) {
 			newUrl.setGroup(null);
 		}
 		urlService.saveUrl(newUrl);
@@ -128,10 +125,10 @@ public class UrlController {
 	@RequestMapping(value = "update", method = RequestMethod.POST)
 	public String update(@Valid @ModelAttribute("url") Url url,
 			RedirectAttributes redirectAttributes) {
-		if (url.getLevel() == null || url.getLevel().getId()==null) {
+		if (url.getLevel() == null || url.getLevel().getId() == null) {
 			url.setLevel(null);
 		}
-		if (url.getGroup() == null || url.getGroup().getId()==null) {
+		if (url.getGroup() == null || url.getGroup().getId() == null) {
 			url.setGroup(null);
 		}
 		urlService.saveUrl(url);
@@ -147,6 +144,38 @@ public class UrlController {
 		return "redirect:/spider/url/";
 	}
 
+	@RequestMapping(value = "validate", method = RequestMethod.GET)
+	public void validate(Long id, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		response.setContentType("text/xml;charset=UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter out;
+		boolean isOk = false;
+		String errMsg = "";
+		try {
+			isOk = urlService.validate(id);
+		} catch (Exception e) {
+			errMsg = "有异常抛出，请查看后台报错日志，异常类：" + e.getClass().getName() + "；异常信息：" + e.getMessage();
+			e.printStackTrace();
+		}
+
+		try {
+			out = response.getWriter();
+			out.print(isNull(errMsg) ? (isOk == true ? "合法的URL" : "非法的URL")
+					: errMsg);// 用于返回对象参数
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private boolean isNull(String str) {
+		if (null == str || "".equals(str.trim())) {
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * 取出Shiro中的当前用户Id.

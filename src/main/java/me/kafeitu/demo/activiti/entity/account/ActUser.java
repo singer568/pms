@@ -1,16 +1,12 @@
 package me.kafeitu.demo.activiti.entity.account;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
@@ -26,7 +22,6 @@ public class ActUser implements Serializable {
 	private String first;
 	private String last;
 	private String password;
-	private List<ActGroup> actIdGroups;
 
 	public ActUser() {
 	}
@@ -76,17 +71,6 @@ public class ActUser implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	//bi-directional many-to-many association to Group
-	@ManyToMany
-	@JoinTable(name = "ACT_ID_MEMBERSHIP", joinColumns = { @JoinColumn(name = "USER_ID_") }, inverseJoinColumns = { @JoinColumn(name = "GROUP_ID_") })
-	public List<ActGroup> getActIdGroups() {
-		return this.actIdGroups;
-	}
-
-	public void setActIdGroups(List<ActGroup> actIdGroups) {
-		this.actIdGroups = actIdGroups;
 	}
 
 }

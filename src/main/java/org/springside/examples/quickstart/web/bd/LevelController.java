@@ -42,13 +42,6 @@ public class LevelController {
 
 	private static final String PAGE_SIZE = "50";
 
-	private static Map<String, String> sortTypes = Maps.newLinkedHashMap();
-	static {
-		sortTypes.put("auto", "自动");
-		sortTypes.put("code", "编码");
-		sortTypes.put("name", "名称");
-	}
-
 	private LevelService levelService;
 
 	@Autowired
@@ -60,18 +53,17 @@ public class LevelController {
 	public String list(
 			@RequestParam(value = "page", defaultValue = "1") int pageNumber,
 			@RequestParam(value = "page.size", defaultValue = PAGE_SIZE) int pageSize,
-			@RequestParam(value = "sortType", defaultValue = "auto") String sortType,
+			@RequestParam(value = "sortType", defaultValue = "code") String sortType,
 			Model model, ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(
 				request, "search_");
 		// Long userId = getCurrentUserId();
 
 		Page<Level> levels = levelService.getUserLevel(searchParams,
-				pageNumber, pageSize, sortType);
+				pageNumber, pageSize, "code");
 
 		model.addAttribute("levels", levels);
-		model.addAttribute("sortType", sortType);
-		model.addAttribute("sortTypes", sortTypes);
+		model.addAttribute("sortType", "code");
 		// 将搜索条件编码成字符串，用于排序，分页的URL
 		model.addAttribute("searchParams", Servlets
 				.encodeParameterStringWithPrefix(searchParams, "search_"));

@@ -1,6 +1,8 @@
 package org.springside.examples.quickstart.service.spider.util;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +25,9 @@ import org.springside.examples.quickstart.entity.Subjects;
 import org.springside.examples.quickstart.entity.Url;
 import org.springside.examples.quickstart.service.spider.SubjectsService;
 
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+
 @Component
 @Transactional
 public class CatchSimpleHtml implements CatchService {
@@ -40,7 +45,6 @@ public class CatchSimpleHtml implements CatchService {
 	private String cdata_e = "\\]\\]>";
 
 	private String isInit = "1";
-	private int defaultPages = 2;// 第一次默认读取2页
 
 	@Autowired
 	public void setSubjService(SubjectsService subjService) {
@@ -78,6 +82,7 @@ public class CatchSimpleHtml implements CatchService {
 		specialChar.add("}");
 		specialChar.add("|");
 
+		isInit = SystemUtil.getInstance().getSystemConfig("isInit");
 	}
 
 	private boolean isExistSubject(Subjects subj) {
@@ -99,6 +104,10 @@ public class CatchSimpleHtml implements CatchService {
 
 	}
 
+	public List<Subjects> catchPolicy(Url url) throws Exception {
+		return catchPolicy(url, null);
+	}
+
 	/**
 	 * 取某天某网址的主题 一个网址产出一批主题
 	 * 
@@ -117,7 +126,7 @@ public class CatchSimpleHtml implements CatchService {
 		String catchNextPage = url.getCatchNextPage();// 每次进入时都将下一页的原始标记保存起来，后面会改动此值
 		String urlStr = url.getUrl();// 原始的url临时保存起来
 		while (true) {
-			result.addAll(catchOnce(url, keyWords));
+			result.addAll(catchOnce(url, keyWords, defaultTimes));
 			if (!"1".equals(url.getCatchNextPage())) {// 不需要取下一页
 				url.setCatchNextPage(catchNextPage);
 				url.setUrl(urlStr);
@@ -133,9 +142,17 @@ public class CatchSimpleHtml implements CatchService {
 		return result;
 	}
 
-	private List<Subjects> catchOnce(Url url, List<KeyWords> keyWords)
+	private List<Subjects> catchOnce(Url url, List<KeyWords> keyWords, int times)
 			throws Exception {
-		TagNode html = getCleanedHtml(url.getUrl(), url.getCharset());
+		String catchType = url.getCatchType();
+		TagNode html = null;
+		if ("NORMAL".equals(catchType)) {
+			html = getCleanedHtml(url.getUrl(), url.getCharset());
+		}
+		if ("SCRIPT".equals(catchType)) {
+			html = getScriptHtml(url.getUrl());
+		}
+
 		if (null == html) {
 			return null;
 		}
@@ -146,7 +163,10 @@ public class CatchSimpleHtml implements CatchService {
 			String nextPage = url.getNextPageXpath();
 			Object[] nodes = (Object[]) html.evaluateXPath(nextPage);
 			if (null == nodes || nodes.length <= 0) {
-				throw new Exception("找不到下一页对应的连接");
+				logger.error("找不到下一页对应的连接{" + url.toString() + "},当前是第{" + times + "}页");
+				url.setCatchNextPage("0");
+				return subjs;
+//				throw new Exception("找不到下一页对应的连接{" + url.toString() + "},当前是第{" + times + "}页");
 			}
 
 			String nextPageUrl = ((TagNode) nodes[0])
@@ -158,8 +178,9 @@ public class CatchSimpleHtml implements CatchService {
 		for (int i = 0; i < subjs.size(); i++) {
 
 			tmp = subjs.get(i);
-
-			setSubjectsKeyFlag(tmp, keyWords);// 设置keyFlag
+			if (keyWords != null) {
+				setSubjectsKeyFlag(tmp, keyWords);// 设置keyFlag
+			}
 		}
 		return subjs;
 	}
@@ -176,65 +197,6 @@ public class CatchSimpleHtml implements CatchService {
 		}
 	}
 
-	/*
-	 * private List<Subjects> convertHuanBaoBu(TagNode html, Url url, String
-	 * currDate) { StringBuffer errMsg = new StringBuffer(); List<Subjects> lst
-	 * = new ArrayList<Subjects>(); String subjPath = url.getSubjPath();//
-	 * 选取的主题的xpath
-	 * 
-	 * String datePath = url.getDatePath(); String dateReplace =
-	 * url.getDateReplace(); int startBegin = url.getStartBegin() == null ? 1 :
-	 * url.getStartBegin(); for (int i = startBegin; i < 20 + startBegin; i++) {
-	 * String datePathTmp = datePath.replaceAll(PARAMETER, i + ""); Object[]
-	 * dateNode = null; try { dateNode = html.evaluateXPath(datePathTmp); }
-	 * catch (XPatherException e) { errMsg.append( "抓取【" + url.getUrl() + "】第【"
-	 * + i + "】发布日期xpath【" + datePath + "】时出错，异常信息为【").append(e).append( "】\n");
-	 * logger.error(e); return null; } String publishDate = getText(((TagNode)
-	 * dateNode[0]));
-	 * 
-	 * Date date = constructDate(publishDate, dateReplace);// 得到发布日期
-	 * 
-	 * String subjPathTmp = subjPath.replaceAll(PARAMETER, i + ""); Object[]
-	 * subjNode = null; String[] subjHref = null;
-	 * 
-	 * String subj = null; String href = null; String relativeHref = null; try {
-	 * subjNode = html.evaluateXPath(subjPathTmp);
-	 * 
-	 * subjHref = dealScript(subjNode);
-	 * 
-	 * subj = subjHref[0];
-	 * 
-	 * relativeHref = subjHref[1];
-	 * 
-	 * href = constructHref(relativeHref, url.getUrlPrefix());// 得到主题的绝对地址 }
-	 * catch (Exception e) { errMsg.append( "抓取【" + url.getUrl() + "】第【" + i +
-	 * "】主题xpath【" + subjPath + "】时出错，异常信息为【").append(e).append( "】\n");
-	 * logger.error(e); return null; }
-	 * 
-	 * Subjects subjects = constructSubjects(url, subj, date, relativeHref,
-	 * href);
-	 * 
-	 * if (isExistSubject(subjects)) {// 当前库中已经存在此主题，则直接退出，不再抓取 break; }
-	 * 
-	 * if (subjects != null) lst.add(subjects); if (errMsg.length() > 0) {
-	 * logger.error(errMsg); } }
-	 * 
-	 * return lst; }
-	 * 
-	 * private String[] dealScript(Object[] subjNode) {
-	 * 
-	 * String script = ((TagNode) subjNode[0]).getText().toString(); String[]
-	 * strs = script.split(";"); String subj = strs[0]; String href = strs[2];
-	 * href = href.replaceAll("document.write('<a ", ""); href =
-	 * href.replaceAll("class=hh14 target=\"_blank\">')", "").trim(); href =
-	 * href.replaceAll("\"", ""); href = href.split("=")[1];
-	 * 
-	 * String[] tmps = subj.split("="); subj = tmps[1].trim(); subj =
-	 * subj.replaceFirst("'", ""); subj = subj.substring(0,
-	 * subj.lastIndexOf("'"));
-	 * 
-	 * String[] result = new String[] { subj, href }; return result; }
-	 */
 	private String replaceCData(String str) {
 		str = str.replaceAll(cdata_e, "");
 		str = str.replaceAll(cdata_s, "");
@@ -317,7 +279,35 @@ public class CatchSimpleHtml implements CatchService {
 
 		int i = startBegin;
 		while (true) {
-			if (datePath != null) {// 当前待抓取网址无日期字段
+			if (subjPath != null) {//调整为先抓主题，主题每个网站都会存在，日期不一定
+				String subjPathTmp = subjPath.replaceAll(PARAMETER, i + "");
+				Object[] subjNode = null;
+				try {
+					subjNode = html.evaluateXPath(subjPathTmp);
+					
+					if ((subjNode == null || subjNode.length == 0) && i < 36) {
+						++i;
+						continue;
+					}
+					if (subjNode == null || subjNode.length == 0) {// /当i增长到一定大小时，无法取得日期值，则直接退出
+						return lst;
+					}
+					subj = constructSubjectItem(((TagNode) subjNode[0])
+							.getText().toString(), url.getSubjReplace());// 得到主题
+					
+					subj = replaceSpecialChar(subj);
+					
+					subj = replaceCData(subj.trim());
+				} catch (Exception e) {
+					errMsg.append(
+							"抓取【" + url.getUrl() + "】第【" + i + "】主题xpath【"
+							+ subjPath + "】时出错，异常信息为【").append(e)
+							.append("】\n");
+					logger.error(e);
+					throw e;
+				}
+			}
+			if (datePath != null) {
 				String datePathTmp = datePath.replaceAll(PARAMETER, i + "");
 				Object[] dateNode = null;
 				try {
@@ -330,33 +320,20 @@ public class CatchSimpleHtml implements CatchService {
 					logger.error(e);
 					throw e;
 				}
-				if (dateNode == null || dateNode.length == 0) {// /当i增长到一定大小时，无法取得日期值，则直接退出
-					return lst;
-				}
 
+				
 				String publishDate = getText(((TagNode) dateNode[0]));
+				
+				publishDate = publishDate.trim();
+				
+				publishDate = publishDate.replace(" ", "");
+				publishDate = publishDate.replace("&nbsp;", "");
 
-				date = constructDate(publishDate, dateReplace);// 得到发布日期
+				date = constructDate(publishDate.trim(), dateReplace);// 得到发布日期
+			} else { //当前主题没有发布日期，则设置当前抓取时间为默认时间
+				date = DateUtil.getCurrentDate();
 			}
 
-			if (subjPath != null) {
-				String subjPathTmp = subjPath.replaceAll(PARAMETER, i + "");
-				Object[] subjNode = null;
-				try {
-					subjNode = html.evaluateXPath(subjPathTmp);
-					subj = constructSubjectItem(((TagNode) subjNode[0])
-							.getText().toString(), url.getSubjReplace());// 得到主题
-					subj = replaceCData(subj);
-				} catch (Exception e) {
-					errMsg.append(
-							"抓取【" + url.getUrl() + "】第【" + i + "】主题xpath【"
-									+ subjPath + "】时出错，异常信息为【").append(e)
-							.append("】\n");
-					logger.error(e);
-					throw e;
-				}
-
-			}
 
 			if (linkPath != null) {
 
@@ -369,7 +346,8 @@ public class CatchSimpleHtml implements CatchService {
 							.getText().toString()
 							: ((TagNode) linkNode[0])
 									.getAttributeByName("href");
-					relativeHref = replaceCData(relativeHref);
+					relativeHref = replaceSpecialChar(relativeHref);
+					relativeHref = replaceCData(relativeHref.trim());
 					href = constructHref(relativeHref, url.getUrlPrefix());// 得到主题的绝对地址
 				} catch (Exception e) {
 					errMsg.append(
@@ -400,26 +378,25 @@ public class CatchSimpleHtml implements CatchService {
 		return lst;
 	}
 
-	public static void main(String[] args) {
-		int[] a = new int[] { 1 };
-		changeValue(a);
-		System.out.println(a[0]);
-	}
-
-	private static void changeValue(int[] a) {
-		a[0] = 10;
-	}
-
 	private String getText(TagNode node) {
 		List lst = node.getAllChildren();
 		for (int i = 0; i < lst.size(); i++) {
 			Object item = lst.get(i);
 			if (item instanceof ContentNode) {
-				return ((ContentNode) item).getContent();
+				String tmp = ((ContentNode) item).getContent();
+				tmp = replaceSpecialChar(tmp);
+				if (!"".equals(tmp)) {
+					return tmp;
+				}
 			}
-
 		}
 		return null;
+	}
+
+	private String replaceSpecialChar(String str) {
+		str = str.replaceAll("\r", "");
+		str = str.replaceAll("\n", "");
+		return str;
 	}
 
 	private Subjects constructSubjects(Url url, String subj, Date date,
@@ -431,6 +408,14 @@ public class CatchSimpleHtml implements CatchService {
 	}
 
 	private Date constructDate(String publishDate, String dateReplace) {
+		String tmp = publishDate.trim();
+		if (tmp.length() == 8) {//8位：20140101，转化为10位
+			String y = tmp.substring(0, 4);
+			String m = tmp.substring(4, 6);
+			String d = tmp.substring(6, 8);
+			publishDate = y + "-" + m + "-" + d;
+		}
+		
 		if (StringUtil.isNull(dateReplace)) {
 			return DateUtil.formatDate(publishDate);
 		}
@@ -439,6 +424,14 @@ public class CatchSimpleHtml implements CatchService {
 			String[] arr = strs[i].split("=");
 
 			if (arr.length == 1) {
+				if ("<".equals(arr[0])) {
+					publishDate = publishDate.replaceAll(arr[0], "");
+					publishDate = publishDate.replaceAll("&lt;", "");
+				}
+				if (">".equals(arr[0])) {
+					publishDate = publishDate.replaceAll(arr[0], "");
+					publishDate = publishDate.replaceAll("&gt;", "");
+				}
 				if (specialChar.contains(arr[0])) {
 					publishDate = publishDate.replaceAll("\\" + arr[0], "");
 				} else
@@ -452,6 +445,33 @@ public class CatchSimpleHtml implements CatchService {
 
 		}
 		return DateUtil.formatDate(publishDate.trim());
+	}
+
+	private TagNode getScriptHtml(String url) throws Exception {
+		WebClient wc = new WebClient();
+
+		wc.getOptions().setJavaScriptEnabled(true); // 启用JS解释器，默认为true
+		wc.getOptions().setCssEnabled(false); // 禁用css支持
+		wc.getOptions().setThrowExceptionOnScriptError(false); // js运行错误时，是否抛出异常
+		wc.getOptions().setTimeout(10000); // 设置连接超时时间 ，这里是10S。如果为0，则无限期等待
+
+		HtmlPage page = wc.getPage(url);
+
+		String pageXml = page.asXml(); // 以xml的形式获取响应文本
+
+		HtmlCleaner cleaner = new HtmlCleaner();
+		CleanerProperties props = cleaner.getProperties();
+		props.setAllowHtmlInsideAttributes(true);
+		props.setAllowMultiWordAttributes(true);
+		props.setRecognizeUnicodeChars(true);
+		props.setOmitComments(true);
+
+		TagNode node = cleaner.clean(pageXml);
+		Object[] nsscript = node.evaluateXPath("//script");
+		for (Object tt : nsscript) {
+			((TagNode) tt).removeFromTree();
+		}
+		return node;
 	}
 
 	private TagNode getCleanedHtml(String url, String charset) throws Exception {
@@ -474,10 +494,10 @@ public class CatchSimpleHtml implements CatchService {
 		} catch (HttpException e) {
 			System.out.println("Please check your provided http address");
 			e.printStackTrace();
-			throw e;
+			throw new Exception(e.getMessage() + "{" + url + "}", e.getCause());
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw e;
+			throw new Exception(e.getMessage() + "{" + url + "}", e.getCause());
 		}
 		return node;
 	}
@@ -518,4 +538,22 @@ public class CatchSimpleHtml implements CatchService {
 
 	}
 
+	public static void main(String[] args) {
+		String tmp = "20140506";
+		if (tmp.length() == 8) {//8位：20140101，转化为10位
+			String y = tmp.substring(0, 4);
+			String m = tmp.substring(4, 6);
+			String d = tmp.substring(6, 8);
+			tmp = y + "-" + m + "-" + d;
+		}
+		
+		System.out.println(tmp);
+		Date d = DateUtil.formatDate(tmp);
+		System.out.println(d);
+		
+	}
+
+	private static void changeValue(int[] a) {
+		a[0] = 10;
+	}
 }
