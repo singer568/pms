@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -20,9 +19,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.examples.quickstart.entity.Url;
-import org.springside.examples.quickstart.service.account.ShiroDbRealm.ShiroUser;
 import org.springside.examples.quickstart.service.spider.UrlService;
 import org.springside.modules.web.Servlets;
 
@@ -56,6 +55,20 @@ public class UrlController {
 	public void setUrlService(UrlService urlService) {
 		this.urlService = urlService;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "queryUrl", method = RequestMethod.GET)
+	public Object queryUrl(Model model, String url) {
+		if (null == url || "".equals(url.trim())) {
+			return 0;
+		}
+		Url urlObj = urlService.getUrl(url);
+		if (null == urlObj) {
+			return "0";
+		} else 
+			return 1;
+	}
+	
 
 	@RequestMapping(value = "copy/{id}", method = RequestMethod.GET)
 	public String copyForm(@PathVariable("id") Long id, Model model) {
@@ -132,6 +145,7 @@ public class UrlController {
 			url.setGroup(null);
 		}
 		urlService.saveUrl(url);
+		
 		redirectAttributes.addFlashAttribute("message", "更新网址成功");
 		return "redirect:/spider/url/";
 	}
@@ -157,7 +171,11 @@ public class UrlController {
 		try {
 			isOk = urlService.validate(id);
 		} catch (Exception e) {
-			errMsg = "有异常抛出，请查看后台报错日志，异常类：" + e.getClass().getName() + "；异常信息：" + e.getMessage();
+			Url tmp = urlService.getUrl(id);
+			tmp.setValid("0");
+			urlService.saveUrl(tmp);
+			errMsg = "有异常抛出，请查看后台报错日志，异常类：" + e.getClass().getName() + "；异常信息："
+					+ e.getMessage();
 			e.printStackTrace();
 		}
 
@@ -177,11 +195,4 @@ public class UrlController {
 		return false;
 	}
 
-	/**
-	 * 取出Shiro中的当前用户Id.
-	 */
-	private Long getCurrentUserId() {
-		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-		return user.id;
-	}
 }

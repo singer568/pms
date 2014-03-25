@@ -17,9 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springside.examples.quickstart.entity.CatchTask;
-import org.springside.examples.quickstart.entity.Email;
-import org.springside.examples.quickstart.entity.KeyWords;
 import org.springside.examples.quickstart.entity.Url;
+import org.springside.examples.quickstart.quartz.job.SendingJob;
 import org.springside.examples.quickstart.quartz.job.SpiderJob;
 import org.springside.examples.quickstart.service.bd.EmailService;
 import org.springside.examples.quickstart.service.bd.KeyWordsService;
@@ -45,6 +44,38 @@ public class SchedulerServiceImpl implements SchedulerService {
 	private SubjectsService subjectService;
 
 	private KeyWordsService wordService;
+
+	public void stop(List<CatchTask> tasks) {
+		deleteJobs(tasks);
+	}
+
+	public void start(List<CatchTask> tasks) {
+
+		deleteJobs(tasks);
+
+		for (int i = 0, len = tasks.size(); i < len; i++) {
+			CatchTask task = tasks.get(i);
+
+			JobDetail jobDetail = new JobDetail();
+			jobDetail.setName(task.getCode() + "_" + task.getName());
+			jobDetail.setGroup(task.getType());
+
+			if (CatchType.equals(task.getType())) {
+				jobDetail.setJobClass(SpiderJob.class);
+			} else {
+				jobDetail.setJobClass(SendingJob.class);
+			}
+
+			jobDetail.getJobDataMap().put(TASKID, task.getId());
+			jobDetail.getJobDataMap().put(CATCHSERVICE, html);
+			jobDetail.getJobDataMap().put(URLSERVICE, urlService);
+			jobDetail.getJobDataMap().put(TASKSERVICE, taskService);
+			jobDetail.getJobDataMap().put(EMAILSERVICE, emailService);
+			jobDetail.getJobDataMap().put(SUBJECTSERVICE, subjectService);
+
+			schedule(task.getCron(), jobDetail, task.getType());
+		}
+	}
 
 	public KeyWordsService getWordService() {
 		return wordService;
@@ -105,40 +136,6 @@ public class SchedulerServiceImpl implements SchedulerService {
 		this.scheduler = scheduler;
 	}
 
-	public void schedule(List<CatchTask> tasks) {
-
-		deleteJobs(tasks);
-
-		List<KeyWords> keys = wordService.getAllKeyWords();
-		Email fromEmail = emailService.getAllEmail().get(0);
-		for (int i = 0, len = tasks.size(); i < len; i++) {
-			CatchTask task = tasks.get(i);
-
-			JobDetail jobDetail = new JobDetail();
-			jobDetail.setName(task.getCode() + "_" + task.getName());
-			jobDetail.setGroup(jobGroup);
-
-			jobDetail.getJobDataMap().put(URLLIST, getTaskUrls(task));// 待执行的URL列表
-			jobDetail.setJobClass(SpiderJob.class);
-			jobDetail.getJobDataMap().put(CATCHSERVICE, html);// 抓取html的实例对象
-			jobDetail.getJobDataMap().put(EMAILLIST,
-					getEmails(task.getEmailRule()));
-			jobDetail.getJobDataMap().put(KEYWORDSLIST, keys);
-			jobDetail.getJobDataMap().put(FROMEMAIL, fromEmail);
-
-			schedule(task.getCron(), jobDetail);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springside.examples.quickstart.quartz.SchedulerService#stop(java.util.List)
-	 */
-	public void stop(List<CatchTask> tasks) {
-		deleteJobs(tasks);
-	}
-
-	
-	
 	/**
 	 * 仅支持 IN_code=('a','v')类型的匹配;
 	 * 
@@ -178,8 +175,8 @@ public class SchedulerServiceImpl implements SchedulerService {
 			for (int i = 0; i < tasks.size(); i++) {
 				task = tasks.get(i);
 				String jobName = task.getCode() + "_" + task.getName();
-				scheduler.unscheduleJob(jobName, jobGroup);
-				scheduler.deleteJob(jobName, jobGroup);
+				scheduler.unscheduleJob(jobName, task.getType());
+				scheduler.deleteJob(jobName, task.getType());
 			}
 		} catch (SchedulerException e) {
 			e.printStackTrace();
@@ -187,15 +184,15 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 	}
 
-	private void schedule(String cron, JobDetail jobDetail) {
+	private void schedule(String cron, JobDetail jobDetail, String group) {
 		try {
 			String name = jobDetail.getName();
 			CronExpression cronExpression = new CronExpression(cron);
 
 			scheduler.addJob(jobDetail, true);
 
-			CronTrigger cronTrigger = new CronTrigger(name, jobGroup, jobDetail
-					.getName(), jobGroup);
+			CronTrigger cronTrigger = new CronTrigger(name, group, jobDetail
+					.getName(), group);
 
 			cronTrigger.setCronExpression(cronExpression);
 

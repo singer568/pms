@@ -90,11 +90,11 @@
 						</tr>
 						<tr>
 							<td>
-								邮件正文:
+								错误日志发送地址(#):
 							</td>
 							<td>
-								<input type="text" id="emailContent" name="emailContent"
-									value="${email.emailContent}" />
+								<input type="text" id="errEmail" name="errEmail"
+									value="${email.errEmail}" size="100"/>
 							</td>
 						</tr>
 						<tr>

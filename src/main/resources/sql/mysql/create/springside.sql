@@ -173,3 +173,43 @@ create table pms_subjects(
 	dr int default 0,
 	primary key (id)
 )engine=InnoDB;
+
+---2014-03-19   updated sql
+
+ALTER TABLE `pms_url` ADD COLUMN `valid`  char(1) NULL DEFAULT '1' AFTER `catch_type`;
+ALTER TABLE `pms_url` ADD COLUMN `success`  char(1) NULL DEFAULT '1' AFTER `valid`;
+ALTER TABLE `pms_url` ADD COLUMN `catch_time`  varchar(30) NULL AFTER `success`;
+ALTER TABLE `pms_url` ADD COLUMN `filter`  char(1) NULL DEFAULT '1' AFTER `catch_time`;
+ALTER TABLE `pms_url` ADD COLUMN `err_msg`  text NULL AFTER `filter`;
+
+
+ALTER TABLE `pms_email` ADD COLUMN `err_email`  varchar(255) NULL AFTER `email_rule`;
+
+
+ALTER TABLE `pms_task` ADD COLUMN `key_words`  text NULL AFTER `email_rule`;
+ALTER TABLE `pms_task` ADD COLUMN `type`  varchar(10) NULL AFTER `key_words`;
+ALTER TABLE `pms_task` ADD COLUMN `days`  varchar(5)  NULL;
+
+ALTER TABLE `pms_subjects` 
+MODIFY COLUMN `publish_date`  varchar(50) NULL DEFAULT NULL AFTER `subject`,
+MODIFY COLUMN `publish_date_time`  varchar(50) NULL DEFAULT NULL AFTER `publish_date`;
+ALTER TABLE `pms_subjects` MODIFY COLUMN `catch_time`  varchar(30) NULL DEFAULT NULL AFTER `content`;
+
+ALTER TABLE `pms_subjects` ADD COLUMN `sended_mail`  varchar(500) NULL AFTER `dr`;
+ALTER TABLE `pms_subjects`
+ADD COLUMN `code`  varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `sended_mail`,
+ADD COLUMN `name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `code`,
+ADD COLUMN `province`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `name`,
+ADD COLUMN `department`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `province`,
+ADD COLUMN `module`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `department`,
+ADD COLUMN `submodule`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `module`,
+ADD COLUMN `area`  varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `submodule`,
+ADD COLUMN `is_capital`  char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' AFTER `area`,
+ADD COLUMN `filter`  char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '1' AFTER `is_capital`;
+ALTER TABLE `pms_subjects` ADD COLUMN `days`  varchar(5) NULL AFTER `filter`;
+
+
+
+
+
+

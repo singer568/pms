@@ -28,6 +28,7 @@ public class CatchTask extends IdEntity {
 
 	/**
 	 * 匹配的抓取网址 按分组/按分级/按网址编码匹配/直接写like的条件
+	 * 
 	 */
 	private String urlRule;
 
@@ -58,7 +59,33 @@ public class CatchTask extends IdEntity {
 	 */
 	private String emailRule;
 	
+	/**
+	 * 默认抓取几天之内的数据，默认3天
+	 */
+	private String days;
 	
+	
+	/**
+	 * 关键字过滤
+	 * 通过#分隔
+	 */
+	private String keyWords;
+	
+	/**
+	 * 任务类型：
+	 * 抓取任务或邮件任务
+	 */
+	private String type;
+	
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public String getEmailRule() {
 		return emailRule;
 	}
@@ -81,6 +108,22 @@ public class CatchTask extends IdEntity {
 
 	public void setUrlRule(String urlRule) {
 		this.urlRule = urlRule;
+	}
+
+	public String getKeyWords() {
+		return keyWords;
+	}
+
+	public String getDays() {
+		return days;
+	}
+
+	public void setDays(String days) {
+		this.days = days;
+	}
+
+	public void setKeyWords(String keyWords) {
+		this.keyWords = keyWords;
 	}
 
 	public Date getStartDate() {

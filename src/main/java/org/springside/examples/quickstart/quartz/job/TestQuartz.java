@@ -58,7 +58,7 @@ public class TestQuartz {
 			long end = System.currentTimeMillis();
 			if (end - curr >= 10000) {
 				System.out.println("======================");
-				schedulerService.schedule(lst);
+				schedulerService.start(lst);
 				break;
 			}
 		}

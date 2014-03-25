@@ -14,7 +14,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name = "ACT_ID_USER")
+@Table(name = "PMS_USER")
 public class ActUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id;

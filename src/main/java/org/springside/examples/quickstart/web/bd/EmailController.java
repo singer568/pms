@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springside.examples.quickstart.entity.Email;
 import org.springside.examples.quickstart.entity.Group;
 import org.springside.examples.quickstart.entity.Level;
-import org.springside.examples.quickstart.service.account.ShiroDbRealm.ShiroUser;
 import org.springside.examples.quickstart.service.bd.EmailService;
 import org.springside.examples.quickstart.service.bd.GroupService;
 import org.springside.examples.quickstart.service.bd.KeyWordsService;
@@ -187,11 +185,4 @@ public class EmailController {
 			Model model) {
 	}
 
-	/**
-	 * 取出Shiro中的当前用户Id.
-	 */
-	private Long getCurrentUserId() {
-		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-		return user.id;
-	}
 }

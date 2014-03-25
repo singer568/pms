@@ -113,7 +113,7 @@ body {
 						发送主题
 					</th>
 					<th>
-						邮件正文
+						错误日志发送地址
 					</th>
 					<th>
 						描述
@@ -150,7 +150,7 @@ body {
 						</td>
 						
 						<td>
-							${email.emailContent}
+							${email.errEmail}
 						</td>
 						<td>
 							${email.description}

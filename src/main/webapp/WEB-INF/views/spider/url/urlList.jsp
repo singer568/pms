@@ -68,7 +68,7 @@ body {
 
 		<div id="querydiv" align="center" style="width: 100%; margin: 0px">
 			<form name="queryForm" id="queryForm" action="#">
-				<table style="width: 70%; margin-bottom: 0px" align="center">
+				<table style="width: 80%; margin-bottom: 0px" align="center">
 					<tr>
 						<td style="background-color: white">
 							<label class="ui-button-text">
@@ -90,6 +90,13 @@ body {
 							</label>
 							<input type="text" name="search_LIKE_province"
 								class="input-medium" value="${param.search_LIKE_province}">
+						</td>
+						<td>
+							<label class="ui-button-text">
+								是否有效(1/0)：
+							</label>
+							<input type="text" name="search_EQ_valid"
+								class="input-medium" value="${param.search_EQ_valid}">
 						</td>
 						<td>
 							&nbsp;
@@ -115,11 +122,25 @@ body {
 								</label>
 								<input type="text" name="search_LIKE_submodule"
 									class="input-medium" value="${param.search_LIKE_submodule}">
+									
+									
+							</td>
+							<td style="background-color: white">
+							<label class="ui-button-text">
+								是否筛选(1/0)：
+							</label>
+							<input type="text" name="search_EQ_filter"
+								class="input-medium" value="${param.search_EQ_filter}">
+						</td>
+						<td style="background-color: white">
 								<a class="startup-process" href="javascript:querySubmit()">检索</a>
 								<a
 									class="startup-process ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary"
 									href="${ctx}/spider/url/create">新增</a>
+							
 							</td>
+							
+							
 						</tr>
 						</form>
 						</div>
@@ -164,6 +185,15 @@ body {
 <%--									</th>--%>
 									<th>
 										编码
+									</th>
+									<th>
+										是否有效
+									</th>
+									<th>
+										是否筛选
+									</th>
+									<th>
+										上次抓取时间
 									</th>
 									<th>
 										操作
@@ -218,6 +248,21 @@ body {
 <%--										</td>--%>
 										<td>
 											${url.charset}
+										</td>
+										<td>
+											<c:choose>
+												<c:when test="${url.valid == null || url.valid=='1' }">是</c:when>
+												<c:otherwise><font color="red" >否</font></c:otherwise>
+											</c:choose>	
+										</td>
+										<td>
+										<c:choose>
+												<c:when test="${url.filter == null || url.filter=='1' }">是</c:when>
+												<c:otherwise>否</c:otherwise>
+											</c:choose>
+										</td>
+										<td>
+											${url.catchTime}
 										</td>
 										<td>
 											<a href="${ctx}/spider/url/delete/${url.id}">删除</a>

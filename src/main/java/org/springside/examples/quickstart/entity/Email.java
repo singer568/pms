@@ -18,19 +18,14 @@ public class Email extends IdEntity implements Cloneable {
 	private String host;
 	private String userName;
 	private String pwd;
+	//发生错误后发送到的邮箱地址以#分隔
+	private String errEmail;
+	
 
 	private String subject;// 主题
 	private String emailContent;// 邮件正文
 
 	private String description;
-	private User user;
-
-	// JPA 基于USER_ID列的多对一关系定义
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	public User getUser() {
-		return user;
-	}
 
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
@@ -38,8 +33,17 @@ public class Email extends IdEntity implements Cloneable {
 				name).append(",email=").append(email).append(",host=").append(
 				host).append(",subject=").append(subject).append(
 				",emailContent=").append(emailContent).append(",user=").append(
-				userName).append(",description=").append(description);
+				userName).append(",errEmail=").append(errEmail).append(",description=").append(description);
 		return buf.toString();
+	}
+
+
+	public String getErrEmail() {
+		return errEmail;
+	}
+
+	public void setErrEmail(String errEmail) {
+		this.errEmail = errEmail;
 	}
 
 	public Email clone() {
@@ -54,7 +58,7 @@ public class Email extends IdEntity implements Cloneable {
 		mail.setSubject(this.getSubject());
 		mail.setEmailContent(this.getEmailContent());
 		mail.setDescription(this.getDescription());
-		mail.setUser(this.getUser());
+		mail.setErrEmail(this.getErrEmail());
 		return mail;
 	}
 
@@ -126,9 +130,6 @@ public class Email extends IdEntity implements Cloneable {
 		this.email = email;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
 
 	public String getDescription() {
 		return description;

@@ -70,6 +70,18 @@
 <%--								</select>--%>
 <%--							</td>--%>
 <%--						</tr>--%>
+
+	<tr>
+	<td>
+								任务类型:
+							</td>
+							<td>
+								<select name="type" id="type">
+									<option value="CATCH" <c:if test="${catchTask.type=='CATCH'}">selected</c:if>>抓取</option>
+									<option value="EMAIL" <c:if test="${catchTask.type=='EMAIL'}">selected</c:if>>邮件</option>
+								</select>
+							</td>
+	</tr>
 						<tr>
 							<td>
 								抓取频率:
@@ -95,6 +107,24 @@
 							<td>
 								<input type="text" id="emailRule" name="emailRule"
 									value="${catchTask.emailRule}" />
+							</td>
+						</tr> 
+						<tr>
+							<td>
+								天数:
+							</td>
+							<td>
+								<input type="text" id="days" name="days"
+									value="${catchTask.days}" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								关键字:
+							</td>
+							<td>
+								<input type="text" id="keyWords" name="keyWords"
+									value="${catchTask.keyWords}" />
 							</td>
 						</tr>
 						<tr>

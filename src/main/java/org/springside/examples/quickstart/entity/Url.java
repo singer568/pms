@@ -102,12 +102,69 @@ public class Url extends IdEntity {
 	 */
 	private String isCapital;
 
+	/**
+	 * 是否有效：1：是；0：否
+	 */
+	private String valid;
+
+	/**
+	 * 最近一次抓取成功失败标志：1：成功；0：失败
+	 */
+	private String success;
+
+	/**
+	 * 最近一次抓取时间
+	 */
+	private String catchTime;
+
+	/**
+	 * 最后一次错误消息
+	 */
+	private String errMsg;
+
+	/**
+	 * 是否按关键词筛选：0：否；1：是
+	 */
+	private String filter;
+
 	private Rule rule;
 
 	private CatchTask task;
 
 	private Level level;
 	private Group group;
+
+	public String getErrMsg() {
+		return errMsg;
+	}
+
+	public void setErrMsg(String errMsg) {
+		this.errMsg = errMsg;
+	}
+
+	public String getSuccess() {
+		return success;
+	}
+
+	public void setSuccess(String success) {
+		this.success = success;
+	}
+
+	public String getCatchTime() {
+		return catchTime;
+	}
+
+	public void setCatchTime(String catchTime) {
+		this.catchTime = catchTime;
+	}
+
+	public String getFilter() {
+		return filter;
+	}
+
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
 
 	@ManyToOne
 	@JoinColumn(name = "level_id")
@@ -143,6 +200,14 @@ public class Url extends IdEntity {
 
 	public void setArea(String area) {
 		this.area = area;
+	}
+
+	public String getValid() {
+		return valid;
+	}
+
+	public void setValid(String valid) {
+		this.valid = valid;
 	}
 
 	public String getIsCapital() {
@@ -325,16 +390,7 @@ public class Url extends IdEntity {
 		StringBuffer buf = new StringBuffer();
 		buf.append("code=").append(code).append(";name=").append(name).append(
 				";province=").append(province).append(";department=").append(
-				department).append(";module=").append(module).append(
-				";submodule=").append(submodule).append(";url=").append(url)
-				.append(";urlPrefix=").append(urlPrefix).append(";subjPath=")
-				.append(subjPath).append(";subjReplace=").append(subjReplace)
-				.append(";linkPath=").append(linkPath)
-				.append(";nextPageXpath=").append(nextPageXpath).append(
-						";datePath=").append(datePath).append(";dateReplace=")
-				.append(dateReplace).append(";catchType=").append(catchType)
-				.append(";description=").append(description);
-
+				department).append(";url=").append(url).append("<br/>");
 		return buf.toString();
 	}
 }

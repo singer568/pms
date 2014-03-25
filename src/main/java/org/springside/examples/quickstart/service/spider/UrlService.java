@@ -1,5 +1,6 @@
 package org.springside.examples.quickstart.service.spider;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,16 @@ public class UrlService {
 		urlDao.save(entity);
 	}
 
+	public void saveUrls(List<Url> lst) {
+		if (null == lst || lst.size() < 1) {
+			return;
+		}
+		for (int i = 0; i < lst.size(); i++) {
+			saveUrl(lst.get(i));
+		}
+	}
+	
+	
 	public void deleteUrl(Long id) {
 		urlDao.delete(id);
 	}
@@ -103,5 +114,13 @@ public class UrlService {
 	@Autowired
 	public void setUrlDao(UrlDao urlDao) {
 		this.urlDao = urlDao;
+	}
+
+	public Url getUrl(String url) {
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_url", url);
+		Specification<Url> spec = buildSpecification(searchParams);
+		return urlDao.findOne(spec);
+		
 	}
 }

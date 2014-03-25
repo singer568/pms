@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -19,13 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springside.examples.quickstart.entity.Group;
 import org.springside.examples.quickstart.entity.Level;
-import org.springside.examples.quickstart.service.account.ShiroDbRealm.ShiroUser;
 import org.springside.examples.quickstart.service.bd.LevelService;
 import org.springside.modules.web.Servlets;
-
-import com.google.common.collect.Maps;
 
 /**
  * Task管理的Controller, 使用Restful风格的Urls:
@@ -73,7 +68,7 @@ public class LevelController {
 	
 	@RequestMapping(value = "queryAll", method = RequestMethod.GET)
 	@ResponseBody
-	public Object queryGroups(Model model) {
+	public Object queryLevels(Model model) {
 		List<Level> levels = levelService.getAllLevel();
 		return levels;
 	}
@@ -143,11 +138,4 @@ public class LevelController {
 //		}
 	}
 
-	/**
-	 * 取出Shiro中的当前用户Id.
-	 */
-	private Long getCurrentUserId() {
-		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-		return user.id;
-	}
 }

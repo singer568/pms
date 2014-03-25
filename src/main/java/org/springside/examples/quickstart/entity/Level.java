@@ -15,7 +15,6 @@ public class Level extends IdEntity {
 	private String code;
 	private String name;
 	private String description;
-	private User user;
 	private Level parent;
 
 	@ManyToOne
@@ -28,19 +27,6 @@ public class Level extends IdEntity {
 		this.parent = parent;
 	}
 
-	// JPA 基于USER_ID列的多对一关系定义
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	public User getUser() {
-		return user;
-	}
-
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-	
-	
 	// JSR303 BeanValidator的校验规则
 	public String getDescription() {
 		return description;

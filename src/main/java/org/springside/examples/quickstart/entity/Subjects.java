@@ -15,12 +15,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Subjects extends IdEntity {
 
 	private Url url;
-	private CatchTask task;
 
-	/**
-	 * 抓取来源网址
-	 */
-	private String fromUrl;
+	private CatchTask task;
 
 	/**
 	 * 截取出来的主题的相对地址
@@ -35,7 +31,7 @@ public class Subjects extends IdEntity {
 	/**
 	 * 发布日期
 	 */
-	private Date publishDate;
+	private String publishDate;
 
 	/**
 	 * 发布日期时间
@@ -55,38 +51,144 @@ public class Subjects extends IdEntity {
 	/**
 	 * 抓取时间戳
 	 */
-	private Date catchTime;
-	
+	private String catchTime;
+
 	/**
-	 * 是否为关键主题
-	 * 1:为关键
-	 * 0:非关键
+	 * 是否为关键主题 1:为关键 0:非关键
 	 */
 	private String keyFlag;
-	
+
 	/**
 	 * 删除标志
 	 */
 	private int dr;
-	
+
 	private Level level;
-	
+
 	private Group group;
-	
+
 	/**
-	 * 是否成功发送邮件
-	 * 1：发送成功
-	 * 0：未发送成功
+	 * 已发送邮箱，中间用#号分隔
 	 */
-	private String isSend;
-	
-	
-	public String getIsSend() {
-		return isSend;
+	private String sendedMail;
+
+	/**
+	 * 抓取来源网址
+	 */
+	private String fromUrl;
+
+	private String code;
+	private String name;
+
+	/**
+	 * 省份，中央直属的写“中央”
+	 */
+	private String province;
+	/**
+	 * 部委：科技部、农业部等
+	 */
+	private String department;
+	/**
+	 * 板块
+	 */
+	private String module;
+	/**
+	 * 子版块
+	 */
+	private String submodule;
+
+	/**
+	 * 中部：MIDDLE；东部：EAST：西部：WEST；
+	 */
+	private String area;
+
+	/**
+	 * 是否为省会：1：是；0：否
+	 */
+	private String isCapital;
+	/**
+	 * 是否按关键词筛选：0：否；1：是
+	 */
+	private String filter;
+
+	public String getCode() {
+		return code;
 	}
 
-	public void setIsSend(String isSend) {
-		this.isSend = isSend;
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getModule() {
+		return module;
+	}
+
+	public void setModule(String module) {
+		this.module = module;
+	}
+
+	public String getSubmodule() {
+		return submodule;
+	}
+
+	public void setSubmodule(String submodule) {
+		this.submodule = submodule;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public String getIsCapital() {
+		return isCapital;
+	}
+
+	public void setIsCapital(String isCapital) {
+		this.isCapital = isCapital;
+	}
+
+	public String getFilter() {
+		return filter;
+	}
+
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
+
+	public String getSendedMail() {
+		return sendedMail;
+	}
+
+	public void setSendedMail(String sendedMail) {
+		this.sendedMail = sendedMail;
 	}
 
 	public String getKeyFlag() {
@@ -96,8 +198,9 @@ public class Subjects extends IdEntity {
 	public void setKeyFlag(String keyFlag) {
 		this.keyFlag = keyFlag;
 	}
+
 	@ManyToOne
-	@JoinColumn(name="task_id")
+	@JoinColumn(name = "task_id")
 	public CatchTask getTask() {
 		return task;
 	}
@@ -115,6 +218,7 @@ public class Subjects extends IdEntity {
 	public void setLevel(Level level) {
 		this.level = level;
 	}
+
 	@ManyToOne
 	@JoinColumn(name = "group_id")
 	public Group getGroup() {
@@ -167,12 +271,11 @@ public class Subjects extends IdEntity {
 		this.relativeUrl = relativeUrl;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	public Date getPublishDate() {
+	public String getPublishDate() {
 		return publishDate;
 	}
 
-	public void setPublishDate(Date publishDate) {
+	public void setPublishDate(String publishDate) {
 		this.publishDate = publishDate;
 	}
 
@@ -201,24 +304,18 @@ public class Subjects extends IdEntity {
 		this.content = content;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	public Date getCatchTime() {
+	public String getCatchTime() {
 		return catchTime;
 	}
 
-	public void setCatchTime(Date catchTime) {
+	public void setCatchTime(String catchTime) {
 		this.catchTime = catchTime;
 	}
 
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
-		buf.append("fromUrl=").append(fromUrl).append(";relativeUrl=").append(
-				relativeUrl).append(";subject=").append(subject).append(
-				";publishDate=").append(publishDate)
-				.append(";publishDateTime=").append(publishDateTime).append(
-						";subjUrl=").append(subjUrl).append(";content=")
-				.append(content).append(";catchTime=").append(catchTime)
-				.append(";").append(url.toString()).toString();
+		buf.append("fromUrl=").append(fromUrl).append(";subject=").append(
+				subject).append("<br/>").toString();
 		return buf.toString();
 	}
 }

@@ -18,7 +18,6 @@ public class Group extends IdEntity {
 	private String code;
 	private String name;
 	private String description;
-	private User user;
 	private Group parent;
 
 	// 自关联
@@ -26,13 +25,6 @@ public class Group extends IdEntity {
 	@JoinColumn(name = "parent_id")
 	public Group getParent() {
 		return parent;
-	}
-
-	// JPA 基于USER_ID列的多对一关系定义
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	public User getUser() {
-		return user;
 	}
 
 	// JSR303 BeanValidator的校验规则
@@ -52,10 +44,6 @@ public class Group extends IdEntity {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public String getDescription() {

@@ -78,9 +78,9 @@ jQuery(function() {
 			</div>
 		</c:if>
 
-		<div id="querydiv" align="center" style="width: 100%; margin:0px ">
+		<div id="querydiv" align="center" style="width: 100%; margin: 0px">
 			<form name="queryForm" id="queryForm" action="#">
-				<table style="width: 70%; margin-bottom: 0px" align="center">
+				<table style="width: 100%; margin-bottom: 0px" align="center">
 					<tr>
 						<td style="background-color: white">
 							<label class="ui-button-text">
@@ -92,26 +92,36 @@ jQuery(function() {
 						</td>
 						<td style="background-color: white">
 							<label class="ui-button-text">
-								发布日期：
+								抓取日期：
 							</label>
-							<input type="text" name="search_EQ_publishDate"
-								id="search_EQ_publishDate" class="input-medium"
-								value="${param.search_EQ_publishDate}" readonly />
+							<input type="text" name="search_LIKE_catchTime"
+								id="search_LIKE_catchTime" class="input-medium"
+								value="${param.search_LIKE_catchTime}" />
 
 						</td>
 						<td style="background-color: white">
 							<label class="ui-button-text">
 								省&nbsp;&nbsp;&nbsp;&nbsp;份：
 							</label>
-							<input type="text" name="search_LIKE_url.province"
-								class="input-medium" value="${param.search_LIKE_url.province}">
+							<input type="text" name="search_LIKE_province"
+								class="input-medium" value="${param.search_LIKE_province}">
 						</td>
 						<td style="background-color: white">
 							<label class="ui-button-text">
-								部门：
+								部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门：
 							</label>
-							<input type="text" name="search_LIKE_url.department"
-								class="input-medium" value="${param.search_LIKE_url.department}">
+							<input type="text" name="search_LIKE_department"
+								class="input-medium" value="${param.search_LIKE_department}">
+						</td>
+						<td style="background-color: white">
+							<label class="ui-button-text">
+								区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;域：
+							</label>
+							<input type="text" name="search_LIKE_area" class="input-medium"
+								value="${param.search_LIKE_area}">
+						</td>
+						<td style="background-color: white" align="center">
+							<a class="startup-process" href="javascript:querySubmit()">检索</a>
 						</td>
 					</tr>
 					<tr>
@@ -119,15 +129,15 @@ jQuery(function() {
 							<label class="ui-button-text">
 								板块：
 							</label>
-							<input type="text" name="search_LIKE_url.module"
-								class="input-medium" value="${param.search_LIKE_url.module}">
+							<input type="text" name="search_LIKE_module" class="input-medium"
+								value="${param.search_LIKE_module}">
 						</td>
 						<td style="background-color: white">
 							<label class="ui-button-text">
 								子&nbsp;&nbsp;版&nbsp;块：
 							</label>
-							<input type="text" name="search_LIKE_url.submodule"
-								class="input-medium" value="${param.search_LIKE_url.submodule}">
+							<input type="text" name="search_LIKE_submodule"
+								class="input-medium" value="${param.search_LIKE_submodule}">
 						</td>
 						<td style="background-color: white">
 							<label class="ui-button-text">
@@ -136,39 +146,45 @@ jQuery(function() {
 							<input type="text" name="search_LIKE_level.name"
 								class="input-medium" value="${param.search_LIKE_level.name}">
 						</td>
+						<td style="background-color: white">
+							<label class="ui-button-text">
+								省会(1/0)：
+							</label>
+							<input type="text" name="search_LIKE_isCapital"
+								class="input-medium" value="${param.search_LIKE_isCapital}">
+						</td>
+						<td style="background-color: white">
+							<label class="ui-button-text">
+								筛选(1/0)：
+							</label>
+							<input type="text" name="search_LIKE_filter" class="input-medium"
+								value="${param.search_LIKE_filter}">
+						</td>
 						<td style="background-color: white" align="center">
-							<a class="startup-process" href="javascript:querySubmit()">检索</a>
+							<a class="startup-process" href="javascript:sendMail()">发送</a>
 						</td>
 					</tr>
 				</table>
 			</form>
-			
+
 		</div>
-	<div style="width: 80%; margin:0px 120px 5px 120px; background-color: #C9C8B0 " align="left">
-				<font style="size: 14; font-weight: bold;">关键词：</font>
-				<c:set var="no" value="1"></c:set>
-				<c:forEach items="${words}" var="word">
-					<a href="javascript:submitWords('${word.name}')">${word.name}</a>
-									&nbsp;&nbsp;&nbsp;&nbsp;
-									<c:if test="${no%15==0}">
-						<br />
-					</c:if>
-					<c:set var="no" value="${no+1}"></c:set>
-				</c:forEach>
-			</div>
 		<table id="contentTable"
 			class="table table-striped table-bordered table-condensed">
 			<thead>
 				<tr>
+					<th>
+						<input type="checkbox" name="checkAll" id="checkAll"
+							onclick="checkAllId()" />
+					</th>
 					<th>
 						编码
 					</th>
 					<th>
 						名称
 					</th>
-<%--					<th>--%>
-<%--						省份--%>
-<%--					</th>--%>
+					<%--					<th>--%>
+					<%--						省份--%>
+					<%--					</th>--%>
 					<th>
 						部委
 					</th>
@@ -202,14 +218,17 @@ jQuery(function() {
 				<c:forEach items="${subjects.content}" var="subject">
 					<tr>
 						<td>
+							<input type="checkbox" name="ids" value="${subject.id}" />
+						</td>
+						<td>
 							${subject.url.code}
 						</td>
 						<td>
 							${subject.url.name}
 						</td>
-<%--						<td>--%>
-<%--							${subject.url.province}--%>
-<%--						</td>--%>
+						<%--						<td>--%>
+						<%--							${subject.url.province}--%>
+						<%--						</td>--%>
 						<td>
 							${subject.url.department}
 						</td>
@@ -226,8 +245,7 @@ jQuery(function() {
 							<a target="_blank" href="${subject.subjUrl}">${subject.subject}</a>
 						</td>
 						<td>
-							<fmt:formatDate pattern="yyyy-MM-dd"
-								value="${subject.publishDate}" type="both" />
+							${subject.publishDate}
 						</td>
 						<td>
 							<a href="${ctx}/policy/subjects/delete/${subject.id}">删除</a>
@@ -239,9 +257,95 @@ jQuery(function() {
 
 		<tags:pagination page="${subjects}" paginationSize="50" />
 
+		<div id="mailAddress" title="发送邮箱" style="display: none">
+
+			<label class="ui-button-text">
+				邮箱：
+			</label>
+			<input type="text" id="mail" name="mail" class="input-medium"
+				size="45" />
+		</div>
+
 
 	</body>
 	<script type="text/javascript">
+$('#mailAddress').dialog( {
+	autoOpen : false,
+	modal : true,
+	width : 500,
+	height : 170,
+	buttons : {
+		"确认" : function() {
+			var ids = document.getElementsByName("ids");
+			var checkedids = "";
+			for ( var i = 0; i < ids.length; i++) {
+				if (ids[i].checked) {
+					if (checkedids == "") {
+						checkedids = ids[i].value;
+					} else {
+						checkedids = checkedids + "," + ids[i].value;
+					}
+				}
+			}
+			var mail = document.getElementById("mail").value;
+			if (mail == null || mail == "") {
+				alert("请输入正确的邮箱地址");
+				return false;
+			} 
+				
+			
+			$.ajax( {
+				type : "GET",
+				url : "${ctx}/policy/subjects/sendmail",
+				dataType : 'text',
+				data : "ids=" + checkedids + "&mail=" + document.getElementById("mail").value,
+				success : function(data) {
+					alert(data);
+				}
+			});
+
+			$(this).dialog("close");
+		},
+
+		"关闭" : function() {
+			$(this).dialog("close");
+		}
+	}
+});
+function checkAllId() {
+	var ids = document.getElementsByName("ids");
+	for ( var i = 0; i < ids.length; i++) {
+		if (ids[i].checked) {
+			ids[i].checked = false;
+		} else {
+			ids[i].checked = true;
+		}
+
+	}
+
+}
+
+function sendMail() {
+	var ids = document.getElementsByName("ids");
+			var checkedids = "";
+			for ( var i = 0; i < ids.length; i++) {
+				if (ids[i].checked) {
+					if (checkedids == "") {
+						checkedids = ids[i].value;
+					} else {
+						checkedids = checkedids + "," + ids[i].value;
+					}
+				}
+			}
+	if (checkedids=="") {
+				alert("请选择要发送的主题");
+				return ;
+	}
+	
+	$("#mailAddress").dialog('open');//设置为‘open’时将显示对话框  
+
+}
+
 $(function() {
 	$('.startup-process').button( {
 		icons : {

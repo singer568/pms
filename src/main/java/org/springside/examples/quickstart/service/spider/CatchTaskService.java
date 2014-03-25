@@ -58,8 +58,10 @@ public class CatchTaskService {
 
 	public void refreshTask(long taskId){
 		List<CatchTask> tasks = new ArrayList<CatchTask>();
+		
 		tasks.add(catchTaskDao.findOne(taskId));
-		schedulerService.schedule(tasks);
+		
+		schedulerService.start(tasks);
 	}
 	
 	public void stopTask(long taskId) {
@@ -73,7 +75,7 @@ public class CatchTaskService {
 	 * 启动定时任务
 	 */
 	public void refreshTasks() {
-		schedulerService.schedule(this.getAllCatchTask());
+		schedulerService.start(this.getAllCatchTask());
 	}
 
 	public void deleteCatchTask(Long id) {

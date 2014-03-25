@@ -13,4 +13,6 @@ public interface CatchService {
 	List<Subjects> catchPolicy(Url url ,List<KeyWords> keyWords) throws Exception;
 	
 	List<Subjects> updateSubjects(List<Subjects> lst) throws Exception;
+	
+	Subjects updateSubject(Subjects subj) throws Exception;
 }

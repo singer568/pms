@@ -28,7 +28,7 @@
 			<li><a rel="form/dynamic/process-instance/finished/list">已结束流程(动态)</a></li>
 			 -->
 			<li><a rel="spider/url">抓取网址</a></li>
-			<li><a rel="spider/catchTask">抓取任务</a></li>
+			<li><a rel="spider/catchTask">任务设置</a></li>
 <%--			<li><a rel="spider/rule">抓取规则</a></li>--%>
 <%--			<li><a rel="spider/catchTaskHistory">抓取记录</a></li>--%>
 		</ul>
