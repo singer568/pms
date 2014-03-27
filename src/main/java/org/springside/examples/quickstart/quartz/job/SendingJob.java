@@ -1,5 +1,6 @@
 package org.springside.examples.quickstart.quartz.job;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -244,11 +245,12 @@ public class SendingJob extends QuartzJobBean {
 	 * @param days
 	 * @return
 	 */
-	private Date getDate(String days) {
+	private String getDate(String days) {
 		Integer day = Integer.parseInt(days);
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_MONTH, 0 - day.intValue());
-		return cal.getTime();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return format.format(cal.getTime());
 	}
 
 }
