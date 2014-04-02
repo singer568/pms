@@ -270,7 +270,6 @@ public class CatchSimpleHtml implements CatchService {
 
 		String linkPath = url.getLinkPath();// 主题内部连接的xpath
 		String datePath = url.getDatePath();
-		String dateReplace = url.getDateReplace();
 		Date date = null;
 		String publishDate = null;
 		String subj = null;
@@ -280,7 +279,18 @@ public class CatchSimpleHtml implements CatchService {
 
 		int i = startBegin;
 		while (true) {
+//			System.out.println(i);
+			if (i > 50) {
+				break;
+			}
+			
 			if (subjPath != null) {// 调整为先抓主题，主题每个网站都会存在，日期不一定
+				
+				if (!subjPath.contains(PARAMETER)){
+					throw new Exception("不包含parameter参数");
+				}
+				
+				
 				String subjPathTmp = subjPath.replaceAll(PARAMETER, i + "");
 				Object[] subjNode = null;
 				try {
@@ -308,7 +318,7 @@ public class CatchSimpleHtml implements CatchService {
 					throw e;
 				}
 			}
-			if (datePath != null) {
+			if (datePath != null && !datePath.trim().equals("")) {
 				String datePathTmp = datePath.replaceAll(PARAMETER, i + "");
 				Object[] dateNode = null;
 				try {
@@ -379,8 +389,14 @@ public class CatchSimpleHtml implements CatchService {
 				break;
 			}
 
-			if (subjects != null)
-				lst.add(subjects);
+			if (subjects != null) {
+				for (int t = 0; t < lst.size(); t++) {
+					Subjects tmp = lst.get(t);
+					if (tmp.getSubjUrl() != null && !tmp.getSubjUrl().equals(subjects.getSubjUrl())) {
+						lst.add(subjects);
+					}
+				}
+			}
 			if (errMsg.length() > 0) {
 				logger.error(errMsg);
 			}
@@ -477,6 +493,10 @@ public class CatchSimpleHtml implements CatchService {
 			props.setIgnoreQuestAndExclam(false);
 			HtmlCleaner cleaner = new HtmlCleaner(props);
 
+			if (charset == null || charset.trim().equals("")) {
+				throw new Exception("编码为空");
+			}
+			
 			node = cleaner.clean(new java.net.URL(url), charset);
 
 		} catch (HttpException e) {

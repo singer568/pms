@@ -61,10 +61,12 @@ public class SpiderJob extends QuartzJobBean {
 
 		List<Url> errors = new ArrayList<Url>();// 存储本次抓取失败的URL
 		List<Url> success = new ArrayList<Url>();// 存储本次抓取成功的URL
-
+		int j = 1;
+		System.out.println("开始执行抓取任务： " + job.getName());
 		while (it.hasNext()) {
 			List<Subjects> lst = new ArrayList<Subjects>();
 			Url url = it.next();
+			System.out.println("	>>>>>>>>执行第" + j + "个Url==>" + url.toString());
 			try {
 				lst = catchService.catchPolicy(url);
 				subjects.addAll(lst);
@@ -82,6 +84,7 @@ public class SpiderJob extends QuartzJobBean {
 				errors.add(url);
 				e.printStackTrace();
 			}
+			j++;
 		}
 
 		if (errors.size() > 0) {
