@@ -62,11 +62,11 @@ public class UrlService {
 		return (List<Url>) urlDao.findAll();
 	}
 
-	public Page<Url> queryUrlByParam(Map<String, Object> searchParams) {
-		PageRequest pageRequest = buildPageRequest(1, 50, "code");
+	public List<Url> queryUrlByParam(Map<String, Object> searchParams) {
+//		PageRequest pageRequest = buildPageRequest(1, 50, "code");
 		Specification<Url> spec = buildSpecification(searchParams);
 
-		return urlDao.findAll(spec, pageRequest);
+		return urlDao.findAll(spec);
 	}
 
 	public Page<Url> getUserUrl(Map<String, Object> searchParams,

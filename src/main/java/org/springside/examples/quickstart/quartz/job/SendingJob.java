@@ -3,7 +3,6 @@ package org.springside.examples.quickstart.quartz.job;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,6 @@ import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.data.domain.Page;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.quartz.QuartzJobBean;
@@ -195,9 +193,8 @@ public class SendingJob extends QuartzJobBean {
 
 		param.put("GT_catchTime", getDate(days));
 
-		Page<Subjects> subjects = subjectService.querySubjectsByParam(param);
+		List<Subjects> lst = subjectService.querySubjectsByParam(param);
 
-		List<Subjects> lst = subjects.getContent();
 		if (null == lst || lst.size() < 1) {
 			return null;
 		}

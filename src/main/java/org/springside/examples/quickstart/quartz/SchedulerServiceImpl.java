@@ -165,8 +165,8 @@ public class SchedulerServiceImpl implements SchedulerService {
 			String[] values = strs[i].split("=");
 			param.put(values[0], values[1]);
 		}
-		Page<Url> urls = urlService.queryUrlByParam(param);
-		return urls.getContent();
+		List<Url> urls = urlService.queryUrlByParam(param);
+		return urls;
 	}
 
 	private void deleteJobs(List<CatchTask> tasks) {

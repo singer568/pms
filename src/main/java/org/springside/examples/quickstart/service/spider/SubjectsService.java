@@ -54,19 +54,19 @@ public class SubjectsService {
 		return (List<Subjects>) subjectsDao.findAll();
 	}
 
-	public Page<Subjects> querySubjectsByParam(Map<String, Object> searchParams) {
-		PageRequest pageRequest = buildPageRequest(1, 50, "catchTime");
+	public List<Subjects> querySubjectsByParam(Map<String, Object> searchParams) {
+		// PageRequest pageRequest = buildPageRequest(1, 50, "catchTime");
 		Specification<Subjects> spec = buildSpecification(searchParams);
 
-		return subjectsDao.findAll(spec, pageRequest);
+		return subjectsDao.findAll(spec);
 	}
 
-	public Page<Subjects> querySubjectsByParam(
+	public List<Subjects> querySubjectsByParam(
 			Map<String, Object> searchParams, String sortType) {
-		PageRequest pageRequest = buildPageRequest(1, 50, sortType);
+//		PageRequest pageRequest = buildPageRequest(1, 50, sortType);
 		Specification<Subjects> spec = buildSpecification(searchParams);
 
-		return subjectsDao.findAll(spec, pageRequest);
+		return subjectsDao.findAll(spec);
 	}
 
 	public Page<Subjects> getUserSubjects(Map<String, Object> searchParams,

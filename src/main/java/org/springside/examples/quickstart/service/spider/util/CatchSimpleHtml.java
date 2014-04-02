@@ -96,8 +96,8 @@ public class CatchSimpleHtml implements CatchService {
 		param.put("LIKE_subjUrl", subjUrl);
 		param.put("LIKE_subject", subject);
 
-		Page<Subjects> subjs = subjService.querySubjectsByParam(param, "auto");
-		if (null == subjs || subjs.getNumberOfElements() <= 0) {// 当前页为0
+		List<Subjects> subjs = subjService.querySubjectsByParam(param, "auto");
+		if (null == subjs || subjs.size() <= 0) {// 当前页为0
 			return false;
 		} else
 			return true;

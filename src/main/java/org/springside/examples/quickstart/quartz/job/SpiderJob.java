@@ -15,7 +15,6 @@ import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.data.domain.Page;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.quartz.QuartzJobBean;
@@ -84,7 +83,7 @@ public class SpiderJob extends QuartzJobBean {
 				e.printStackTrace();
 			}
 		}
-		
+
 		if (errors.size() > 0) {
 			try {
 				sendEmail(emailService, getContent(errors), "抓取失败网址");
@@ -117,8 +116,7 @@ public class SpiderJob extends QuartzJobBean {
 			urlService.saveUrls(errors);
 			urlService.saveUrls(success);
 		} catch (Exception e) {
-			buf1.append("<br/><h1>更新成功/失败url信息失败").append(
-					"</h1>");
+			buf1.append("<br/><h1>更新成功/失败url信息失败").append("</h1>");
 			buf1.append("<br/><h1>抓取失败网址：</h1>").append(errors);
 			buf1.append("<br/><h1>抓取成功网址：</h1>").append(success);
 			buf1.append("<br/>").append("<h1>错误消息如下</h1>：<br/>");
@@ -126,10 +124,10 @@ public class SpiderJob extends QuartzJobBean {
 					.append(getStackTraceStr(e.getStackTrace()));
 			e.printStackTrace();
 		}
-		if(buf.length() > 0) updateErrMsg = buf.toString();
-		if (buf1.length() > 0) updateErrMsg = updateErrMsg + buf1.toString();
-		
-		
+		if (buf.length() > 0)
+			updateErrMsg = buf.toString();
+		if (buf1.length() > 0)
+			updateErrMsg = updateErrMsg + buf1.toString();
 
 		if (updateErrMsg != null && !"".equals(updateErrMsg.trim())) {
 			try {
@@ -274,8 +272,8 @@ public class SpiderJob extends QuartzJobBean {
 			String[] values = strs[i].split("=");
 			param.put(values[0], values[1]);
 		}
-		Page<Url> urls = urlService.queryUrlByParam(param);
-		return urls.getContent();
+		List<Url> urls = urlService.queryUrlByParam(param);
+		return urls;
 	}
 
 }
