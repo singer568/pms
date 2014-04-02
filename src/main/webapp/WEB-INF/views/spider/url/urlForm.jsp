@@ -126,14 +126,14 @@
 						</tr>
 						<tr>
 							<td>
-								子&nbsp;&nbsp;&nbsp;版&nbsp;&nbsp;&nbsp;块:
+								板&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;块:
 							</td>
 							<td>
 								<input type="text" id="module" name="module"
 									value="${url.module}" size="45" />
 							</td>
 							<td>
-								板&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;块:
+								子&nbsp;&nbsp;&nbsp;版&nbsp;&nbsp;&nbsp;块:
 							</td>
 							<td>
 								<input type="text" id="submodule" name="submodule"
