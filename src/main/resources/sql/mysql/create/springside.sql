@@ -209,6 +209,9 @@ ADD COLUMN `filter`  char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEF
 ALTER TABLE `pms_subjects` ADD COLUMN `days`  varchar(5) NULL AFTER `filter`;
 
 
+ALTER TABLE `pms_url` ADD COLUMN `catch_num`  varchar(20) NULL AFTER `err_msg`;
+
+
 
 
 

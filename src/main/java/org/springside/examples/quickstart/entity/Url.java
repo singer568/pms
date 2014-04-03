@@ -134,6 +134,19 @@ public class Url extends IdEntity {
 	private Level level;
 	private Group group;
 
+	/**
+	 * 上次抓取条数
+	 */
+	private String catchNum;
+
+	public String getCatchNum() {
+		return catchNum;
+	}
+
+	public void setCatchNum(String catchNum) {
+		this.catchNum = catchNum;
+	}
+
 	public String getErrMsg() {
 		return errMsg;
 	}

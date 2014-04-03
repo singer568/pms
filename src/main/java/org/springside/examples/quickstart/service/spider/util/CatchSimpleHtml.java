@@ -174,14 +174,14 @@ public class CatchSimpleHtml implements CatchService {
 			String urlStr = constructHref(nextPageUrl, url.getUrlPrefix());
 			url.setUrl(urlStr);
 		}
-		Subjects tmp = null;
-		for (int i = 0; i < subjs.size(); i++) {
-
-			tmp = subjs.get(i);
-			if (keyWords != null) {
-				setSubjectsKeyFlag(tmp, keyWords);// 设置keyFlag
-			}
-		}
+//		Subjects tmp = null;
+//		for (int i = 0; i < subjs.size(); i++) {
+//
+//			tmp = subjs.get(i);
+//			if (keyWords != null) {
+//				setSubjectsKeyFlag(tmp, keyWords);// 设置keyFlag
+//			}
+//		}
 		return subjs;
 	}
 
@@ -390,13 +390,22 @@ public class CatchSimpleHtml implements CatchService {
 			}
 
 			if (subjects != null) {
-				for (int t = 0; t < lst.size(); t++) {
-					Subjects tmp = lst.get(t);
-					if (tmp.getSubjUrl() != null && !tmp.getSubjUrl().equals(subjects.getSubjUrl())) {
+				if (lst.size() > 0) {
+					boolean isContain = false;
+					for (int t = 0; t < lst.size(); t++) {
+						Subjects tmp = lst.get(t);
+						if (tmp.getSubjUrl() != null && tmp.getSubjUrl().equals(subjects.getSubjUrl())) {
+							isContain = true;
+							break;
+						}
+					}
+					if (!isContain) {
 						lst.add(subjects);
 					}
+				} else {
+					lst.add(subjects);
 				}
-			}
+			} 
 			if (errMsg.length() > 0) {
 				logger.error(errMsg);
 			}
