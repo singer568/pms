@@ -110,7 +110,7 @@ public class CatchTaskHistory implements java.io.Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	@Column(name = "log_info")
+	@Column(name = "logInfo")
 	public String getLogInfo() {
 		return logInfo;
 	}
