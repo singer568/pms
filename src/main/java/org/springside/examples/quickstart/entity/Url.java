@@ -1,13 +1,14 @@
 package org.springside.examples.quickstart.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.validator.constraints.NotBlank;
-
-//JPA标识
 /**
  * 按日期判断，同时按网址判断，如果这个网址已经抓取过了将不再抓取(为解决没发布日期的情况)
  * 
@@ -16,8 +17,14 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 @Entity
 @Table(name = "pms_url")
-public class Url extends IdEntity {
+public class Url implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6612407087175243007L;
+	
+	protected Long id;
 	private String code;
 	private String name;
 
@@ -139,6 +146,18 @@ public class Url extends IdEntity {
 	 */
 	private String catchNum;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	
+	@Column(name = "catch_num")
 	public String getCatchNum() {
 		return catchNum;
 	}
@@ -147,6 +166,7 @@ public class Url extends IdEntity {
 		this.catchNum = catchNum;
 	}
 
+	@Column(name = "err_msg")
 	public String getErrMsg() {
 		return errMsg;
 	}
@@ -155,6 +175,7 @@ public class Url extends IdEntity {
 		this.errMsg = errMsg;
 	}
 
+	@Column(name = "success")
 	public String getSuccess() {
 		return success;
 	}
@@ -163,6 +184,7 @@ public class Url extends IdEntity {
 		this.success = success;
 	}
 
+	@Column(name = "catch_time")
 	public String getCatchTime() {
 		return catchTime;
 	}
@@ -171,6 +193,7 @@ public class Url extends IdEntity {
 		this.catchTime = catchTime;
 	}
 
+	@Column(name = "filter")
 	public String getFilter() {
 		return filter;
 	}
@@ -189,6 +212,7 @@ public class Url extends IdEntity {
 		this.level = level;
 	}
 
+	@Column(name = "catch_type")
 	public String getCatchType() {
 		return catchType;
 	}
@@ -207,6 +231,7 @@ public class Url extends IdEntity {
 		this.group = group;
 	}
 
+	@Column(name = "area")
 	public String getArea() {
 		return area;
 	}
@@ -215,6 +240,7 @@ public class Url extends IdEntity {
 		this.area = area;
 	}
 
+	@Column(name = "valid")
 	public String getValid() {
 		return valid;
 	}
@@ -223,6 +249,7 @@ public class Url extends IdEntity {
 		this.valid = valid;
 	}
 
+	@Column(name = "is_capital")
 	public String getIsCapital() {
 		return isCapital;
 	}
@@ -231,10 +258,7 @@ public class Url extends IdEntity {
 		this.isCapital = isCapital;
 	}
 
-	public String getProvince() {
-		return province;
-	}
-
+	@Column(name = "catch_next_page")
 	public String getCatchNextPage() {
 		return catchNextPage;
 	}
@@ -243,6 +267,7 @@ public class Url extends IdEntity {
 		this.catchNextPage = catchNextPage;
 	}
 
+	@Column(name = "next_page_xpath")
 	public String getNextPageXpath() {
 		return nextPageXpath;
 	}
@@ -251,10 +276,16 @@ public class Url extends IdEntity {
 		this.nextPageXpath = nextPageXpath;
 	}
 
+	@Column(name = "province")
+	public String getProvince() {
+		return province;
+	}
+
 	public void setProvince(String province) {
 		this.province = province;
 	}
 
+	@Column(name = "charset")
 	public String getCharset() {
 		return charset;
 	}
@@ -263,6 +294,7 @@ public class Url extends IdEntity {
 		this.charset = charset;
 	}
 
+	@Column(name = "department")
 	public String getDepartment() {
 		return department;
 	}
@@ -271,10 +303,7 @@ public class Url extends IdEntity {
 		this.department = department;
 	}
 
-	public String getModule() {
-		return module;
-	}
-
+	@Column(name = "start_begin")
 	public Integer getStartBegin() {
 		return startBegin;
 	}
@@ -283,10 +312,16 @@ public class Url extends IdEntity {
 		this.startBegin = startBegin;
 	}
 
+	@Column(name = "module")
+	public String getModule() {
+		return module;
+	}
+
 	public void setModule(String module) {
 		this.module = module;
 	}
 
+	@Column(name = "submodule")
 	public String getSubmodule() {
 		return submodule;
 	}
@@ -295,6 +330,7 @@ public class Url extends IdEntity {
 		this.submodule = submodule;
 	}
 
+	@Column(name = "url_prefix")
 	public String getUrlPrefix() {
 		return urlPrefix;
 	}
@@ -303,6 +339,7 @@ public class Url extends IdEntity {
 		this.urlPrefix = urlPrefix;
 	}
 
+	@Column(name = "subj_path")
 	public String getSubjPath() {
 		return subjPath;
 	}
@@ -311,6 +348,7 @@ public class Url extends IdEntity {
 		this.subjPath = subjPath;
 	}
 
+	@Column(name = "link_path")
 	public String getLinkPath() {
 		return linkPath;
 	}
@@ -319,6 +357,7 @@ public class Url extends IdEntity {
 		this.linkPath = linkPath;
 	}
 
+	@Column(name = "date_path")
 	public String getDatePath() {
 		return datePath;
 	}
@@ -327,6 +366,7 @@ public class Url extends IdEntity {
 		this.datePath = datePath;
 	}
 
+	@Column(name = "subj_replace")
 	public String getSubjReplace() {
 		return subjReplace;
 	}
@@ -335,6 +375,7 @@ public class Url extends IdEntity {
 		this.subjReplace = subjReplace;
 	}
 
+	@Column(name = "date_replace")
 	public String getDateReplace() {
 		return dateReplace;
 	}
@@ -353,7 +394,7 @@ public class Url extends IdEntity {
 		this.task = task;
 	}
 
-	@NotBlank
+	@Column(name = "url")
 	public String getUrl() {
 		return url;
 	}
@@ -372,8 +413,7 @@ public class Url extends IdEntity {
 		this.rule = rule;
 	}
 
-	// JSR303 BeanValidator的校验规则
-	@NotBlank
+	@Column(name = "code")
 	public String getCode() {
 		return code;
 	}
@@ -382,7 +422,7 @@ public class Url extends IdEntity {
 		this.code = code;
 	}
 
-	@NotBlank
+	@Column(name = "name")
 	public String getName() {
 		return name;
 	}
@@ -391,6 +431,7 @@ public class Url extends IdEntity {
 		this.name = name;
 	}
 
+	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}
@@ -401,9 +442,9 @@ public class Url extends IdEntity {
 
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
-		buf.append("code=").append(code).append(";name=").append(name).append(
-				";province=").append(province).append(";department=").append(
-				department).append(";url=").append(url).append("<br/>");
+		buf.append("code=").append(code).append(";name=").append(name)
+				.append(";province=").append(province).append(";department=")
+				.append(department).append(";url=").append(url).append("<br/>");
 		return buf.toString();
 	}
 }

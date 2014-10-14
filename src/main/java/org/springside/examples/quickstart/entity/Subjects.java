@@ -2,18 +2,30 @@ package org.springside.examples.quickstart.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-//JPA标识
 @Entity
 @Table(name = "pms_subjects")
-public class Subjects extends IdEntity {
+public class Subjects implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7241583001935319516L;
+
+
+	protected Long id;
+	
+	
 	private Url url;
 
 	private CatchTask task;
@@ -110,7 +122,18 @@ public class Subjects extends IdEntity {
 	 * 是否按关键词筛选：0：否；1：是
 	 */
 	private String filter;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Column(name = "code")
 	public String getCode() {
 		return code;
 	}
@@ -119,6 +142,7 @@ public class Subjects extends IdEntity {
 		this.code = code;
 	}
 
+	@Column(name = "name")
 	public String getName() {
 		return name;
 	}
@@ -127,6 +151,7 @@ public class Subjects extends IdEntity {
 		this.name = name;
 	}
 
+	@Column(name = "province")
 	public String getProvince() {
 		return province;
 	}
@@ -135,6 +160,7 @@ public class Subjects extends IdEntity {
 		this.province = province;
 	}
 
+	@Column(name = "department")
 	public String getDepartment() {
 		return department;
 	}
@@ -143,6 +169,7 @@ public class Subjects extends IdEntity {
 		this.department = department;
 	}
 
+	@Column(name = "module")
 	public String getModule() {
 		return module;
 	}
@@ -151,6 +178,7 @@ public class Subjects extends IdEntity {
 		this.module = module;
 	}
 
+	@Column(name = "submodule")
 	public String getSubmodule() {
 		return submodule;
 	}
@@ -159,6 +187,7 @@ public class Subjects extends IdEntity {
 		this.submodule = submodule;
 	}
 
+	@Column(name = "area")
 	public String getArea() {
 		return area;
 	}
@@ -167,6 +196,7 @@ public class Subjects extends IdEntity {
 		this.area = area;
 	}
 
+	@Column(name = "is_capital")
 	public String getIsCapital() {
 		return isCapital;
 	}
@@ -175,6 +205,7 @@ public class Subjects extends IdEntity {
 		this.isCapital = isCapital;
 	}
 
+	@Column(name = "filter")
 	public String getFilter() {
 		return filter;
 	}
@@ -183,6 +214,7 @@ public class Subjects extends IdEntity {
 		this.filter = filter;
 	}
 
+	@Column(name = "sended_mail")
 	public String getSendedMail() {
 		return sendedMail;
 	}
@@ -191,6 +223,7 @@ public class Subjects extends IdEntity {
 		this.sendedMail = sendedMail;
 	}
 
+	@Column(name = "key_flag")
 	public String getKeyFlag() {
 		return keyFlag;
 	}
@@ -229,6 +262,7 @@ public class Subjects extends IdEntity {
 		this.group = group;
 	}
 
+	@Column(name = "dr")
 	public int getDr() {
 		return dr;
 	}
@@ -247,6 +281,7 @@ public class Subjects extends IdEntity {
 		this.url = url;
 	}
 
+	@Column(name = "from_url")
 	public String getFromUrl() {
 		return fromUrl;
 	}
@@ -255,6 +290,7 @@ public class Subjects extends IdEntity {
 		this.fromUrl = fromUrl;
 	}
 
+	@Column(name = "subject")
 	public String getSubject() {
 		return subject;
 	}
@@ -263,6 +299,7 @@ public class Subjects extends IdEntity {
 		this.subject = subject;
 	}
 
+	@Column(name = "relative_url")
 	public String getRelativeUrl() {
 		return relativeUrl;
 	}
@@ -271,6 +308,7 @@ public class Subjects extends IdEntity {
 		this.relativeUrl = relativeUrl;
 	}
 
+	@Column(name = "publish_date")
 	public String getPublishDate() {
 		return publishDate;
 	}
@@ -280,6 +318,7 @@ public class Subjects extends IdEntity {
 	}
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	@Column(name = "publish_date_time")
 	public Date getPublishDateTime() {
 		return publishDateTime;
 	}
@@ -288,6 +327,7 @@ public class Subjects extends IdEntity {
 		this.publishDateTime = publishDateTime;
 	}
 
+	@Column(name = "subj_url")
 	public String getSubjUrl() {
 		return subjUrl;
 	}
@@ -296,6 +336,7 @@ public class Subjects extends IdEntity {
 		this.subjUrl = subjUrl;
 	}
 
+	@Column(name = "content")
 	public String getContent() {
 		return content;
 	}
@@ -304,6 +345,7 @@ public class Subjects extends IdEntity {
 		this.content = content;
 	}
 
+	@Column(name = "catch_time")
 	public String getCatchTime() {
 		return catchTime;
 	}
@@ -314,8 +356,8 @@ public class Subjects extends IdEntity {
 
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
-		buf.append("fromUrl=").append(fromUrl).append(";subject=").append(
-				subject).append("<br/>").toString();
+		buf.append("fromUrl=").append(fromUrl).append(";subject=")
+				.append(subject).append("<br/>").toString();
 		return buf.toString();
 	}
 }

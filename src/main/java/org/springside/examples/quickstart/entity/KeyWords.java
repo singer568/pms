@@ -1,27 +1,46 @@
 package org.springside.examples.quickstart.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.validator.constraints.NotBlank;
-
-//JPA标识
 @Entity
 @Table(name = "pms_keywords")
-public class KeyWords extends IdEntity {
+public class KeyWords implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 23756257967647948L;
+	protected Long id;
 	private String code;
 	private String name;
-	private String keyWords;//具体关键词
+	private String keyWords;// 具体关键词
 	private String description;
-	
 
-	// JSR303 BeanValidator的校验规则
-	@NotBlank
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Column(name = "code")
 	public String getCode() {
 		return code;
 	}
 
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	@Column(name = "key_words")
 	public String getKeyWords() {
 		return keyWords;
 	}
@@ -30,10 +49,7 @@ public class KeyWords extends IdEntity {
 		this.keyWords = keyWords;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
-	}
-	@NotBlank
+	@Column(name = "name")
 	public String getName() {
 		return name;
 	}
@@ -42,6 +58,7 @@ public class KeyWords extends IdEntity {
 		this.name = name;
 	}
 
+	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}
@@ -49,5 +66,5 @@ public class KeyWords extends IdEntity {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 }

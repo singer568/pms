@@ -1,43 +1,58 @@
 package org.springside.examples.quickstart.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.validator.constraints.NotBlank;
 
 //JPA标识
 @Entity
 @Table(name = "pms_email")
-public class Email extends IdEntity implements Cloneable {
+public class Email implements java.io.Serializable, Cloneable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1151508219513981065L;
+	protected Long id;
 	private String code;
 	private String name;
 	private String email;
 	private String host;
 	private String userName;
 	private String pwd;
-	//发生错误后发送到的邮箱地址以#分隔
+	// 发生错误后发送到的邮箱地址以#分隔
 	private String errEmail;
-	
 
 	private String subject;// 主题
 	private String emailContent;// 邮件正文
 
 	private String description;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
-		buf.append("Email Info{code=").append(code).append(",name=").append(
-				name).append(",email=").append(email).append(",host=").append(
-				host).append(",subject=").append(subject).append(
-				",emailContent=").append(emailContent).append(",user=").append(
-				userName).append(",errEmail=").append(errEmail).append(",description=").append(description);
+		buf.append("Email Info{code=").append(code).append(",name=")
+				.append(name).append(",email=").append(email).append(",host=")
+				.append(host).append(",subject=").append(subject)
+				.append(",emailContent=").append(emailContent).append(",user=")
+				.append(userName).append(",errEmail=").append(errEmail)
+				.append(",description=").append(description);
 		return buf.toString();
 	}
 
-
+	@Column(name = "err_email")
 	public String getErrEmail() {
 		return errEmail;
 	}
@@ -62,12 +77,16 @@ public class Email extends IdEntity implements Cloneable {
 		return mail;
 	}
 
-	// JSR303 BeanValidator的校验规则
-	@NotBlank
+	@Column(name = "code")
 	public String getCode() {
 		return code;
 	}
 
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	@Column(name = "host")
 	public String getHost() {
 		return host;
 	}
@@ -76,6 +95,7 @@ public class Email extends IdEntity implements Cloneable {
 		this.host = host;
 	}
 
+	@Column(name = "user_name")
 	public String getUserName() {
 		return userName;
 	}
@@ -84,6 +104,7 @@ public class Email extends IdEntity implements Cloneable {
 		this.userName = userName;
 	}
 
+	@Column(name = "pwd")
 	public String getPwd() {
 		return pwd;
 	}
@@ -92,6 +113,7 @@ public class Email extends IdEntity implements Cloneable {
 		this.pwd = pwd;
 	}
 
+	@Column(name = "subject")
 	public String getSubject() {
 		return subject;
 	}
@@ -100,6 +122,7 @@ public class Email extends IdEntity implements Cloneable {
 		this.subject = subject;
 	}
 
+	@Column(name = "email_content")
 	public String getEmailContent() {
 		return emailContent;
 	}
@@ -108,11 +131,7 @@ public class Email extends IdEntity implements Cloneable {
 		this.emailContent = emailContent;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	@NotBlank
+	@Column(name = "name")
 	public String getName() {
 		return name;
 	}
@@ -121,7 +140,7 @@ public class Email extends IdEntity implements Cloneable {
 		this.name = name;
 	}
 
-	@NotBlank
+	@Column(name = "email")
 	public String getEmail() {
 		return email;
 	}
@@ -130,7 +149,7 @@ public class Email extends IdEntity implements Cloneable {
 		this.email = email;
 	}
 
-
+	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}

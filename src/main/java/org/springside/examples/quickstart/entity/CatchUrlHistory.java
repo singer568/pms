@@ -1,15 +1,23 @@
 package org.springside.examples.quickstart.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-//JPA标识
 @Entity
 @Table(name = "pms_urlhistory")
-public class CatchUrlHistory extends IdEntity {
+public class CatchUrlHistory implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected Long id;
 	/**
 	 * 抓取开始时间
 	 */
@@ -39,7 +47,7 @@ public class CatchUrlHistory extends IdEntity {
 	 * 抓取到的主题；用#号分隔开
 	 */
 	private String subjects;
-	
+
 	/**
 	 * 对应一次抓取日志
 	 */
@@ -50,6 +58,16 @@ public class CatchUrlHistory extends IdEntity {
 	 */
 	private Url url;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "task_history_id")
 	public CatchTaskHistory getTaskHistory() {
@@ -59,7 +77,7 @@ public class CatchUrlHistory extends IdEntity {
 	public void setTaskHistory(CatchTaskHistory taskHistory) {
 		this.taskHistory = taskHistory;
 	}
-
+	@Column(name = "start_date")
 	public String getStartDate() {
 		return startDate;
 	}
@@ -67,7 +85,7 @@ public class CatchUrlHistory extends IdEntity {
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
-
+	@Column(name = "subjects")
 	public String getSubjects() {
 		return subjects;
 	}
@@ -75,7 +93,7 @@ public class CatchUrlHistory extends IdEntity {
 	public void setSubjects(String subjects) {
 		this.subjects = subjects;
 	}
-
+	@Column(name = "end_date")
 	public String getEndDate() {
 		return endDate;
 	}
@@ -83,7 +101,7 @@ public class CatchUrlHistory extends IdEntity {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-
+	@Column(name = "duration")
 	public double getDuration() {
 		return duration;
 	}
@@ -91,7 +109,7 @@ public class CatchUrlHistory extends IdEntity {
 	public void setDuration(double duration) {
 		this.duration = duration;
 	}
-
+	@Column(name = "status")
 	public String getStatus() {
 		return status;
 	}

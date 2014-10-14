@@ -2,15 +2,24 @@ package org.springside.examples.quickstart.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.validator.constraints.NotBlank;
 
 //JPA标识
 @Entity
 @Table(name = "pms_task")
-public class CatchTask extends IdEntity {
+public class CatchTask implements java.io.Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6150450030078651624L;
+
+	protected Long id;
 
 	private String code;
 
@@ -53,31 +62,38 @@ public class CatchTask extends IdEntity {
 	 * 最近一次抓取状态：SUCCESS成功/失败FAIL
 	 */
 	private String status;
-	
+
 	/**
 	 * 匹配邮箱
 	 */
 	private String emailRule;
-	
+
 	/**
 	 * 默认抓取几天之内的数据，默认3天
 	 */
 	private String days;
-	
-	
+
 	/**
-	 * 关键字过滤
-	 * 通过#分隔
+	 * 关键字过滤 通过#分隔
 	 */
 	private String keyWords;
-	
+
 	/**
-	 * 任务类型：
-	 * 抓取任务或邮件任务
+	 * 任务类型： 抓取任务或邮件任务
 	 */
 	private String type;
-	
-	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Column(name = "type")
 	public String getType() {
 		return type;
 	}
@@ -86,6 +102,7 @@ public class CatchTask extends IdEntity {
 		this.type = type;
 	}
 
+	@Column(name = "email_rule")
 	public String getEmailRule() {
 		return emailRule;
 	}
@@ -94,6 +111,7 @@ public class CatchTask extends IdEntity {
 		this.emailRule = emailRule;
 	}
 
+	@Column(name = "catch_type")
 	public String getCatchType() {
 		return catchType;
 	}
@@ -102,6 +120,7 @@ public class CatchTask extends IdEntity {
 		this.catchType = catchType;
 	}
 
+	@Column(name = "url_rule")
 	public String getUrlRule() {
 		return urlRule;
 	}
@@ -110,10 +129,16 @@ public class CatchTask extends IdEntity {
 		this.urlRule = urlRule;
 	}
 
+	@Column(name = "key_words")
 	public String getKeyWords() {
 		return keyWords;
 	}
 
+	public void setKeyWords(String keyWords) {
+		this.keyWords = keyWords;
+	}
+
+	@Column(name = "days")
 	public String getDays() {
 		return days;
 	}
@@ -122,10 +147,7 @@ public class CatchTask extends IdEntity {
 		this.days = days;
 	}
 
-	public void setKeyWords(String keyWords) {
-		this.keyWords = keyWords;
-	}
-
+	@Column(name = "start_date")
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -134,6 +156,7 @@ public class CatchTask extends IdEntity {
 		this.startDate = startDate;
 	}
 
+	@Column(name = "end_date")
 	public Date getEndDate() {
 		return endDate;
 	}
@@ -142,6 +165,7 @@ public class CatchTask extends IdEntity {
 		this.endDate = endDate;
 	}
 
+	@Column(name = "duration")
 	public double getDuration() {
 		return duration;
 	}
@@ -150,6 +174,7 @@ public class CatchTask extends IdEntity {
 		this.duration = duration;
 	}
 
+	@Column(name = "status")
 	public String getStatus() {
 		return status;
 	}
@@ -158,7 +183,7 @@ public class CatchTask extends IdEntity {
 		this.status = status;
 	}
 
-	@NotBlank
+	@Column(name = "cron")
 	public String getCron() {
 		return cron;
 	}
@@ -167,8 +192,7 @@ public class CatchTask extends IdEntity {
 		this.cron = cron;
 	}
 
-	// JSR303 BeanValidator的校验规则
-	@NotBlank
+	@Column(name = "code")
 	public String getCode() {
 		return code;
 	}
@@ -177,7 +201,7 @@ public class CatchTask extends IdEntity {
 		this.code = code;
 	}
 
-	@NotBlank
+	@Column(name = "name")
 	public String getName() {
 		return name;
 	}
@@ -186,6 +210,7 @@ public class CatchTask extends IdEntity {
 		this.name = name;
 	}
 
+	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}

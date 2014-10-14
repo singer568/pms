@@ -2,7 +2,11 @@ package org.springside.examples.quickstart.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -12,7 +16,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 //JPA标识
 @Entity
 @Table(name = "pms_taskhistory")
-public class CatchTaskHistory extends IdEntity {
+public class CatchTaskHistory implements java.io.Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3501411372588101101L;
+
+	protected Long id;
 
 	/**
 	 * 抓取任务
@@ -44,6 +55,16 @@ public class CatchTaskHistory extends IdEntity {
 	 */
 	private String logInfo;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "task_id")
 	public CatchTask getTask() {
@@ -55,6 +76,7 @@ public class CatchTaskHistory extends IdEntity {
 	}
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	@Column(name = "start_date")
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -64,6 +86,7 @@ public class CatchTaskHistory extends IdEntity {
 	}
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	@Column(name = "end_date")
 	public Date getEndDate() {
 		return endDate;
 	}
@@ -71,7 +94,7 @@ public class CatchTaskHistory extends IdEntity {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-
+	@Column(name = "duration")
 	public String getDuration() {
 		return duration;
 	}
@@ -79,7 +102,7 @@ public class CatchTaskHistory extends IdEntity {
 	public void setDuration(String duration) {
 		this.duration = duration;
 	}
-
+	@Column(name = "status")
 	public String getStatus() {
 		return status;
 	}
@@ -87,7 +110,7 @@ public class CatchTaskHistory extends IdEntity {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
+	@Column(name = "log_info")
 	public String getLogInfo() {
 		return logInfo;
 	}
